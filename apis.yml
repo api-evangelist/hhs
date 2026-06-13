@@ -61,6 +61,26 @@ apis:
         url: https://simpler.grants.gov/developers
       - type: OpenAPI
         url: https://api.simpler.grants.gov/docs
+      - type: OpenAPISpec
+        url: openapi/simpler-grants-gov.yml
+      - type: JSONSchema
+        url: json-schema/opportunityv1.json
+      - type: JSONSchema
+        url: json-schema/opportunitysearchresponsev1.json
+      - type: JSONSchema
+        url: json-schema/agencyv1.json
+      - type: JSONSchema
+        url: json-schema/errorresponse.json
+      - type: JSONSchema
+        url: json-schema/paginationinfo.json
+      - type: JSONSchema
+        url: json-schema/healthcheckresponse.json
+      - type: Examples
+        url: examples/v1_opportunities_search_post_request.json
+      - type: Examples
+        url: examples/v1_agencies_search_post_request.json
+      - type: JSONLDContext
+        url: json-ld/context.json
       - type: RateLimits
         url: rate-limits/simpler-grants.yml
       - type: Plans

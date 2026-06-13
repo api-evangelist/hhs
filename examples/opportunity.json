@@ -1,0 +1,17 @@
+{
+  "opportunity_id": 12345,
+  "opportunity_number": "HHS-2024-001",
+  "opportunity_title": "Research Grant for Public Health Innovation",
+  "agency_name": "Department of Health and Human Services",
+  "agency_code": "HHS",
+  "summary": {
+    "close_date": "2024-12-31",
+    "award_floor": 50000,
+    "award_ceiling": 500000,
+    "post_date": "2024-01-15",
+    "archive_date": "2025-01-15",
+    "is_cost_sharing": false,
+    "opportunity_status": "posted"
+  },
+  "category": "research_and_development"
+}

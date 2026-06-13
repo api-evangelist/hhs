@@ -1,0 +1,71 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.simpler.grants.gov/schemas/AgencyV1Schema",
+  "title": "AgencyV1Schema",
+  "type": "object",
+  "properties": {
+    "agency_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The internal ID of the agency",
+      "example": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    "agency_name": {
+      "type": "string",
+      "description": "The name of the agency who created the opportunity",
+      "example": "Department of Examples"
+    },
+    "agency_code": {
+      "type": "string",
+      "description": "The agency who created the opportunity",
+      "example": "ABC"
+    },
+    "top_level_agency": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "anyOf": [
+        {
+          "$ref": "#/components/schemas/AgencyV1Schema"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "is_test_agency": {
+      "type": "boolean",
+      "description": "Indicates if the agency is a test agency.",
+      "example": false
+    },
+    "opportunity_statuses": {
+      "type": "array",
+      "description": "List of opportunity statuses the agency is linked with.",
+      "example": [
+        "posted"
+      ],
+      "items": {
+        "enum": [
+          "forecasted",
+          "posted",
+          "closed",
+          "archived"
+        ],
+        "type": [
+          "string"
+        ]
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    }
+  }
+}

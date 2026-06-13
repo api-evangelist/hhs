@@ -1,0 +1,24 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.simpler.grants.gov/schemas/HealthcheckResponseSchema",
+  "title": "HealthcheckResponseSchema",
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string",
+      "description": "The message to return",
+      "example": "Success"
+    },
+    "data": {
+      "type": [
+        "object"
+      ],
+      "$ref": "#/components/schemas/HealthcheckMetadataSchema"
+    },
+    "status_code": {
+      "type": "integer",
+      "description": "The HTTP status code",
+      "example": 200
+    }
+  }
+}

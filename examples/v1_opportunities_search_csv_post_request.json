@@ -1,0 +1,27 @@
+{
+  "example1": {
+    "summary": "No filters",
+    "value": {}
+  },
+  "example2": {
+    "summary": "Query and filters",
+    "value": {
+      "query": "research",
+      "query_operator": "OR",
+      "filters": {
+        "agency": {
+          "one_of": [
+            "USAID",
+            "DOC"
+          ]
+        },
+        "opportunity_status": {
+          "one_of": [
+            "forecasted",
+            "posted"
+          ]
+        }
+      }
+    }
+  }
+}

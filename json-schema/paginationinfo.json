@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.simpler.grants.gov/schemas/PaginationInfoSchema",
+  "title": "PaginationInfoSchema",
+  "type": "object",
+  "properties": {
+    "page_offset": {
+      "type": "integer",
+      "description": "The page number that was fetched",
+      "example": 1
+    },
+    "page_size": {
+      "type": "integer",
+      "description": "The size of the page fetched",
+      "example": 25
+    },
+    "total_records": {
+      "type": "integer",
+      "description": "The total number of records fetchable",
+      "example": 42
+    },
+    "total_pages": {
+      "type": "integer",
+      "description": "The total number of pages that can be fetched",
+      "example": 2
+    },
+    "sort_order": {
+      "type": "array",
+      "description": "The sort order passed in originally",
+      "items": {
+        "type": [
+          "object"
+        ],
+        "$ref": "#/components/schemas/SortOrderSchema"
+      }
+    }
+  }
+}

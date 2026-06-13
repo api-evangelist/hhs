@@ -1,0 +1,144 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.simpler.grants.gov/schemas/OpportunityV1Schema",
+  "title": "OpportunityV1Schema",
+  "type": "object",
+  "properties": {
+    "opportunity_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "The internal ID of the opportunity",
+      "example": "123e4567-e89b-12d3-a456-426614174000"
+    },
+    "legacy_opportunity_id": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "description": "The internal legacy ID of the opportunity",
+      "example": 12345
+    },
+    "opportunity_number": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The funding opportunity number",
+      "example": "ABC-123-XYZ-001"
+    },
+    "opportunity_title": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The title of the opportunity",
+      "example": "Research into conservation techniques"
+    },
+    "agency": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "DEPRECATED - use: agency_code",
+      "example": "US-ABC"
+    },
+    "agency_code": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The agency who created the opportunity",
+      "example": "US-ABC"
+    },
+    "agency_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The name of the agency who created the opportunity",
+      "example": "Department of Examples"
+    },
+    "top_level_agency_name": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The name of the top level agency who created the oppportunity",
+      "example": "Department of Examples"
+    },
+    "category": {
+      "description": "The opportunity category",
+      "example": [
+        "discretionary"
+      ],
+      "enum": [
+        "discretionary",
+        "mandatory",
+        "continuation",
+        "earmark",
+        "other"
+      ],
+      "type": [
+        "string",
+        "null",
+        "null"
+      ]
+    },
+    "category_explanation": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Explanation of the category when the category is 'O' (other)",
+      "example": null
+    },
+    "opportunity_assistance_listings": {
+      "type": "array",
+      "items": {
+        "type": [
+          "object"
+        ],
+        "$ref": "#/components/schemas/OpportunityAssistanceListingV1Schema"
+      }
+    },
+    "summary": {
+      "type": [
+        "object"
+      ],
+      "$ref": "#/components/schemas/OpportunitySummaryV1Schema"
+    },
+    "opportunity_status": {
+      "description": "The current status of the opportunity",
+      "example": [
+        "posted"
+      ],
+      "enum": [
+        "forecasted",
+        "posted",
+        "closed",
+        "archived"
+      ],
+      "type": [
+        "string"
+      ]
+    },
+    "top_level_agency_code": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The top-level (parent) agency",
+      "example": "HHS"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "readOnly": true
+    }
+  }
+}

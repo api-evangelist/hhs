@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://api.simpler.grants.gov/schemas/OpportunitySearchResponseV1Schema",
+  "title": "OpportunitySearchResponseV1Schema",
+  "type": "object",
+  "properties": {
+    "pagination_info": {
+      "description": "The pagination information for paginated endpoints",
+      "type": [
+        "object"
+      ],
+      "$ref": "#/components/schemas/PaginationInfoSchema"
+    },
+    "message": {
+      "type": "string",
+      "description": "The message to return",
+      "example": "Success"
+    },
+    "data": {
+      "type": "array",
+      "items": {
+        "$ref": "#/components/schemas/OpportunityV1Schema"
+      }
+    },
+    "status_code": {
+      "type": "integer",
+      "description": "The HTTP status code",
+      "example": 200
+    },
+    "facet_counts": {
+      "description": "Counts of filter/facet values in the full response",
+      "type": [
+        "object"
+      ],
+      "$ref": "#/components/schemas/OpportunityFacetV1Schema"
+    }
+  }
+}

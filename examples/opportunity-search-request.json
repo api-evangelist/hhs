@@ -1,0 +1,17 @@
+{
+  "query": "public health research",
+  "filters": {
+    "agency": [
+      "HHS"
+    ],
+    "opportunity_status": [
+      "posted"
+    ]
+  },
+  "pagination": {
+    "page_offset": 1,
+    "page_size": 25,
+    "sort_order": "asc",
+    "order_by": "close_date"
+  }
+}

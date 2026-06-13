@@ -1,0 +1,45 @@
+{
+  "example1": {
+    "summary": "No filters",
+    "value": {
+      "query": "USAID",
+      "pagination": {
+        "sort_order": [
+          {
+            "order_by": "agency_name",
+            "sort_direction": "descending"
+          }
+        ],
+        "page_offset": 1,
+        "page_size": 25
+      }
+    }
+  },
+  "example2": {
+    "summary": "Filter by open/forecasted agency",
+    "value": {
+      "filters": {
+        "has_open_opportunity": {
+          "one_of": [
+            "False"
+          ]
+        },
+        "has_forecasted_opportunity": {
+          "one_of": [
+            "False"
+          ]
+        }
+      },
+      "pagination": {
+        "sort_order": [
+          {
+            "order_by": "agency_name",
+            "sort_direction": "descending"
+          }
+        ],
+        "page_offset": 1,
+        "page_size": 25
+      }
+    }
+  }
+}
