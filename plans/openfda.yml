@@ -1,0 +1,29 @@
+name: openFDA API Plans
+description: openFDA offers free access with and without an API key. API keys are free to obtain and provide significantly higher rate limits for regular use.
+url: https://open.fda.gov/apis/authentication/
+
+plans:
+  - name: Anonymous
+    description: Access without an API key. Suitable for occasional exploratory use.
+    rateLimits:
+      - requests: 240
+        period: minute
+        unit: IP address
+      - requests: 1000
+        period: day
+        unit: IP address
+    price: 0
+    pricingModel: free
+
+  - name: API Key (Free)
+    description: Free API key providing higher throughput for regular use in applications and research.
+    rateLimits:
+      - requests: 240
+        period: minute
+        unit: key
+      - requests: 120000
+        period: day
+        unit: key
+    price: 0
+    pricingModel: free
+    signupURL: https://open.fda.gov/apis/authentication/

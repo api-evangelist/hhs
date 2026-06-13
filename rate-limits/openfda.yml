@@ -1,0 +1,26 @@
+name: openFDA API Rate Limits
+description: Rate limits for the openFDA REST API. Limits vary based on whether an API key is used.
+url: https://open.fda.gov/apis/authentication/
+
+rateLimits:
+  - plan: Anonymous (no API key)
+    requests: 240
+    period: minute
+    unit: IP address
+    notes: Without an API key, the limit is per IP address.
+
+  - plan: API Key (Free)
+    requests: 240
+    period: minute
+    unit: key
+    notes: Per API key, not per IP.
+
+  - plan: API Key (Free)
+    requests: 120000
+    period: day
+    unit: key
+    notes: Daily limit per API key.
+
+enforcement: HTTP 429 Too Many Requests returned when limit exceeded.
+keyRequired: false
+keySignupURL: https://open.fda.gov/apis/authentication/

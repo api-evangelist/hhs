@@ -1,0 +1,38 @@
+name: HHS API FinOps Overview
+description: Financial operations summary for HHS public APIs. All HHS agency APIs are provided free of charge as a public service of the US federal government.
+
+apis:
+  - name: openFDA API
+    cost: free
+    keyRequired: false
+    keySignupURL: https://open.fda.gov/apis/authentication/
+    notes: Free API key available for higher rate limits. No cost tiers.
+
+  - name: Simpler Grants.gov API
+    cost: free
+    keyRequired: true
+    keySignupURL: https://simpler.grants.gov/developers
+    notes: Free with API key. Higher throughput for production available upon request at no cost.
+
+  - name: MyHealthfinder API
+    cost: free
+    keyRequired: false
+    notes: Completely free to use. No API key required based on published documentation.
+
+  - name: ONC Health IT Open Data API
+    cost: free
+    keyRequired: false
+    notes: Public open data API, no key required.
+
+  - name: HRSA Health Center Data Web Service
+    cost: free
+    keyRequired: true
+    registrationURL: https://data.hrsa.gov/data/services
+    notes: Free registration required to obtain a web service token. SOAP/XML interface.
+
+  - name: HealthData.gov Catalog API (CKAN)
+    cost: free
+    keyRequired: false
+    notes: Public CKAN API, no key required.
+
+summary: All HHS and sub-agency APIs are provided at no cost as part of the US government open data mandate.

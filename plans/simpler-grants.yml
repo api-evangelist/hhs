@@ -1,0 +1,25 @@
+name: Simpler Grants.gov API Plans
+description: Simpler Grants.gov API is free to use with an API key managed through a developer account. Higher throughput is available for production integrations upon request.
+url: https://simpler.grants.gov/developers
+
+plans:
+  - name: Standard (Free)
+    description: Default access for registered developers using an API key.
+    rateLimits:
+      - requests: 60
+        period: minute
+        unit: key
+      - requests: 10000
+        period: day
+        unit: key
+    price: 0
+    pricingModel: free
+    signupURL: https://simpler.grants.gov/developers
+    notes: Inactive API keys are automatically disabled after 30 days without use.
+
+  - name: Production (Request Required)
+    description: Higher throughput for production integrations, available upon request.
+    price: 0
+    pricingModel: free
+    contactURL: https://simpler.grants.gov/developers
+    notes: Contact support@grants.gov or 1-800-518-4726 to request elevated limits.

@@ -1,0 +1,20 @@
+name: Simpler Grants.gov API Rate Limits
+description: Rate limits for the Simpler Grants.gov REST API. All access requires an API key.
+url: https://simpler.grants.gov/developers
+
+rateLimits:
+  - plan: Standard
+    requests: 60
+    period: minute
+    unit: key
+
+  - plan: Standard
+    requests: 10000
+    period: day
+    unit: key
+
+keyRequired: true
+keyManagement: Developers create and manage API keys through their simpler.grants.gov account dashboard.
+keyExpiry: API keys are automatically disabled after 30 days of inactivity.
+productionUpgrade: Higher limits available upon request for production integrations.
+contactURL: https://simpler.grants.gov/developers

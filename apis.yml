@@ -1,0 +1,164 @@
+aid: hhs
+name: HHS (US Department of Health and Human Services)
+description: The US Department of Health and Human Services provides data APIs for health programs, public health datasets, grants data, and interoperability standards for health information. HHS operates a broad ecosystem of APIs spanning FDA drug and device data, grants opportunity search, health IT open data, HRSA health center locators, and public health content syndication through its agencies including FDA, HRSA, ONC, and ODPHP.
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - Health
+  - Public Health
+  - Grants
+  - Interoperability
+  - FHIR
+  - Government
+  - Open Data
+  - FDA
+  - HRSA
+  - ONC
+url: https://raw.githubusercontent.com/api-evangelist/hhs/refs/heads/main/apis.yml
+created: "2026-06-13"
+modified: "2026-06-13"
+specificationVersion: "0.19"
+type: Index
+
+apis:
+
+  - name: openFDA API
+    description: OpenFDA provides RESTful APIs and raw download access to high-value FDA public datasets including drug adverse events, drug labels, drug recalls, medical device 510(k) clearances, device classifications, device recalls, and food recall enforcement reports. Free API key available for higher rate limits.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://open.fda.gov/apis/
+    baseURL: https://api.fda.gov
+    tags:
+      - FDA
+      - Drugs
+      - Medical Devices
+      - Food Safety
+      - Adverse Events
+      - Recalls
+    properties:
+      - type: Documentation
+        url: https://open.fda.gov/apis/
+      - type: Authentication
+        url: https://open.fda.gov/apis/authentication/
+      - type: RateLimits
+        url: rate-limits/openfda.yml
+      - type: Plans
+        url: plans/openfda.yml
+    contact:
+      - FN: openFDA Team
+        url: https://open.fda.gov/contact/
+
+  - name: Simpler Grants.gov API
+    description: The Simpler Grants.gov API provides programmatic access to search and retrieve federal grant opportunities. Supports keyword search, fielded search, pagination, sorting, and detailed opportunity retrieval. Requires an API key managed through a developer account.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://simpler.grants.gov/developers
+    baseURL: https://api.simpler.grants.gov
+    tags:
+      - Grants
+      - Federal Funding
+      - Opportunities
+      - Search
+    properties:
+      - type: Documentation
+        url: https://simpler.grants.gov/developers
+      - type: OpenAPI
+        url: https://api.simpler.grants.gov/docs
+      - type: RateLimits
+        url: rate-limits/simpler-grants.yml
+      - type: Plans
+        url: plans/simpler-grants.yml
+    contact:
+      - FN: Grants.gov Support
+        email: support@grants.gov
+        url: https://simpler.grants.gov/
+
+  - name: MyHealthfinder API
+    description: The MyHealthfinder API (Version 4) allows developers to add evidence-based, plain language health content to their websites and applications. Content is available in English and Spanish and is completely free to use. Provides personalized health recommendations based on age, sex, and pregnancy status.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://odphp.health.gov/our-work/national-health-initiatives/health-literacy/consumer-health-content/free-web-content/apis-developers
+    baseURL: https://health.gov/myhealthfinder
+    tags:
+      - Public Health
+      - Health Content
+      - Consumer Health
+      - ODPHP
+    properties:
+      - type: Documentation
+        url: https://odphp.health.gov/our-work/national-health-initiatives/health-literacy/consumer-health-content/free-web-content/apis-developers/api-documentation
+    contact:
+      - FN: ODPHP
+        url: https://odphp.health.gov/
+
+  - name: ONC Health IT Open Data API
+    description: The ONC Health IT Open Data API provides access to open datasets published by the Office of the National Coordinator for Health Information Technology. Supports filtering by state and year, and returns data in JSON, CSV, or XML formats. Covers datasets on EHR adoption, health IT use, and interoperability metrics.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://healthit.gov/data/api/
+    baseURL: https://healthit.gov/data/open-api
+    tags:
+      - Health IT
+      - EHR
+      - Interoperability
+      - ONC
+      - Open Data
+    properties:
+      - type: Documentation
+        url: https://healthit.gov/data/api/
+    contact:
+      - FN: ONC
+        email: ONC.Request@hhs.gov
+        url: https://healthit.gov/
+
+  - name: HRSA Health Center Data Web Service
+    description: The HRSA Health Center Data Web Service allows querying for federally qualified health centers by state, county, or ZIP code. A separate service provides access to Ryan White HIV/AIDS Medical Care Providers searchable by latitude and longitude. Uses SOAP/XML. Registration required to obtain a web token.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://data.hrsa.gov/data/services
+    baseURL: https://data.hrsa.gov
+    tags:
+      - HRSA
+      - Health Centers
+      - HIV/AIDS
+      - Provider Locator
+      - SOAP
+    properties:
+      - type: Documentation
+        url: https://data.hrsa.gov/data/services
+    contact:
+      - FN: HRSA Data
+        email: data@hrsa.gov
+        url: https://data.hrsa.gov/
+
+  - name: HealthData.gov Catalog API
+    description: The HealthData.gov Catalog API uses CKAN and provides machine-readable access to the HHS health data catalog. Developers can find newly added datasets, search the catalog, download catalog metadata for analysis, or build new catalog tools. Conforms to DCAT-US 3.0 standards.
+    image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://healthdata.gov/
+    baseURL: https://healthdata.gov/api/3
+    tags:
+      - Open Data
+      - CKAN
+      - Health Data
+      - Data Catalog
+      - DCAT
+    properties:
+      - type: Documentation
+        url: https://healthdata.gov/
+    contact:
+      - FN: HealthData.gov
+        url: https://healthdata.gov/
+
+common:
+  - type: GitHub
+    url: https://github.com/HHS
+  - type: TermsOfService
+    url: https://www.hhs.gov/web/policies-and-standards/hhs-web-policies/terms-of-service/index.html
+  - type: PrivacyPolicy
+    url: https://www.hhs.gov/web/policies-and-standards/hhs-web-policies/privacy/index.html
+  - type: OpenData
+    url: https://healthdata.gov/
+  - type: Status
+    url: https://www.hhs.gov/
+  - type: Blog
+    url: https://www.hhs.gov/about/news/index.html
+  - type: Accessibility
+    url: https://www.hhs.gov/web/policies-and-standards/hhs-web-policies/accessibility/index.html
+
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
