@@ -164,6 +164,8 @@ apis:
         url: https://healthdata.gov/
 
 common:
+  - type: DomainSecurity
+    url: security/hhs-domain-security.yml
   - type: GitHub
     url: https://github.com/HHS
   - type: TermsOfService
