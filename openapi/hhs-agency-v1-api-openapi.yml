@@ -1,0 +1,372 @@
+openapi: 3.1.0
+info:
+  description: '
+
+    Back end API for simpler.grants.gov.
+
+
+    This API is in active development as we build out new functionalities for Simpler.Grants.gov. It is currently stable for everyday use, and will be versioned with advance notice for any breaking changes.
+
+
+    Learn more in our [API documentation](https://wiki.simpler.grants.gov/product/api).
+
+    See [Release Phases](https://github.com/github/roadmap?tab=readme-ov-file#release-phases) for further details.
+
+    '
+  contact:
+    name: Simpler Grants.gov
+    url: https://simpler.grants.gov/
+    email: simpler@grants.gov
+  title: Simpler Grants Agency v1 API
+  version: v0
+servers: .
+tags:
+- name: Agency v1
+paths:
+  /v1/agencies/search:
+    post:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgencySearchResponseV1Schema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+      tags:
+      - Agency v1
+      summary: Agency Search
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgencySearchRequestSchema'
+            examples:
+              example1:
+                summary: No filters
+                value:
+                  query: USAID
+                  pagination:
+                    sort_order:
+                    - order_by: agency_name
+                      sort_direction: descending
+                    page_offset: 1
+                    page_size: 25
+              example2:
+                summary: Filter by open/forecasted agency
+                value:
+                  filters:
+                    has_open_opportunity:
+                      one_of:
+                      - 'False'
+                    has_forecasted_opportunity:
+                      one_of:
+                      - 'False'
+                  pagination:
+                    sort_order:
+                    - order_by: agency_name
+                      sort_direction: descending
+                    page_offset: 1
+                    page_size: 25
+      security:
+      - ApiJwtAuth: &id001 []
+      - ApiUserKeyAuth: *id001
+components:
+  schemas:
+    HasActiveOpportunityFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type:
+          - array
+          - 'null'
+          items:
+            type: boolean
+            example: true
+    AgencySearchFilterV1Schema:
+      type: object
+      properties:
+        has_active_opportunity:
+          type:
+          - object
+          $ref: '#/components/schemas/HasActiveOpportunityFilterV1Schema'
+        opportunity_statuses:
+          type:
+          - object
+          $ref: '#/components/schemas/OpportunityStatusesFilterV1Schema'
+        is_test_agency:
+          type:
+          - object
+          $ref: '#/components/schemas/IsTestAgencyFilterV1Schema'
+    AgencySearchResponseV1Schema:
+      type: object
+      properties:
+        pagination_info:
+          description: The pagination information for paginated endpoints
+          type:
+          - object
+          $ref: '#/components/schemas/PaginationInfoSchema'
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/AgencyV1Schema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    AgencyV1Schema:
+      type: object
+      properties:
+        agency_id:
+          type: string
+          format: uuid
+          description: The internal ID of the agency
+          example: 123e4567-e89b-12d3-a456-426614174000
+        agency_name:
+          type: string
+          description: The name of the agency who created the opportunity
+          example: Department of Examples
+        agency_code:
+          type: string
+          description: The agency who created the opportunity
+          example: ABC
+        top_level_agency:
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/AgencyV1Schema'
+          - type: 'null'
+        is_test_agency:
+          type: boolean
+          description: Indicates if the agency is a test agency.
+          example: false
+        opportunity_statuses:
+          type: array
+          description: List of opportunity statuses the agency is linked with.
+          example:
+          - posted
+          items:
+            enum:
+            - forecasted
+            - posted
+            - closed
+            - archived
+            type:
+            - string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    AgencySearchRequestSchema:
+      type: object
+      properties:
+        query:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Query string which searches against several text fields
+          example: research
+        query_operator:
+          default:
+          - OR
+          description: Query operator for combining search conditions
+          example: OR
+          enum:
+          - AND
+          - OR
+          type:
+          - string
+        filters:
+          type:
+          - object
+          $ref: '#/components/schemas/AgencySearchFilterV1Schema'
+        pagination:
+          type:
+          - object
+          $ref: '#/components/schemas/AgencySearchPaginationV1Schema'
+      required:
+      - pagination
+    PaginationInfoSchema:
+      type: object
+      properties:
+        page_offset:
+          type: integer
+          description: The page number that was fetched
+          example: 1
+        page_size:
+          type: integer
+          description: The size of the page fetched
+          example: 25
+        total_records:
+          type: integer
+          description: The total number of records fetchable
+          example: 42
+        total_pages:
+          type: integer
+          description: The total number of pages that can be fetched
+          example: 2
+        sort_order:
+          type: array
+          description: The sort order passed in originally
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderSchema'
+    OpportunityStatusesFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            example: archived
+    AgencySearchPaginationV1Schema:
+      type: object
+      properties:
+        sort_order:
+          type: array
+          default:
+          - order_by: agency_code
+            sort_direction: ascending
+          minItems: 1
+          maxItems: 5
+          description: The list of sorting rules
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderAgencySearchPaginationV1Schema'
+        page_size:
+          type: integer
+          minimum: 1
+          maximum: 5000
+          description: The size of the page to fetch
+          example: 25
+        page_offset:
+          type: integer
+          minimum: 1
+          description: The page number to fetch, starts counting from 1
+          example: 1
+      required:
+      - page_offset
+      - page_size
+    IsTestAgencyFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type:
+          - array
+          - 'null'
+          items:
+            type: boolean
+            example: true
+    ErrorResponseSchema:
+      type: object
+      properties:
+        data:
+          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
+          example: {}
+        message:
+          type: string
+          description: General description of the error
+          example: Error
+        status_code:
+          type: integer
+          description: The HTTP status code of the error
+        errors:
+          type: array
+          example: []
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        internal_request_id:
+          type: string
+          description: An internal tracking ID
+          example: 550e8400-e29b-41d4-a716-446655440000
+    SortOrderSchema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          description: The field that the records were sorted by
+          example: id
+        sort_direction:
+          description: The direction the records are sorted
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+    SortOrderAgencySearchPaginationV1Schema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          enum:
+          - agency_code
+          - agency_name
+          description: The field to sort the response by
+        sort_direction:
+          description: Whether to sort the response ascending or descending
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+      required:
+      - order_by
+      - sort_direction
+    ValidationIssueSchema:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error
+          example: invalid
+        message:
+          type: string
+          description: The message to return
+          example: Not a valid string.
+        field:
+          type: string
+          description: The field that failed
+          example: summary.summary_description
+        value:
+          type: string
+          description: The value that failed
+          example: invalid string
+  securitySchemes:
+    ApiJwtAuth:
+      type: apiKey
+      in: header
+      name: X-SGG-Token
+    InternalApiJwtAuth:
+      type: apiKey
+      in: header
+      name: X-SGG-Internal-Token
+    ApiUserKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

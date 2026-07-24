@@ -1,0 +1,3123 @@
+openapi: 3.1.0
+info:
+  description: '
+
+    Back end API for simpler.grants.gov.
+
+
+    This API is in active development as we build out new functionalities for Simpler.Grants.gov. It is currently stable for everyday use, and will be versioned with advance notice for any breaking changes.
+
+
+    Learn more in our [API documentation](https://wiki.simpler.grants.gov/product/api).
+
+    See [Release Phases](https://github.com/github/roadmap?tab=readme-ov-file#release-phases) for further details.
+
+    '
+  contact:
+    name: Simpler Grants.gov
+    url: https://simpler.grants.gov/
+    email: simpler@grants.gov
+  title: Simpler Grants User v1 - Internal Only API
+  version: v0
+servers: .
+tags:
+- name: User v1 - Internal Only
+paths:
+  /v1/users/login:
+    get:
+      parameters:
+      - in: query
+        name: piv_required
+        description: Whether the user is required to use a PIV to login
+        schema:
+          type: boolean
+          nullable: true
+        required: false
+      responses:
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '302':
+          content:
+            application/json:
+              schema: {}
+          description: Found
+      tags:
+      - User v1 - Internal Only
+      summary: User Login
+      description: '
+
+        To use this endpoint, click [this link](/v1/users/login) which will redirect
+
+        you to an OAuth provider where you can sign into an account.
+
+
+        Do not try to use the execute option below as OpenAPI will not redirect your browser for you.
+
+
+        The token you receive can then be set to the X-SGG-Token header for authenticating with endpoints.
+
+        '
+  /v1/users/token/logout:
+    post:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserTokenLogoutResponseSchema'
+          description: Successful response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+      tags:
+      - User v1 - Internal Only
+      summary: User Token Logout
+      security:
+      - ApiJwtAuth: []
+  /v1/users/token/refresh:
+    post:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserTokenRefreshResponseSchema'
+          description: Successful response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+      tags:
+      - User v1 - Internal Only
+      summary: User Token Refresh
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}:
+    get:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGetResponseSchema'
+          description: Successful response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+      tags:
+      - User v1 - Internal Only
+      summary: User Get
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/profile:
+    put:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdateProfileResponseSchema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: Update the authenticated user's profile data'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateProfileRequestSchema'
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/agencies:
+    post:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAgenciesResponseSchema'
+          description: Successful response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: User Get Agencies
+      security:
+      - ApiJwtAuth: &id001 []
+      - ApiUserKeyAuth: *id001
+  /v1/users/{user_id}/api-keys:
+    post:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserApiKeyCreateResponseSchema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: Create a new API key for the authenticated user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserApiKeyCreateRequestSchema'
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/privileges:
+    post:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGetRolesAndPrivilegesResponseSchema'
+          description: Successful response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: Get the roles and privileges for the authenticated user
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/can_access:
+    post:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCanAccessResponseSchema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: Check user access for a given resource
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCanAccessRequestSchema'
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/applications:
+    post:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserApplicationListResponseSchema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: Get all applications for a user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserApplicationListRequestSchema'
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/organizations:
+    get:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserOrganizationsResponseSchema'
+          description: Successful response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: User Get Organizations
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/api-keys/list:
+    post:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserApiKeyListResponseSchema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: List all API keys for the authenticated user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserApiKeyListRequestSchema'
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/saved-searches:
+    post:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSaveSearchResponseSchema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: User Save Search
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSaveSearchRequestSchema'
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/invitations/list:
+    post:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInvitationListResponseSchema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: Get all invitations for a user by matching their login.gov email
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInvitationListRequestSchema'
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/saved-opportunities:
+    post:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSaveOpportunityResponseSchema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: User Save Opportunity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSaveOpportunityRequestSchema'
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/saved-searches/list:
+    post:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSavedSearchesResponseSchema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: User Get Saved Searches
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSavedSearchesRequestSchema'
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/saved-opportunities/list:
+    post:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSavedOpportunitiesResponseSchema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: User Get Saved Opportunities
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSavedOpportunitiesRequestSchema'
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/api-keys/{api_key_id}:
+    put:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: api_key_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserApiKeyRenameResponseSchema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '400':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Bad Request
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: Rename an existing API key for the authenticated user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserApiKeyRenameRequestSchema'
+      security:
+      - ApiJwtAuth: []
+    delete:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: api_key_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserApiKeyDeleteResponseSchema'
+          description: Successful response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: Delete (deactivate) an API key for the authenticated user
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/saved-opportunities/notifications:
+    get:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSavedOpportunityNotificationsResponseSchema'
+          description: Successful response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: User Get Saved Opportunity Notifications
+      security:
+      - ApiJwtAuth: &id002 []
+      - ApiUserKeyAuth: *id002
+    post:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SetUserSavedOpportunityNotificationResponseSchema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: User Saved Opportunities Notifications
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetUserSavedOpportunityNotificationRequestSchema'
+      security:
+      - ApiJwtAuth: &id003 []
+      - ApiUserKeyAuth: *id003
+  /v1/users/{user_id}/saved-searches/{saved_search_id}:
+    put:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: saved_search_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdateSavedSearchResponseSchema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: User Update Saved Search
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateSavedSearchRequestSchema'
+      security:
+      - ApiJwtAuth: []
+    delete:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: saved_search_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDeleteSavedSearchResponseSchema'
+          description: Successful response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: User Delete Saved Search
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/saved-opportunities/{opportunity_id}:
+    delete:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: opportunity_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDeleteSavedOpportunityResponseSchema'
+          description: Successful response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: User Delete Saved Opportunity
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/invitations/{invitation_id}/organizations:
+    post:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: invitation_id
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserResponseOrgInvitationResponseSchema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Forbidden
+      tags:
+      - User v1 - Internal Only
+      summary: User Response Org Invitation
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserResponseOrgInvitationRequestSchema'
+      security:
+      - ApiJwtAuth: []
+  /v1/users/{user_id}/saved-opportunities/{legacy_opportunity_id}:
+    delete:
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: legacy_opportunity_id
+        schema:
+          type: integer
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDeleteSavedOpportunityResponseSchema'
+          description: Successful response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+      tags:
+      - User v1 - Internal Only
+      summary: User Delete Saved Opportunity Legacy
+      security:
+      - ApiJwtAuth: []
+components:
+  schemas:
+    UserApiKeyCreateResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          description: The newly created API key
+          type:
+          - object
+          $ref: '#/components/schemas/UserApiKeySchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    UserInvitationOrganizationSchema:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          format: uuid
+          description: Organization unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        organization_name:
+          type:
+          - string
+          - 'null'
+          description: Organization name
+          example: Example Organization
+    UserApiKeyListRequestSchema:
+      type: object
+      properties: {}
+    RoleSchema:
+      type: object
+      properties:
+        role_id:
+          type: string
+          description: The internal ID of a role
+        role_name:
+          type: string
+          description: The name of the role
+        privileges:
+          type: array
+          items:
+            description: Privileges for the role
+            enum:
+            - manage_org_members
+            - manage_org_admin_members
+            - view_org_membership
+            - start_application
+            - list_application
+            - view_application
+            - modify_application
+            - submit_application
+            - update_form
+            - manage_agency_members
+            - get_submitted_applications
+            - legacy_agency_viewer
+            - legacy_agency_grant_retriever
+            - legacy_agency_assigner
+            - manage_internal_roles
+            - manage_competition
+            - read_test_user_token
+            - view_opportunity
+            - create_opportunity
+            - update_opportunity
+            - publish_opportunity
+            - internal_workflow_access
+            - view_org_saved_opportunities
+            - modify_org_saved_opportunities
+            - internal_workflow_event_send
+            - view_award_recommendation
+            - create_award_recommendation
+            - update_award_recommendation
+            - submit_award_recommendation
+            - program_officer_approval
+            - budget_officer_approval
+            - internal_s3_scan
+            type:
+            - string
+    UserDeleteSavedSearchResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          example: null
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    UserApiKeyCreateRequestSchema:
+      type: object
+      properties:
+        key_name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Human-readable name for the API key
+          example: Production API Key
+      required:
+      - key_name
+    UserSaveSearchRequestSchema:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the saved search
+          example: Example search
+        search_query:
+          type:
+          - object
+          $ref: '#/components/schemas/OpportunitySearchRequestV1Schema'
+      required:
+      - name
+    ValidationIssueSchema:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error
+          example: invalid
+        message:
+          type: string
+          description: The message to return
+          example: Not a valid string.
+        field:
+          type: string
+          description: The field that failed
+          example: summary.summary_description
+        value:
+          type: string
+          description: The value that failed
+          example: invalid string
+    UserAgencySchema:
+      type: object
+      properties:
+        agency_id:
+          type: string
+          description: The internal ID of the agency
+          example: 123e4567-e89b-12d3-a456-426614174000
+        agency_name:
+          type: string
+          description: The name of the agency
+          example: Department of Commerce
+        agency_code:
+          type: string
+          description: The unique code for the agency
+          example: DOC
+    UserDeleteSavedOpportunityResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          example: null
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    UserApplicationApplicationStatusFiilterSchema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            enum:
+            - in_progress
+            - submitted
+            - accepted
+            type:
+            - string
+    UserTokenRefreshResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          example: null
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    EstimatedTotalProgramFundingFilterV1Schema:
+      type: object
+      properties:
+        min:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          example: 0
+        max:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          example: 10000000
+    UserProfile:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: The first name of the user
+          example: John
+        middle_name:
+          type:
+          - string
+          - 'null'
+          description: The middle name of the user
+          example: Hoover
+        last_name:
+          type: string
+          description: The last name of the user
+          example: Smith
+    UserApplicationListResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          description: List of applications for the user
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/UserApplicationListItemSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    UserApiKeyDeleteResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          example: null
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    UserSchema:
+      type: object
+      properties:
+        user_id:
+          type: string
+          description: The internal ID of a user
+          example: 861a0148-cf2c-432b-b0b3-690016299ab1
+        email:
+          type: string
+          description: The email address returned from Oauth2 provider
+          example: user@example.com
+        external_user_type:
+          description: The Oauth2 provider through which a user was authenticated
+          example:
+          - login_gov
+          enum:
+          - login_gov
+          type:
+          - string
+        profile:
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/UserProfile'
+          - type: 'null'
+    UserSavedOpportunitiesResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          description: List of saved opportunities
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SavedOpportunityResponseV1Schema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    UserUpdateProfileRequestSchema:
+      type: object
+      properties:
+        first_name:
+          type: string
+          description: The first name of the user
+          example: John
+        middle_name:
+          type:
+          - string
+          - 'null'
+          description: The middle name of the user
+          example: Hoover
+        last_name:
+          type: string
+          description: The last name of the user
+          example: Smith
+    UserOrganization:
+      type: object
+      properties:
+        organization:
+          description: Organization details
+          type:
+          - object
+          $ref: '#/components/schemas/GetUserRolesAndPrivilegesOrganizationSchema'
+        organization_user_roles:
+          type: array
+          items:
+            description: Roles the user has for this organization
+            type:
+            - object
+            $ref: '#/components/schemas/RoleSchema'
+    ErrorResponseSchema:
+      type: object
+      properties:
+        data:
+          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
+          example: {}
+        message:
+          type: string
+          description: General description of the error
+          example: Error
+        status_code:
+          type: integer
+          description: The HTTP status code of the error
+        errors:
+          type: array
+          example: []
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        internal_request_id:
+          type: string
+          description: An internal tracking ID
+          example: 550e8400-e29b-41d4-a716-446655440000
+    UserGetResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type:
+          - object
+          $ref: '#/components/schemas/UserSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    UserResponseOrgInvitationResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type:
+          - object
+          $ref: '#/components/schemas/OrganizationInvitationSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    UserCanAccessRequestSchema:
+      type: object
+      properties:
+        resource_id:
+          type: string
+          format: uuid
+          description: The internal ID of the resource
+          example: 123e4567-e89b-12d3-a456-426614174000
+        resource_type:
+          description: Type of the resource to check access
+          enum:
+          - agency
+          - application
+          - organization
+          type:
+          - string
+        privileges:
+          type: array
+          items:
+            description: List of privileges to verify for the specified resource.
+            enum:
+            - manage_org_members
+            - manage_org_admin_members
+            - view_org_membership
+            - start_application
+            - list_application
+            - view_application
+            - modify_application
+            - submit_application
+            - update_form
+            - manage_agency_members
+            - get_submitted_applications
+            - legacy_agency_viewer
+            - legacy_agency_grant_retriever
+            - legacy_agency_assigner
+            - manage_internal_roles
+            - manage_competition
+            - read_test_user_token
+            - view_opportunity
+            - create_opportunity
+            - update_opportunity
+            - publish_opportunity
+            - internal_workflow_access
+            - view_org_saved_opportunities
+            - modify_org_saved_opportunities
+            - internal_workflow_event_send
+            - view_award_recommendation
+            - create_award_recommendation
+            - update_award_recommendation
+            - submit_award_recommendation
+            - program_officer_approval
+            - budget_officer_approval
+            - internal_s3_scan
+            type:
+            - string
+    UserApplicationOpportunitySchema:
+      type: object
+      properties:
+        opportunity_id:
+          type: string
+          format: uuid
+          description: The opportunity ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        opportunity_title:
+          type:
+          - string
+          - 'null'
+          description: The title of the opportunity
+          example: Research into Conservation Techniques
+        agency_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the agency who created the opportunity
+          example: Department of Examples
+    UserAgency:
+      type: object
+      properties:
+        agency:
+          description: Agency details
+          type:
+          - object
+          $ref: '#/components/schemas/GetUserRolesAndPrivilegesAgencySchema'
+        agency_user_roles:
+          type: array
+          items:
+            description: Roles the user has for this agency
+            type:
+            - object
+            $ref: '#/components/schemas/RoleSchema'
+    UserUpdateProfileResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          description: The updated user profile
+          type:
+          - object
+          $ref: '#/components/schemas/UserProfile'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    UserUpdateSavedSearchRequestSchema:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the saved search
+          example: Example search
+      required:
+      - name
+    UserInvitationRoleSchema:
+      type: object
+      properties:
+        role_id:
+          type: string
+          format: uuid
+          description: Role unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        role_name:
+          type: string
+          description: Role name
+          example: Organization Member
+        privileges:
+          type: array
+          description: List of privileges for this role
+          items:
+            enum:
+            - manage_org_members
+            - manage_org_admin_members
+            - view_org_membership
+            - start_application
+            - list_application
+            - view_application
+            - modify_application
+            - submit_application
+            - update_form
+            - manage_agency_members
+            - get_submitted_applications
+            - legacy_agency_viewer
+            - legacy_agency_grant_retriever
+            - legacy_agency_assigner
+            - manage_internal_roles
+            - manage_competition
+            - read_test_user_token
+            - view_opportunity
+            - create_opportunity
+            - update_opportunity
+            - publish_opportunity
+            - internal_workflow_access
+            - view_org_saved_opportunities
+            - modify_org_saved_opportunities
+            - internal_workflow_event_send
+            - view_award_recommendation
+            - create_award_recommendation
+            - update_award_recommendation
+            - submit_award_recommendation
+            - program_officer_approval
+            - budget_officer_approval
+            - internal_s3_scan
+            type:
+            - string
+    UserSaveOpportunityRequestSchema:
+      type: object
+      properties:
+        opportunity_id:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+      - opportunity_id
+    UserInvitationInviterUserSchema:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          description: Inviter user unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: Inviter first name
+          example: John
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: Inviter last name
+          example: Doe
+        email:
+          type:
+          - string
+          - 'null'
+          description: Inviter email
+          example: admin@org.com
+    UserApplicationListRequestSchema:
+      type: object
+      properties:
+        filters:
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/UserApplicationFilterSchema'
+          - type: 'null'
+        pagination:
+          type:
+          - object
+          $ref: '#/components/schemas/UserApplicationPaginationSchema'
+      required:
+      - pagination
+    ApplicantTypeFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            enum:
+            - state_governments
+            - county_governments
+            - city_or_township_governments
+            - special_district_governments
+            - independent_school_districts
+            - public_and_state_institutions_of_higher_education
+            - private_institutions_of_higher_education
+            - federally_recognized_native_american_tribal_governments
+            - other_native_american_tribal_organizations
+            - public_and_indian_housing_authorities
+            - nonprofits_non_higher_education_with_501c3
+            - nonprofits_non_higher_education_without_501c3
+            - individuals
+            - for_profit_organizations_other_than_small_businesses
+            - small_businesses
+            - other
+            - unrestricted
+            type:
+            - string
+    SamGovEntityResponseSchema:
+      type: object
+      properties:
+        uei:
+          type: string
+          description: Unique Entity Identifier
+          example: 000123456789
+        legal_business_name:
+          type: string
+          description: Legal business name from SAM.gov
+          example: Example Inc.
+        expiration_date:
+          type: string
+          format: date
+          description: SAM.gov registration expiration date
+          example: '2025-08-11'
+        ebiz_poc_email:
+          type: string
+          description: Email address of the Electronic Business Point of Contact
+          example: ebiz@example.com
+        ebiz_poc_first_name:
+          type: string
+          description: First name of the Electronic Business Point of Contact
+          example: John
+        ebiz_poc_last_name:
+          type: string
+          description: Last name of the Electronic Business Point of Contact
+          example: Smith
+    UserOrganizationsResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          description: List of organizations the user is associated with
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/UserOrganizationSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    GetRolesAndPrivilegesResponseSchema:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          example: 123e4567-e89b-12d3-a456-426614174000
+        organization_users:
+          type: array
+          items:
+            description: List of organizations and the user's roles in each
+            type:
+            - object
+            $ref: '#/components/schemas/UserOrganization'
+        application_users:
+          type: array
+          items:
+            description: List of applications and the user's roles in each
+            type:
+            - object
+            $ref: '#/components/schemas/UserApplication'
+        agency_users:
+          type: array
+          items:
+            description: List of agencies and the user's roles in each
+            type:
+            - object
+            $ref: '#/components/schemas/UserAgency'
+        internal_user_roles:
+          type: array
+          items:
+            description: List of roles and the user's roles & privileges in each
+            type:
+            - object
+            $ref: '#/components/schemas/RoleSchema'
+    SavedOpportunityNotificationsOrgSchema:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          format: uuid
+          description: The organization ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        email_enabled:
+          type: boolean
+          description: Whether email notifications are enabled for this organization's saved opportunities
+          example: false
+    UserApplicationApplicationCompetitionIDFilterSchema:
+      type: object
+      properties:
+        one_of:
+          type:
+          - array
+          - 'null'
+          minItems: 1
+          items:
+            type: string
+            format: uuid
+            example: 123e4567-e89b-12d3-a456-426614174000
+    UserInvitationListRequestSchema:
+      type: object
+      properties: {}
+    SortOrderUserGetSavedSearchPaginationV1Schema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          enum:
+          - created_at
+          - updated_at
+          - name
+          description: The field to sort the response by
+        sort_direction:
+          description: Whether to sort the response ascending or descending
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+      required:
+      - order_by
+      - sort_direction
+    UserInvitationItemSchema:
+      type: object
+      properties:
+        organization_invitation_id:
+          type: string
+          format: uuid
+          description: Invitation unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        organization:
+          description: Organization information
+          type:
+          - object
+          $ref: '#/components/schemas/UserInvitationOrganizationSchema'
+        status:
+          type: string
+          description: Invitation status
+          example: pending
+        created_at:
+          type: string
+          format: date-time
+          description: When the invitation was created
+          example: '2024-01-08T10:30:00Z'
+        expires_at:
+          type: string
+          format: date-time
+          description: When the invitation expires
+          example: '2024-01-15T10:30:00Z'
+        inviter_user:
+          description: Information about who sent the invitation
+          type:
+          - object
+          $ref: '#/components/schemas/UserInvitationInviterUserSchema'
+        roles:
+          type: array
+          description: Roles that would be assigned if invitation is accepted
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/UserInvitationRoleSchema'
+    SavedSearchResponseSchema:
+      type: object
+      properties:
+        saved_search_id:
+          type: string
+          format: uuid
+          description: The ID of the saved search
+          example: 123e4567-e89b-12d3-a456-426614174000
+        name:
+          type: string
+          description: Name of the saved search
+          example: Grant opportunities in California
+        search_query:
+          description: The saved search query parameters
+          type:
+          - object
+          $ref: '#/components/schemas/OpportunitySearchRequestV1Schema'
+        created_at:
+          type: string
+          format: date-time
+          description: When the search was saved
+          example: '2024-01-01T00:00:00Z'
+    AssistanceListingNumberFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            pattern: ^\d{2}\.[A-Za-z0-9]{2,3}$
+            example: '45.149'
+    GetUserRolesAndPrivilegesApplicationSchema:
+      type: object
+      properties:
+        application_id:
+          type: string
+          description: The internal ID of the application
+        organization_id:
+          type: string
+          description: The internal ID of the organization that owns the application
+    UserApplicationListItemSchema:
+      type: object
+      properties:
+        application_id:
+          type: string
+          format: uuid
+          description: The application ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        application_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the application
+          example: my app
+        application_status:
+          description: Status of the application
+          enum:
+          - in_progress
+          - submitted
+          - accepted
+          type:
+          - string
+        organization:
+          description: Organization associated with the application
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/UserOrganizationSchema'
+          - type: 'null'
+        competition:
+          description: Competition information
+          type:
+          - object
+          $ref: '#/components/schemas/UserApplicationCompetitionSchema'
+    SavedOpportunityOrganizationSchema:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          format: uuid
+          description: The ID of the organization
+          example: 123e4567-e89b-12d3-a456-426614174000
+        organization_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the organization
+          example: Department of Health
+    OpportunitySearchFilterV1Schema:
+      type: object
+      properties:
+        funding_instrument:
+          type:
+          - object
+          $ref: '#/components/schemas/FundingInstrumentFilterV1Schema'
+        funding_category:
+          type:
+          - object
+          $ref: '#/components/schemas/FundingCategoryFilterV1Schema'
+        applicant_type:
+          type:
+          - object
+          $ref: '#/components/schemas/ApplicantTypeFilterV1Schema'
+        opportunity_status:
+          type:
+          - object
+          $ref: '#/components/schemas/OpportunityStatusFilterV1Schema'
+        agency:
+          type:
+          - object
+          $ref: '#/components/schemas/AgencyOppSearchFilterV1Schema'
+        assistance_listing_number:
+          type:
+          - object
+          $ref: '#/components/schemas/AssistanceListingNumberFilterV1Schema'
+        is_cost_sharing:
+          type:
+          - object
+          $ref: '#/components/schemas/IsCostSharingFilterV1Schema'
+        expected_number_of_awards:
+          type:
+          - object
+          $ref: '#/components/schemas/ExpectedNumberAwardsFilterV1Schema'
+        award_floor:
+          type:
+          - object
+          $ref: '#/components/schemas/AwardFloorFilterV1Schema'
+        award_ceiling:
+          type:
+          - object
+          $ref: '#/components/schemas/AwardCeilingFilterV1Schema'
+        estimated_total_program_funding:
+          type:
+          - object
+          $ref: '#/components/schemas/EstimatedTotalProgramFundingFilterV1Schema'
+        post_date:
+          type:
+          - object
+          $ref: '#/components/schemas/PostDateFilterV1Schema'
+        close_date:
+          type:
+          - object
+          $ref: '#/components/schemas/CloseDateFilterV1Schema'
+        top_level_agency:
+          type:
+          - object
+          $ref: '#/components/schemas/TopLevelAgencyOppSearchFilterV1Schema'
+    SortOrderUserApplicationPaginationSchema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          enum:
+          - created_at
+          description: The field to sort the response by
+        sort_direction:
+          description: Whether to sort the response ascending or descending
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+      required:
+      - order_by
+      - sort_direction
+    GetUserRolesAndPrivilegesOrganizationSchema:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          description: The internal ID of the organization
+    UserApplication:
+      type: object
+      properties:
+        application:
+          description: Application details
+          type:
+          - object
+          $ref: '#/components/schemas/GetUserRolesAndPrivilegesApplicationSchema'
+        application_user_roles:
+          type: array
+          items:
+            description: Roles the user has for this application
+            type:
+            - object
+            $ref: '#/components/schemas/RoleSchema'
+    SetUserSavedOpportunityNotificationRequestSchema:
+      type: object
+      properties:
+        organization_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The ID of the organization for which to set notification. If not provided, the setting applies to the user's own saved opportunities.
+          example: 123e4567-e89b-12d3-a456-426614174000
+        email_enabled:
+          type: boolean
+          description: Whether the email notifications is enabled
+      required:
+      - email_enabled
+      - organization_id
+    UserTokenLogoutResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          example: null
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    UserCanAccessResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          example: null
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    UserResponseOrgInvitationRequestSchema:
+      type: object
+      properties:
+        status:
+          enum:
+          - accepted
+          - rejected
+          - expired
+          - pending
+          description: User response to invitation
+          type:
+          - string
+    SavedOpportunityStatusFieldFilterSchema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            example:
+            - posted
+            enum:
+            - forecasted
+            - posted
+            - closed
+            - archived
+            type:
+            - string
+    SavedOpportunitySummaryV1Schema:
+      type: object
+      properties:
+        post_date:
+          type: string
+          format: date
+          description: The date the opportunity was posted
+          example: '2024-01-01'
+        close_date:
+          type: string
+          format: date
+          description: The date the opportunity will close
+          example: '2024-01-01'
+        is_forecast:
+          type: boolean
+          description: Whether the opportunity is forecasted
+          example: false
+    SavedOpportunityNotificationsSelfSchema:
+      type: object
+      properties:
+        email_enabled:
+          type: boolean
+          description: Whether email notifications are enabled for personal saved opportunities
+          example: true
+    UserApplicationPaginationSchema:
+      type: object
+      properties:
+        sort_order:
+          type: array
+          default:
+          - order_by: created_at
+            sort_direction: descending
+          minItems: 1
+          maxItems: 5
+          description: The list of sorting rules
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderUserApplicationPaginationSchema'
+        page_size:
+          type: integer
+          minimum: 1
+          maximum: 5000
+          description: The size of the page to fetch
+          example: 25
+        page_offset:
+          type: integer
+          minimum: 1
+          description: The page number to fetch, starts counting from 1
+          example: 1
+      required:
+      - page_offset
+      - page_size
+    UserApiKeyRenameRequestSchema:
+      type: object
+      properties:
+        key_name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: New name for the API key
+          example: Production API Key
+      required:
+      - key_name
+    UserApplicationApplicationOrganizationIDFilterSchema:
+      type: object
+      properties:
+        one_of:
+          type:
+          - array
+          - 'null'
+          minItems: 1
+          items:
+            type: string
+            format: uuid
+            example: 123e4567-e89b-12d3-a456-426614174000
+    SortOrderOpportunityPaginationV1Schema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          enum:
+          - relevancy
+          - opportunity_id
+          - opportunity_number
+          - opportunity_title
+          - post_date
+          - close_date
+          - agency_code
+          - agency_name
+          - top_level_agency_name
+          - award_floor
+          - award_ceiling
+          description: The field to sort the response by
+        sort_direction:
+          description: Whether to sort the response ascending or descending
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+      required:
+      - order_by
+      - sort_direction
+    SortOrderUserGetSavedOpportunityPaginationV1Schema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          enum:
+          - created_at
+          - opportunity_title
+          - close_date
+          description: The field to sort the response by
+        sort_direction:
+          description: Whether to sort the response ascending or descending
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+      required:
+      - order_by
+      - sort_direction
+    UserSavedOpportunityNotificationsResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type:
+          - object
+          $ref: '#/components/schemas/SavedOpportunityNotificationsSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    OrganizationInvitationSchema:
+      type: object
+      properties:
+        organization_invitation_id:
+          type: string
+          format: uuid
+          description: Organization invitation ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        status:
+          description: User response to invitation
+          enum:
+          - accepted
+          - rejected
+          - expired
+          - pending
+          type:
+          - string
+        responded_at:
+          type: string
+          format: date-time
+          description: Time User responded to invitation
+        organization:
+          description: Organization information
+          type:
+          - object
+          $ref: '#/components/schemas/OrganizationSchema1'
+        roles_granted:
+          type: array
+          description: Roles granted
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/InvitationRoleSchema'
+    UserApiKeyListResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          description: List of API keys for the user
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/UserApiKeySchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    InvitationRoleSchema:
+      type: object
+      properties:
+        role_id:
+          type: string
+          format: uuid
+          description: Role unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        role_name:
+          type: string
+          description: Role name
+    OpportunityStatusFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            enum:
+            - forecasted
+            - posted
+            - closed
+            - archived
+            type:
+            - string
+    AwardFloorFilterV1Schema:
+      type: object
+      properties:
+        min:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          example: 0
+        max:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          example: 10000
+    UserGetSavedSearchPaginationV1Schema:
+      type: object
+      properties:
+        sort_order:
+          type: array
+          default:
+          - order_by: created_at
+            sort_direction: descending
+          minItems: 1
+          maxItems: 5
+          description: The list of sorting rules
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderUserGetSavedSearchPaginationV1Schema'
+        page_size:
+          type: integer
+          minimum: 1
+          maximum: 5000
+          description: The size of the page to fetch
+          example: 25
+        page_offset:
+          type: integer
+          minimum: 1
+          description: The page number to fetch, starts counting from 1
+          example: 1
+      required:
+      - page_offset
+      - page_size
+    UserUpdateSavedSearchResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          example: null
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    TopLevelAgencyOppSearchFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            minLength: 2
+            example: USAID
+    FundingCategoryFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            enum:
+            - recovery_act
+            - agriculture
+            - arts
+            - business_and_commerce
+            - community_development
+            - consumer_protection
+            - disaster_prevention_and_relief
+            - education
+            - employment_labor_and_training
+            - energy
+            - environment
+            - food_and_nutrition
+            - health
+            - housing
+            - humanities
+            - infrastructure_investment_and_jobs_act
+            - information_and_statistics
+            - income_security_and_social_services
+            - law_justice_and_legal_services
+            - natural_resources
+            - opportunity_zone_benefits
+            - regional_development
+            - science_technology_and_other_research_and_development
+            - transportation
+            - affordable_care_act
+            - other
+            - energy_infrastructure_and_critical_mineral_and_materials
+            - recreation_and_tourism
+            type:
+            - string
+    AwardCeilingFilterV1Schema:
+      type: object
+      properties:
+        min:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          example: 0
+        max:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          example: 10000000
+    UserSaveSearchResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type:
+          - object
+          $ref: '#/components/schemas/SavedSearchResponseSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    UserSavedSearchesResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          description: List of saved searches
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SavedSearchResponseSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    FundingInstrumentFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            enum:
+            - cooperative_agreement
+            - grant
+            - procurement_contract
+            - other
+            type:
+            - string
+    UserOrganizationSchema:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          description: The internal ID of the organization
+          example: 123e4567-e89b-12d3-a456-426614174000
+        sam_gov_entity:
+          description: SAM.gov entity information for the organization
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/SamGovEntityResponseSchema'
+          - type: 'null'
+    UserApplicationCompetitionSchema:
+      type: object
+      properties:
+        competition_id:
+          type: string
+          format: uuid
+          description: The competition ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        competition_title:
+          type: string
+          description: The title of the competition
+          example: Proposal for Advanced Research
+        opening_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The opening date of the competition, the first day applications are accepted
+        closing_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The closing date of the competition, the last day applications are accepted
+        is_open:
+          type: boolean
+          description: Whether the competition is open and accepting applications
+        opportunity:
+          description: Opportunity information for this competition
+          type:
+          - object
+          $ref: '#/components/schemas/UserApplicationOpportunitySchema'
+    UserGetSavedOpportunityPaginationV1Schema:
+      type: object
+      properties:
+        sort_order:
+          type: array
+          default:
+          - order_by: created_at
+            sort_direction: descending
+          minItems: 1
+          maxItems: 5
+          description: The list of sorting rules
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderUserGetSavedOpportunityPaginationV1Schema'
+        page_size:
+          type: integer
+          minimum: 1
+          maximum: 5000
+          description: The size of the page to fetch
+          example: 25
+        page_offset:
+          type: integer
+          minimum: 1
+          description: The page number to fetch, starts counting from 1
+          example: 1
+      required:
+      - page_offset
+      - page_size
+    IsCostSharingFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type:
+          - array
+          - 'null'
+          items:
+            type: boolean
+            example: true
+    UserSavedOpportunitiesFilterSchema:
+      type: object
+      properties:
+        opportunity_status:
+          type:
+          - object
+          $ref: '#/components/schemas/SavedOpportunityStatusFieldFilterSchema'
+        organization_ids:
+          type:
+          - object
+          $ref: '#/components/schemas/UserSavedOpportunitiesOrganizationIDSFilterSchema'
+    UserSavedOpportunitiesOrganizationIDSFilterSchema:
+      type: object
+      properties:
+        one_of:
+          type:
+          - array
+          - 'null'
+          items:
+            type: string
+            format: uuid
+            example: 123e4567-e89b-12d3-a456-426614174000
+    OpportunitySearchRequestV1Schema:
+      type: object
+      properties:
+        query:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Query string which searches against several text fields
+          example: research
+        query_operator:
+          default:
+          - AND
+          description: Query operator for combining search conditions
+          example: OR
+          enum:
+          - AND
+          - OR
+          type:
+          - string
+        filters:
+          type:
+          - object
+          $ref: '#/components/schemas/OpportunitySearchFilterV1Schema'
+        experimental:
+          type:
+          - object
+          $ref: '#/components/schemas/ExperimentalV1Schema'
+        pagination:
+          type:
+          - object
+          $ref: '#/components/schemas/OpportunityPaginationV1Schema'
+        format:
+          default:
+          - json
+          description: Response serialization. `json` returns the standard envelope with facet counts. `csv` returns a CSV file; pagination and sort_order match the JSON response for the same request. For a bulk export (up to 5000 rows, fixed sort by post_date descending), use `POST /v1/opportunities/search/csv` instead.
+          enum:
+          - json
+          - csv
+          type:
+          - string
+      required:
+      - pagination
+    ExperimentalV1Schema:
+      type: object
+      properties:
+        scoring_rule:
+          default:
+          - default
+          description: Scoring rule to query against OpenSearch
+          enum:
+          - default
+          - expanded
+          - agency
+          type:
+          - string
+    OpportunityPaginationV1Schema:
+      type: object
+      properties:
+        sort_order:
+          type: array
+          default:
+          - order_by: opportunity_id
+            sort_direction: descending
+          minItems: 1
+          maxItems: 5
+          description: The list of sorting rules
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderOpportunityPaginationV1Schema'
+        page_size:
+          type: integer
+          minimum: 1
+          maximum: 5000
+          description: The size of the page to fetch
+          example: 25
+        page_offset:
+          type: integer
+          minimum: 1
+          description: The page number to fetch, starts counting from 1
+          example: 1
+      required:
+      - page_offset
+      - page_size
+    UserSavedSearchesRequestSchema:
+      type: object
+      properties:
+        pagination:
+          type:
+          - object
+          $ref: '#/components/schemas/UserGetSavedSearchPaginationV1Schema'
+      required:
+      - pagination
+    UserApiKeyRenameResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          description: The renamed API key
+          type:
+          - object
+          $ref: '#/components/schemas/UserApiKeySchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    UserSavedOpportunitiesRequestSchema:
+      type: object
+      properties:
+        filters:
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/UserSavedOpportunitiesFilterSchema'
+          - type: 'null'
+        pagination:
+          type:
+          - object
+          $ref: '#/components/schemas/UserGetSavedOpportunityPaginationV1Schema'
+      required:
+      - pagination
+    UserSaveOpportunityResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          example: null
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    ExpectedNumberAwardsFilterV1Schema:
+      type: object
+      properties:
+        min:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          example: 0
+        max:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          example: 25
+    CloseDateFilterV1Schema:
+      type: object
+      properties:
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        start_date_relative:
+          type:
+          - integer
+          - 'null'
+          minimum: -1000000
+          maximum: 1000000
+        end_date_relative:
+          type:
+          - integer
+          - 'null'
+          minimum: -1000000
+          maximum: 1000000
+    UserApplicationFilterSchema:
+      type: object
+      properties:
+        application_status:
+          type:
+          - object
+          $ref: '#/components/schemas/UserApplicationApplicationStatusFiilterSchema'
+        organization_id:
+          type:
+          - object
+          $ref: '#/components/schemas/UserApplicationApplicationOrganizationIDFilterSchema'
+        competition_id:
+          type:
+          - object
+          $ref: '#/components/schemas/UserApplicationApplicationCompetitionIDFilterSchema'
+    PostDateFilterV1Schema:
+      type: object
+      properties:
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        start_date_relative:
+          type:
+          - integer
+          - 'null'
+          minimum: -1000000
+          maximum: 1000000
+        end_date_relative:
+          type:
+          - integer
+          - 'null'
+          minimum: -1000000
+          maximum: 1000000
+    SavedOpportunityNotificationsSchema:
+      type: object
+      properties:
+        self:
+          description: Personal notification settings for saved opportunities
+          type:
+          - object
+          $ref: '#/components/schemas/SavedOpportunityNotificationsSelfSchema'
+        organizations:
+          type: array
+          description: Notification settings per organization
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SavedOpportunityNotificationsOrgSchema'
+    SavedOpportunityResponseV1Schema:
+      type: object
+      properties:
+        opportunity_id:
+          type: string
+          format: uuid
+          description: The ID of the saved opportunity
+          example: 123e4567-e89b-12d3-a456-426614174000
+        opportunity_title:
+          type:
+          - string
+          - 'null'
+          description: The title of the opportunity
+          example: my title
+        opportunity_status:
+          description: The current status of the opportunity
+          example:
+          - posted
+          enum:
+          - forecasted
+          - posted
+          - closed
+          - archived
+          type:
+          - string
+        summary:
+          type:
+          - object
+          $ref: '#/components/schemas/SavedOpportunitySummaryV1Schema'
+        saved_to_organizations:
+          type: array
+          items:
+            type:
+            - object
+            - 'null'
+            anyOf:
+            - $ref: '#/components/schemas/SavedOpportunityOrganizationSchema'
+            - type: 'null'
+    SetUserSavedOpportunityNotificationResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          example: null
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    UserAgenciesResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          description: List of agencies the user is associated with
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/UserAgencySchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    UserApiKeySchema:
+      type: object
+      properties:
+        api_key_id:
+          type: string
+          format: uuid
+          description: Unique identifier for the API key record
+          example: 123e4567-e89b-12d3-a456-426614174000
+        key_name:
+          type: string
+          description: Human-readable name for the API key
+          example: Production API Key
+        key_id:
+          type: string
+          description: The actual API key identifier to use for authentication
+          example: k8w2Xd9Zq1mN3pR7sT5vY4uI
+        is_active:
+          type: boolean
+          description: Whether the API key is currently active
+          example: true
+        last_used:
+          type:
+          - string
+          - 'null'
+          format: date-time
+          description: Timestamp when this API key was last used for authentication
+          example: '2024-01-15T10:30:00Z'
+        created_at:
+          type: string
+          format: date-time
+          description: When this API key was created
+          example: '2024-01-01T12:00:00Z'
+    OrganizationSchema1:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          format: uuid
+          description: The unique identifier of the organization
+          example: 456e7890-e12c-34f5-b678-901234567890
+        organization_name:
+          type:
+          - string
+          - 'null'
+          description: Organization name
+          example: Legal business name of the corresponding Sam Gov Entity
+    UserGetRolesAndPrivilegesResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type:
+          - object
+          $ref: '#/components/schemas/GetRolesAndPrivilegesResponseSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    UserInvitationListResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          description: List of user invitations
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/UserInvitationItemSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    GetUserRolesAndPrivilegesAgencySchema:
+      type: object
+      properties:
+        agency_id:
+          type: string
+          description: The internal ID of the agency
+    AgencyOppSearchFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            minLength: 2
+            example: USAID
+  securitySchemes:
+    ApiJwtAuth:
+      type: apiKey
+      in: header
+      name: X-SGG-Token
+    InternalApiJwtAuth:
+      type: apiKey
+      in: header
+      name: X-SGG-Internal-Token
+    ApiUserKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

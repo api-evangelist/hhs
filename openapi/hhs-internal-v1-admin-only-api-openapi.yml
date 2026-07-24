@@ -1,0 +1,143 @@
+openapi: 3.1.0
+info:
+  description: '
+
+    Back end API for simpler.grants.gov.
+
+
+    This API is in active development as we build out new functionalities for Simpler.Grants.gov. It is currently stable for everyday use, and will be versioned with advance notice for any breaking changes.
+
+
+    Learn more in our [API documentation](https://wiki.simpler.grants.gov/product/api).
+
+    See [Release Phases](https://github.com/github/roadmap?tab=readme-ov-file#release-phases) for further details.
+
+    '
+  contact:
+    name: Simpler Grants.gov
+    url: https://simpler.grants.gov/
+    email: simpler@grants.gov
+  title: Simpler Grants Internal v1 - Admin Only API
+  version: v0
+servers: .
+tags:
+- name: Internal v1 - Admin Only
+paths:
+  /v1/internal/roles:
+    put:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalRoleAssignmentResponseSchema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+      tags:
+      - Internal v1 - Admin Only
+      summary: Update Internal Roles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InternalRoleAssignmentRequestSchema'
+      security:
+      - ApiUserKeyAuth: []
+components:
+  schemas:
+    InternalRoleAssignmentResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          description: The REST resource object
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    InternalRoleAssignmentRequestSchema:
+      type: object
+      properties:
+        internal_role_id:
+          type: string
+          format: uuid
+          description: The UUID of the internal role to assign
+          example: 57e8875f-c154-41be-a5f6-602f4c92d6e6
+        user_email:
+          type: string
+          description: The email address of the user receiving the role
+          example: example@example.com
+      required:
+      - internal_role_id
+      - user_email
+    ValidationIssueSchema:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error
+          example: invalid
+        message:
+          type: string
+          description: The message to return
+          example: Not a valid string.
+        field:
+          type: string
+          description: The field that failed
+          example: summary.summary_description
+        value:
+          type: string
+          description: The value that failed
+          example: invalid string
+    ErrorResponseSchema:
+      type: object
+      properties:
+        data:
+          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
+          example: {}
+        message:
+          type: string
+          description: General description of the error
+          example: Error
+        status_code:
+          type: integer
+          description: The HTTP status code of the error
+        errors:
+          type: array
+          example: []
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        internal_request_id:
+          type: string
+          description: An internal tracking ID
+          example: 550e8400-e29b-41d4-a716-446655440000
+  securitySchemes:
+    ApiJwtAuth:
+      type: apiKey
+      in: header
+      name: X-SGG-Token
+    InternalApiJwtAuth:
+      type: apiKey
+      in: header
+      name: X-SGG-Internal-Token
+    ApiUserKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

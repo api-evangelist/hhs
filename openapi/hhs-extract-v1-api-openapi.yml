@@ -1,0 +1,317 @@
+openapi: 3.1.0
+info:
+  description: '
+
+    Back end API for simpler.grants.gov.
+
+
+    This API is in active development as we build out new functionalities for Simpler.Grants.gov. It is currently stable for everyday use, and will be versioned with advance notice for any breaking changes.
+
+
+    Learn more in our [API documentation](https://wiki.simpler.grants.gov/product/api).
+
+    See [Release Phases](https://github.com/github/roadmap?tab=readme-ov-file#release-phases) for further details.
+
+    '
+  contact:
+    name: Simpler Grants.gov
+    url: https://simpler.grants.gov/
+    email: simpler@grants.gov
+  title: Simpler Grants Extract v1 API
+  version: v0
+servers: .
+tags:
+- name: Extract v1
+paths:
+  /v1/extracts:
+    post:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtractMetadataListResponseSchema'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+      tags:
+      - Extract v1
+      summary: Extract Metadata Get
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExtractMetadataRequestSchema'
+            examples:
+              example1:
+                summary: No filters
+                value:
+                  pagination:
+                    sort_order:
+                    - order_by: created_at
+                      sort_direction: descending
+                    page_offset: 1
+                    page_size: 25
+      security:
+      - ApiJwtAuth: &id001 []
+      - ApiUserKeyAuth: *id001
+components:
+  schemas:
+    ExtractMetadataListResponseSchema:
+      type: object
+      properties:
+        pagination_info:
+          description: The pagination information for paginated endpoints
+          type:
+          - object
+          $ref: '#/components/schemas/PaginationInfoSchema'
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          description: A list of extract metadata records
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ExtractMetadataResponseSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    ExtractMetadataResponseSchema:
+      type: object
+      properties:
+        download_path:
+          type: string
+          description: The file's download path
+        file_size_bytes:
+          type: integer
+          description: The size of the file in bytes
+          example: 1024
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        extract_metadata_id:
+          type: string
+          format: uuid
+          description: The ID of the extract metadata
+          example: 123e4567-e89b-12d3-a456-426614174000
+        extract_type:
+          type: string
+          description: The type of extract
+          example: opportunity_data_extract
+    ExtractMetadataRequestSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          description: The REST resource object
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+        filters:
+          type:
+          - object
+          $ref: '#/components/schemas/ExtractMetadataFilterV1Schema'
+        pagination:
+          type:
+          - object
+          $ref: '#/components/schemas/ExtractMetadataPaginationV1Schema'
+      required:
+      - pagination
+    DateRangeSchema:
+      type: object
+      properties:
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+      required:
+      - end_date
+      - start_date
+    PaginationInfoSchema:
+      type: object
+      properties:
+        page_offset:
+          type: integer
+          description: The page number that was fetched
+          example: 1
+        page_size:
+          type: integer
+          description: The size of the page fetched
+          example: 25
+        total_records:
+          type: integer
+          description: The total number of records fetchable
+          example: 42
+        total_pages:
+          type: integer
+          description: The total number of pages that can be fetched
+          example: 2
+        sort_order:
+          type: array
+          description: The sort order passed in originally
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderSchema'
+    ErrorResponseSchema:
+      type: object
+      properties:
+        data:
+          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
+          example: {}
+        message:
+          type: string
+          description: General description of the error
+          example: Error
+        status_code:
+          type: integer
+          description: The HTTP status code of the error
+        errors:
+          type: array
+          example: []
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        internal_request_id:
+          type: string
+          description: An internal tracking ID
+          example: 550e8400-e29b-41d4-a716-446655440000
+    ExtractMetadataPaginationV1Schema:
+      type: object
+      properties:
+        sort_order:
+          type: array
+          minItems: 1
+          maxItems: 5
+          description: The list of sorting rules
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderExtractMetadataPaginationV1Schema'
+        page_size:
+          type: integer
+          minimum: 1
+          maximum: 5000
+          description: The size of the page to fetch
+          example: 25
+        page_offset:
+          type: integer
+          minimum: 1
+          description: The page number to fetch, starts counting from 1
+          example: 1
+      required:
+      - page_offset
+      - page_size
+      - sort_order
+    ExtractMetadataFilterV1Schema:
+      type: object
+      properties:
+        extract_type:
+          description: The type of extract to filter by
+          example: opportunities_json
+          enum:
+          - opportunities_json
+          - opportunities_csv
+          type:
+          - string
+          - 'null'
+          - 'null'
+        created_at:
+          type:
+          - object
+          $ref: '#/components/schemas/DateRangeSchema'
+    SortOrderSchema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          description: The field that the records were sorted by
+          example: id
+        sort_direction:
+          description: The direction the records are sorted
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+    SortOrderExtractMetadataPaginationV1Schema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          enum:
+          - created_at
+          description: The field to sort the response by
+        sort_direction:
+          description: Whether to sort the response ascending or descending
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+      required:
+      - order_by
+      - sort_direction
+    ValidationIssueSchema:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error
+          example: invalid
+        message:
+          type: string
+          description: The message to return
+          example: Not a valid string.
+        field:
+          type: string
+          description: The field that failed
+          example: summary.summary_description
+        value:
+          type: string
+          description: The value that failed
+          example: invalid string
+  securitySchemes:
+    ApiJwtAuth:
+      type: apiKey
+      in: header
+      name: X-SGG-Token
+    InternalApiJwtAuth:
+      type: apiKey
+      in: header
+      name: X-SGG-Internal-Token
+    ApiUserKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

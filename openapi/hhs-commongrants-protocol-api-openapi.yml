@@ -1,0 +1,1209 @@
+openapi: 3.1.0
+info:
+  description: '
+
+    Back end API for simpler.grants.gov.
+
+
+    This API is in active development as we build out new functionalities for Simpler.Grants.gov. It is currently stable for everyday use, and will be versioned with advance notice for any breaking changes.
+
+
+    Learn more in our [API documentation](https://wiki.simpler.grants.gov/product/api).
+
+    See [Release Phases](https://github.com/github/roadmap?tab=readme-ov-file#release-phases) for further details.
+
+    '
+  contact:
+    name: Simpler Grants.gov
+    url: https://simpler.grants.gov/
+    email: simpler@grants.gov
+  title: Simpler Grants CommonGrants Protocol API
+  version: v0
+servers: .
+tags:
+- name: CommonGrants Protocol
+  description: CommonGrants-compliant API routes for searching opportunities to promote interoperability across grant systems. Learn more by visiting CommonGrants.org
+paths:
+  /common-grants/opportunities:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: The page number to retrieve
+        schema:
+          type: integer
+          example: 1
+          nullable: true
+        required: false
+      - in: query
+        name: pageSize
+        description: The number of items per page
+        schema:
+          type: integer
+          example: 10
+          nullable: true
+        required: false
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpportunitiesListResponse'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+      tags:
+      - CommonGrants Protocol
+      summary: List opportunities
+      description: Get a paginated list of opportunities, sorted by `lastModifiedAt` with most recent first.
+      security:
+      - ApiUserKeyAuth: []
+  /common-grants/opportunities/search:
+    post:
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpportunitiesSearchResponse'
+          description: Successful response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Validation error
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+      tags:
+      - CommonGrants Protocol
+      summary: Search opportunities
+      description: Search for opportunities based on the provided filters
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpportunitySearchRequest'
+      security:
+      - ApiUserKeyAuth: []
+  /common-grants/opportunities/{oppId}:
+    get:
+      parameters:
+      - in: path
+        name: oppId
+        schema:
+          type: string
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OpportunityResponse'
+          description: Successful response
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Authentication error
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponseSchema'
+          description: Not found
+      tags:
+      - CommonGrants Protocol
+      summary: View opportunity details
+      description: View details about an opportunity
+      security:
+      - ApiUserKeyAuth: []
+components:
+  schemas:
+    AdditionalInfoValue:
+      type: object
+      properties:
+        url:
+          type:
+          - string
+          - 'null'
+          format: url
+          example: https://www.grants.gov
+        description:
+          type:
+          - string
+          - 'null'
+          example: Click me for more info
+    PaginatedResultsInfo:
+      type: object
+      properties:
+        page:
+          type:
+          - integer
+          - 'null'
+          description: The page number to retrieve
+          example: 1
+        pageSize:
+          type:
+          - integer
+          - 'null'
+          description: The number of items per page
+          example: 10
+        totalItems:
+          type: integer
+          description: The total number of items
+          example: 100
+        totalPages:
+          type: integer
+          description: The total number of pages
+          example: 10
+      required:
+      - totalItems
+      - totalPages
+    OpportunitiesSearchResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: The HTTP status code
+        message:
+          type: string
+          description: The message
+        items:
+          type: array
+          description: The list of opportunities
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/OpportunityBase'
+        paginationInfo:
+          description: The pagination details
+          type:
+          - object
+          $ref: '#/components/schemas/PaginatedResultsInfo'
+        sortInfo:
+          description: The sorting details
+          type:
+          - object
+          $ref: '#/components/schemas/SortedResultsInfo'
+        filterInfo:
+          description: The filter details
+          type:
+          - object
+          $ref: '#/components/schemas/FilterInfo'
+      required:
+      - filterInfo
+      - items
+      - message
+      - paginationInfo
+      - sortInfo
+      - status
+    AgencyContactValue:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          example: Jane Smith
+        email:
+          type:
+          - string
+          - 'null'
+          example: fake_email@grants.gov
+        phone:
+          type:
+          - string
+          - 'null'
+          example: 123-456-7890
+        description:
+          type:
+          - string
+          - 'null'
+          example: For more information, reach out to Jane Smith at agency US-ABC
+    attachments:
+      type: object
+      properties:
+        name:
+          type: string
+          example: attachments
+        fieldType:
+          type: string
+          example: array
+        schema:
+          type:
+          - string
+          - 'null'
+          format: url
+          example: https://example.com/schema
+        value:
+          type: array
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/AttachmentValue'
+        description:
+          type:
+          - string
+          - 'null'
+          example: Attachments such as NOFOs and supplemental documents for the opportunity
+      required:
+      - fieldType
+      - name
+    PaginatedBodyParams:
+      type: object
+      properties:
+        page:
+          type:
+          - integer
+          - 'null'
+          description: The page number to retrieve
+          example: 1
+        pageSize:
+          type:
+          - integer
+          - 'null'
+          description: The number of items per page
+          example: 10
+    fiscalYear:
+      type: object
+      properties:
+        name:
+          type: string
+          example: fiscalYear
+        fieldType:
+          type: string
+          example: integer
+        schema:
+          type:
+          - string
+          - 'null'
+          format: url
+          example: https://example.com/schema
+        value:
+          type: integer
+          example: 2026
+        description:
+          type:
+          - string
+          - 'null'
+          example: The fiscal year associated with this opportunity
+      required:
+      - fieldType
+      - name
+      - value
+    costSharing:
+      type: object
+      properties:
+        name:
+          type: string
+          example: costSharing
+        fieldType:
+          type: string
+          example: object
+        schema:
+          type:
+          - string
+          - 'null'
+          format: url
+          example: https://example.com/schema
+        value:
+          type:
+          - object
+          $ref: '#/components/schemas/CostSharingValue'
+        description:
+          type:
+          - string
+          - 'null'
+          example: Whether cost sharing or matching funds are required for this opportunity
+      required:
+      - fieldType
+      - name
+      - value
+    Money:
+      type: object
+      properties:
+        amount:
+          type: string
+          description: The amount of money
+          example: '1000000.0'
+        currency:
+          type: string
+          description: The ISO 4217 currency code
+          example: USD
+      required:
+      - amount
+      - currency
+    MoneyRange:
+      type: object
+      properties:
+        min:
+          description: The minimum amount in the range
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/Money'
+          - type: 'null'
+        max:
+          description: The maximum amount in the range
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/Money'
+          - type: 'null'
+    ValidationIssueSchema:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error
+          example: invalid
+        message:
+          type: string
+          description: The message to return
+          example: Not a valid string.
+        field:
+          type: string
+          description: The field that failed
+          example: summary.summary_description
+        value:
+          type: string
+          description: The value that failed
+          example: invalid string
+    additionalInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          example: additionalInfo
+        fieldType:
+          type: string
+          example: object
+        schema:
+          type:
+          - string
+          - 'null'
+          format: url
+          example: https://example.com/schema
+        value:
+          type:
+          - object
+          $ref: '#/components/schemas/AdditionalInfoValue'
+        description:
+          type:
+          - string
+          - 'null'
+          example: URL and description for additional information about the opportunity
+      required:
+      - fieldType
+      - name
+      - value
+    DateRangeFilter:
+      type: object
+      properties:
+        operator:
+          type: string
+          description: The operator to apply to the filter value
+          example: between
+        value:
+          description: The date range value
+          type:
+          - object
+          $ref: '#/components/schemas/DateRange'
+      required:
+      - operator
+      - value
+    CostSharingValue:
+      type: object
+      properties:
+        isRequired:
+          type:
+          - boolean
+          - 'null'
+          example: true
+    StringArrayFilter:
+      type: object
+      properties:
+        operator:
+          type: string
+          description: The operator to apply to the filter value
+          example: in
+        value:
+          type: array
+          description: The array of string values
+          example:
+          - open
+          - forecasted
+          items:
+            type: string
+      required:
+      - operator
+      - value
+    OpportunityCustomFields:
+      type: object
+      properties:
+        legacySerialId:
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/legacySerialId'
+          - type: 'null'
+        federalOpportunityNumber:
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/federalOpportunityNumber'
+          - type: 'null'
+        assistanceListings:
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/assistanceListings'
+          - type: 'null'
+        agency:
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/agency'
+          - type: 'null'
+        attachments:
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/attachments'
+          - type: 'null'
+        federalFundingSource:
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/federalFundingSource'
+          - type: 'null'
+        fiscalYear:
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/fiscalYear'
+          - type: 'null'
+        costSharing:
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/costSharing'
+          - type: 'null'
+        additionalInfo:
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/additionalInfo'
+          - type: 'null'
+        contactInfo:
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/contactInfo'
+          - type: 'null'
+    OppTimeline:
+      type: object
+      properties:
+        postDate:
+          description: The date (and time) at which the opportunity is posted
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/SingleDateEvent'
+          - type: 'null'
+        closeDate:
+          description: The date (and time) at which the opportunity closes
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/SingleDateEvent'
+          - type: 'null'
+        otherDates:
+          description: An optional map of other key dates or events in the opportunity timeline
+    AgencyValue:
+      type: object
+      properties:
+        code:
+          type:
+          - string
+          - 'null'
+          example: US-ABC
+        name:
+          type:
+          - string
+          - 'null'
+          example: Department of Examples
+        parentName:
+          type:
+          - string
+          - 'null'
+          example: Department of Examples
+        parentCode:
+          type:
+          - string
+          - 'null'
+          example: HHS
+    MoneyRangeFilter:
+      type: object
+      properties:
+        operator:
+          type: string
+          description: The operator to apply to the filter value
+          example: between
+        value:
+          description: The money range value
+          type:
+          - object
+          $ref: '#/components/schemas/MoneyRange'
+      required:
+      - operator
+      - value
+    OpportunitySearchRequest:
+      type: object
+      properties:
+        search:
+          type:
+          - string
+          - 'null'
+          description: Search query string
+          example: community health
+        filters:
+          description: Filters to apply to the opportunity search
+          type:
+          - object
+          $ref: '#/components/schemas/OppFilters'
+        sorting:
+          description: Sorting parameters for opportunities
+          type:
+          - object
+          $ref: '#/components/schemas/OppSorting'
+        pagination:
+          type:
+          - object
+          $ref: '#/components/schemas/PaginatedBodyParams'
+    OpportunityBase:
+      type: object
+      properties:
+        createdAt:
+          description: The timestamp (in UTC) at which the record was created.
+          example: '2026-01-01T00:00:00Z'
+        lastModifiedAt:
+          description: The timestamp (in UTC) at which the record was last modified.
+          example: '2026-02-01T00:00:00Z'
+        id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Globally unique id for the opportunity
+          example: 123e4567-e89b-12d3-a456-426614174000
+        title:
+          type:
+          - string
+          - 'null'
+          description: Title or name of the funding opportunity
+          example: Community Health Initiative Grant
+        status:
+          description: Status of the opportunity
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/OppStatus'
+          - type: 'null'
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of the opportunity's purpose and scope
+          example: Funding to support community health initiatives in underserved areas.
+        funding:
+          description: Details about the funding available
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/OppFunding'
+          - type: 'null'
+        keyDates:
+          description: Key dates for the opportunity, such as when the application opens and closes
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/OppTimeline'
+          - type: 'null'
+        source:
+          description: URL for the original source of the opportunity
+          example: https://grants.gov/web/grants/view-opportunity.html?oppId=12345
+        customFields:
+          description: Additional custom fields specific to this opportunity
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/OpportunityCustomFields'
+          - type: 'null'
+    assistanceListings:
+      type: object
+      properties:
+        name:
+          type: string
+          example: assistanceListings
+        fieldType:
+          type: string
+          example: array
+        schema:
+          type:
+          - string
+          - 'null'
+          format: url
+          example: https://example.com/schema
+        value:
+          type: array
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/AssistanceListingValue'
+        description:
+          type:
+          - string
+          - 'null'
+          example: The assistance listing number and program title for this opportunity
+      required:
+      - fieldType
+      - name
+    OppFilters:
+      type: object
+      properties:
+        status:
+          description: '`status.value` matches one of the following values'
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/StringArrayFilter'
+          - type: 'null'
+        closeDateRange:
+          description: '`keyDates.closeDate` is between the given range'
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/DateRangeFilter'
+          - type: 'null'
+        totalFundingAvailableRange:
+          description: '`funding.totalAmountAvailable` is between the given range'
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/MoneyRangeFilter'
+          - type: 'null'
+        minAwardAmountRange:
+          description: '`funding.minAwardAmount` is between the given range'
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/MoneyRangeFilter'
+          - type: 'null'
+        maxAwardAmountRange:
+          description: '`funding.maxAwardAmount` is between the given range'
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/MoneyRangeFilter'
+          - type: 'null'
+        customFilters:
+          type:
+          - object
+          - 'null'
+          description: Additional custom filters to apply to the search
+          example: {}
+          additionalProperties: {}
+    OppStatus:
+      type: object
+      properties:
+        value:
+          type:
+          - string
+          - 'null'
+          description: The status value, from a predefined set of options
+          example: active, forecasted, closed
+        customValue:
+          type:
+          - string
+          - 'null'
+          description: A custom status value
+        description:
+          type:
+          - string
+          - 'null'
+          description: A human-readable description of the status
+    FilterInfo:
+      type: object
+      properties:
+        filters:
+          description: The filters applied to the response items
+        errors:
+          type: array
+          default: []
+          description: Non-fatal errors that occurred during filtering
+          items:
+            type: string
+      required:
+      - filters
+    OpportunitiesListResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: The HTTP status code
+        message:
+          type: string
+          description: The message
+        items:
+          type: array
+          description: The list of opportunities
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/OpportunityBase'
+        paginationInfo:
+          description: The pagination details
+          type:
+          - object
+          $ref: '#/components/schemas/PaginatedResultsInfo'
+      required:
+      - items
+      - message
+      - paginationInfo
+      - status
+    agency:
+      type: object
+      properties:
+        name:
+          type: string
+          example: agency
+        fieldType:
+          type: string
+          example: object
+        schema:
+          type:
+          - string
+          - 'null'
+          format: url
+          example: https://example.com/schema
+        value:
+          type:
+          - object
+          $ref: '#/components/schemas/AgencyValue'
+        description:
+          type:
+          - string
+          - 'null'
+          example: Information about the agency offering this opportunity
+      required:
+      - fieldType
+      - name
+      - value
+    contactInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          example: contactInfo
+        fieldType:
+          type: string
+          example: object
+        schema:
+          type:
+          - string
+          - 'null'
+          format: url
+          example: https://example.com/schema
+        value:
+          type:
+          - object
+          $ref: '#/components/schemas/AgencyContactValue'
+        description:
+          type:
+          - string
+          - 'null'
+          example: Contact information for the agency managing this opportunity
+      required:
+      - fieldType
+      - name
+      - value
+    AttachmentValue:
+      type: object
+      properties:
+        downloadUrl:
+          type:
+          - string
+          - 'null'
+          format: url
+          example: https://example.com/file.pdf
+        name:
+          type: string
+          example: example.pdf
+        description:
+          type:
+          - string
+          - 'null'
+          example: A PDF file with instructions
+        sizeInBytes:
+          type:
+          - integer
+          - 'null'
+          example: 1000
+        mimeType:
+          type:
+          - string
+          - 'null'
+          example: application/pdf
+        createdAt:
+          type: string
+          format: date-time
+          example: '2025-01-01T17:01:01.000Z'
+        lastModifiedAt:
+          type: string
+          format: date-time
+          example: '2025-01-02T17:30:00.000Z'
+      required:
+      - createdAt
+      - lastModifiedAt
+      - name
+    legacySerialId:
+      type: object
+      properties:
+        name:
+          type: string
+          example: legacySerialId
+        fieldType:
+          type: string
+          example: integer
+        schema:
+          type:
+          - string
+          - 'null'
+          format: url
+          example: https://example.com/schema
+        value:
+          type: integer
+          example: 12345
+        description:
+          type:
+          - string
+          - 'null'
+          example: An integer ID for the opportunity, needed for compatibility with legacy systems
+      required:
+      - fieldType
+      - name
+      - value
+    federalOpportunityNumber:
+      type: object
+      properties:
+        name:
+          type: string
+          example: federalOpportunityNumber
+        fieldType:
+          type: string
+          example: string
+        schema:
+          type:
+          - string
+          - 'null'
+          format: url
+          example: https://example.com/schema
+        value:
+          type: string
+          example: ABC-123-XYZ-001
+        description:
+          type:
+          - string
+          - 'null'
+          example: The federal opportunity number assigned to this grant opportunity
+      required:
+      - fieldType
+      - name
+      - value
+    AssistanceListingValue:
+      type: object
+      properties:
+        identifier:
+          type:
+          - string
+          - 'null'
+          example: '43.012'
+        programTitle:
+          type:
+          - string
+          - 'null'
+          example: Space Technology
+    SortedResultsInfo:
+      type: object
+      properties:
+        sortBy:
+          type: string
+          description: The field to sort by
+          example: lastModifiedAt
+        customSortBy:
+          type:
+          - string
+          - 'null'
+          description: Implementation-defined sort key
+          example: custom_field_1
+        sortOrder:
+          type: string
+          description: The order in which the results are sorted
+          example: desc
+        errors:
+          type: array
+          default: []
+          description: Non-fatal errors that occurred during sorting
+          items:
+            type: string
+      required:
+      - sortBy
+      - sortOrder
+    OppSorting:
+      type: object
+      properties:
+        sortBy:
+          type: string
+          enum:
+          - lastModifiedAt
+          - createdAt
+          - title
+          - status.value
+          - keyDates.closeDate
+          - funding.maxAwardAmount
+          - funding.minAwardAmount
+          - funding.totalAmountAvailable
+          - funding.estimatedAwardCount
+          - custom
+          description: The field to sort by
+        sortOrder:
+          type:
+          - string
+          - 'null'
+          description: The sort order (asc or desc)
+          example: desc
+        customSortBy:
+          type:
+          - string
+          - 'null'
+          description: The custom field to sort by when sortBy is 'custom'
+          example: custom_field_1
+      required:
+      - sortBy
+    OppFunding:
+      type: object
+      properties:
+        details:
+          type:
+          - string
+          - 'null'
+          description: Details about the funding available for this opportunity that don't fit other fields
+          example: Awards are subject to the availability of appropriated funds.
+        totalAmountAvailable:
+          description: Total amount of funding available for this opportunity
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/Money'
+          - type: 'null'
+        minAwardAmount:
+          description: Minimum amount of funding granted per award
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/Money'
+          - type: 'null'
+        maxAwardAmount:
+          description: Maximum amount of funding granted per award
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/Money'
+          - type: 'null'
+        minAwardCount:
+          type:
+          - integer
+          - 'null'
+          description: Minimum number of awards granted
+          example: 1
+        maxAwardCount:
+          type:
+          - integer
+          - 'null'
+          description: Maximum number of awards granted
+          example: 10
+        estimatedAwardCount:
+          type:
+          - integer
+          - 'null'
+          description: Estimated number of awards that will be granted
+          example: 5
+    OpportunityResponse:
+      type: object
+      properties:
+        status:
+          type: integer
+          description: The HTTP status code
+        message:
+          type: string
+          description: The message
+        data:
+          description: The opportunity
+          type:
+          - object
+          $ref: '#/components/schemas/OpportunityBase'
+      required:
+      - data
+      - message
+      - status
+    ErrorResponseSchema:
+      type: object
+      properties:
+        data:
+          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
+          example: {}
+        message:
+          type: string
+          description: General description of the error
+          example: Error
+        status_code:
+          type: integer
+          description: The HTTP status code of the error
+        errors:
+          type: array
+          example: []
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        internal_request_id:
+          type: string
+          description: An internal tracking ID
+          example: 550e8400-e29b-41d4-a716-446655440000
+    DateRange:
+      type: object
+      properties:
+        min:
+          description: The minimum date in the range
+          example: '2021-01-01'
+        max:
+          description: The maximum date in the range
+          example: '2021-01-02'
+    federalFundingSource:
+      type: object
+      properties:
+        name:
+          type: string
+          example: federalFundingSource
+        fieldType:
+          type: string
+          example: string
+        schema:
+          type:
+          - string
+          - 'null'
+          format: url
+          example: https://example.com/schema
+        value:
+          type: string
+          example: discretionary
+        description:
+          type:
+          - string
+          - 'null'
+          example: The category type of the grant opportunity
+      required:
+      - fieldType
+      - name
+      - value
+    SingleDateEvent:
+      type: object
+      properties:
+        name:
+          type:
+          - string
+          - 'null'
+          description: Human-readable name of the event
+          example: Application period begins
+        eventType:
+          type:
+          - string
+          - 'null'
+          description: Type of event
+          example: singleDate
+        description:
+          type:
+          - string
+          - 'null'
+          description: Description of what this event represents
+          example: Application period begins
+        date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: 'Date of the event in ISO 8601 format: YYYY-MM-DD'
+          example: '2026-02-27'
+        time:
+          type:
+          - string
+          - 'null'
+          description: 'Time of the event in ISO 8601 format: HH:MM:SS'
+          example: '11:15:00'
+  securitySchemes:
+    ApiJwtAuth:
+      type: apiKey
+      in: header
+      name: X-SGG-Token
+    InternalApiJwtAuth:
+      type: apiKey
+      in: header
+      name: X-SGG-Internal-Token
+    ApiUserKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
