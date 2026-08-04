@@ -1,0 +1,31 @@
+{
+  "provider": "hhs",
+  "sources": [
+    "simpler-grants-gov.yml"
+  ],
+  "outputs": [
+    "hhs-agency-v1-api-openapi.yml",
+    "hhs-application-alpha-api-openapi.yml",
+    "hhs-award-recommendation-alpha-api-openapi.yml",
+    "hhs-commongrants-protocol-api-openapi.yml",
+    "hhs-competition-alpha-api-openapi.yml",
+    "hhs-extract-v1-api-openapi.yml",
+    "hhs-file-v1-api-openapi.yml",
+    "hhs-form-alpha-api-openapi.yml",
+    "hhs-health-api-openapi.yml",
+    "hhs-internal-v1-admin-only-api-openapi.yml",
+    "hhs-local-only-api-openapi.yml",
+    "hhs-opportunity-v1-api-openapi.yml",
+    "hhs-opportunity-v1-for-grantors-api-openapi.yml",
+    "hhs-organization-v1-api-openapi.yml",
+    "hhs-user-v1-internal-only-api-openapi.yml",
+    "hhs-workflow-api-openapi.yml"
+  ],
+  "archived": [
+    "archived openapi/simpler-grants-gov.yml"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
