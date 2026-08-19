@@ -1,0 +1,250 @@
+{
+  "item": [
+    {
+      "id": "5d99e73a-0ee1-49c4-88a9-cc20cf7320c5",
+      "name": "Extract v1",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3d03415d-c54f-4f7b-8a8c-a37613796da7",
+          "name": "Extract Metadata Get",
+          "request": {
+            "name": "Extract Metadata Get",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "extracts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-SGG-Token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pagination\": {\n    \"page_offset\": \"<integer>\",\n    \"page_size\": \"<integer>\",\n    \"sort_order\": [\n      {\n        \"order_by\": \"<string>\",\n        \"sort_direction\": \"<string>\"\n      }\n    ]\n  },\n  \"message\": \"<string>\",\n  \"data\": {},\n  \"status_code\": \"<integer>\",\n  \"filters\": {\n    \"extract_type\": \"<string,null,null>\",\n    \"created_at\": {\n      \"end_date\": \"<string,null-date>\",\n      \"start_date\": \"<string,null-date>\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6546de8a-1a60-479f-8d99-e74093a593e3",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "extracts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pagination\": {\n    \"sort_order\": [\n      {\n        \"order_by\": \"created_at\",\n        \"sort_direction\": \"descending\"\n      }\n    ],\n    \"page_offset\": 1,\n    \"page_size\": 25\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pagination_info\": {\n    \"page_offset\": 1,\n    \"page_size\": 25,\n    \"total_records\": 42,\n    \"total_pages\": 2,\n    \"sort_order\": [\n      {\n        \"order_by\": \"id\",\n        \"sort_direction\": \"descending\"\n      },\n      {\n        \"order_by\": \"id\",\n        \"sort_direction\": \"ascending\"\n      }\n    ]\n  },\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"download_path\": \"string\",\n      \"file_size_bytes\": 1024,\n      \"created_at\": \"1972-05-21T12:49:48.336Z\",\n      \"updated_at\": \"2004-03-14T10:36:32.719Z\",\n      \"extract_metadata_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"extract_type\": \"opportunity_data_extract\"\n    },\n    {\n      \"download_path\": \"string\",\n      \"file_size_bytes\": 1024,\n      \"created_at\": \"1982-12-03T11:58:40.881Z\",\n      \"updated_at\": \"1983-02-16T09:59:30.560Z\",\n      \"extract_metadata_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"extract_type\": \"opportunity_data_extract\"\n    }\n  ],\n  \"status_code\": 200\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0cff0389-3fc3-4ae7-8839-c98267bdf9d8",
+              "name": "Authentication error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "extracts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pagination\": {\n    \"sort_order\": [\n      {\n        \"order_by\": \"created_at\",\n        \"sort_direction\": \"descending\"\n      }\n    ],\n    \"page_offset\": 1,\n    \"page_size\": 25\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 1844,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a7910797-3a4e-49c7-904d-ef3d97581905",
+              "name": "Validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "extracts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pagination\": {\n    \"sort_order\": [\n      {\n        \"order_by\": \"created_at\",\n        \"sort_direction\": \"descending\"\n      }\n    ],\n    \"page_offset\": 1,\n    \"page_size\": 25\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 1844,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "{{baseURL}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "edc3fc44-392c-4b04-ad62-9d5126f31628",
+    "name": "Simpler Grants Extract v1 API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "\nBack end API for simpler.grants.gov.\n\nThis API is in active development as we build out new functionalities for Simpler.Grants.gov. It is currently stable for everyday use, and will be versioned with advance notice for any breaking changes.\n\nLearn more in our [API documentation](https://wiki.simpler.grants.gov/product/api).\nSee [Release Phases](https://github.com/github/roadmap?tab=readme-ov-file#release-phases) for further details.\n\n\nContact Support:\n Name: Simpler Grants.gov\n Email: simpler@grants.gov",
+      "type": "text/plain"
+    }
+  }
+}

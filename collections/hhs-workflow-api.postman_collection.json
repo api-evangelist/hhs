@@ -1,0 +1,1299 @@
+{
+  "item": [
+    {
+      "id": "9dc3fb1d-395c-4f58-aaeb-fa203d6afede",
+      "name": "Workflow",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b67daf3f-7b99-4028-9b1d-583caec8a864",
+          "name": "Send Workflow Event",
+          "request": {
+            "name": "Send Workflow Event",
+            "description": {
+              "content": "Trigger a new workflow or progress an existing one.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "workflows",
+                "events"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-SGG-Token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event_type\": \"<string>\",\n  \"start_workflow_context\": {\n    \"entity_id\": \"<uuid>\",\n    \"entity_type\": \"<string>\",\n    \"workflow_type\": \"<string>\"\n  },\n  \"process_workflow_context\": {\n    \"event_to_send\": \"<string>\",\n    \"workflow_id\": \"<uuid>\"\n  },\n  \"metadata\": {}\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "aa2e8ace-53a1-4593-aa9f-cd741722fc9a",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_type\": \"<string>\",\n  \"start_workflow_context\": {\n    \"entity_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"entity_type\": \"opportunity\",\n    \"workflow_type\": \"basic_test_workflow\"\n  },\n  \"process_workflow_context\": {\n    \"event_to_send\": \"approve\",\n    \"workflow_id\": \"123e4567-e89b-12d3-a456-426614174000\"\n  },\n  \"metadata\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Success\",\n  \"data\": {\n    \"event_id\": \"123e4567-e89b-12d3-a456-426614174000\"\n  },\n  \"status_code\": 200\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c0251a24-add6-44bb-936f-149ab4eaebf7",
+              "name": "Authentication error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_type\": \"<string>\",\n  \"start_workflow_context\": {\n    \"entity_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"entity_type\": \"opportunity\",\n    \"workflow_type\": \"basic_test_workflow\"\n  },\n  \"process_workflow_context\": {\n    \"event_to_send\": \"approve\",\n    \"workflow_id\": \"123e4567-e89b-12d3-a456-426614174000\"\n  },\n  \"metadata\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 485,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "86099846-88fb-436e-8f18-74e542e65ca8",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_type\": \"<string>\",\n  \"start_workflow_context\": {\n    \"entity_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"entity_type\": \"opportunity\",\n    \"workflow_type\": \"basic_test_workflow\"\n  },\n  \"process_workflow_context\": {\n    \"event_to_send\": \"approve\",\n    \"workflow_id\": \"123e4567-e89b-12d3-a456-426614174000\"\n  },\n  \"metadata\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 485,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2d69b72d-7f9b-49a8-9b64-799250009761",
+              "name": "Not Found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_type\": \"<string>\",\n  \"start_workflow_context\": {\n    \"entity_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"entity_type\": \"opportunity\",\n    \"workflow_type\": \"basic_test_workflow\"\n  },\n  \"process_workflow_context\": {\n    \"event_to_send\": \"approve\",\n    \"workflow_id\": \"123e4567-e89b-12d3-a456-426614174000\"\n  },\n  \"metadata\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 485,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "913e133b-1ee0-4b48-ac01-e5693e338405",
+              "name": "Validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    "events"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"event_type\": \"<string>\",\n  \"start_workflow_context\": {\n    \"entity_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"entity_type\": \"opportunity\",\n    \"workflow_type\": \"basic_test_workflow\"\n  },\n  \"process_workflow_context\": {\n    \"event_to_send\": \"approve\",\n    \"workflow_id\": \"123e4567-e89b-12d3-a456-426614174000\"\n  },\n  \"metadata\": {}\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 485,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "deadb6a4-a162-4941-b6d4-ba7be3327575",
+          "name": "Get Workflow Details",
+          "request": {
+            "name": "Get Workflow Details",
+            "description": {
+              "content": "Retrieve detailed information about a specific workflow including audit history, approvals, and approval configuration. Access is controlled by entity-based privileges (VIEW_OPPORTUNITY or VIEW_APPLICATION).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "workflows",
+                ":workflow_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workflow_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-SGG-Token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "e69d680a-df40-4b63-8ab6-116b03f799c7",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    ":workflow_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Success\",\n  \"data\": {\n    \"workflow_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"workflow_type\": \"opportunity_publish\",\n    \"current_workflow_state\": \"draft\",\n    \"is_active\": true,\n    \"created_at\": \"2020-03-29T00:20:55.937Z\",\n    \"updated_at\": \"1987-03-21T10:21:57.540Z\",\n    \"workflow_audit_events\": [\n      {\n        \"workflow_audit_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"acting_user\": {\n          \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n          \"email\": \"user@example.com\",\n          \"first_name\": \"John\",\n          \"last_name\": \"Smith\"\n        },\n        \"transition_event\": \"approve\",\n        \"source_state\": \"pending_review\",\n        \"target_state\": \"approved\",\n        \"event\": {\n          \"event_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n          \"sent_at\": \"1951-02-08T21:33:39.991Z\"\n        },\n        \"audit_metadata\": {\n          \"key_0\": {},\n          \"key_1\": {}\n        },\n        \"created_at\": \"1990-10-21T14:44:59.192Z\"\n      },\n      {\n        \"workflow_audit_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"acting_user\": {\n          \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n          \"email\": \"user@example.com\",\n          \"first_name\": \"John\",\n          \"last_name\": \"Smith\"\n        },\n        \"transition_event\": \"approve\",\n        \"source_state\": \"pending_review\",\n        \"target_state\": \"approved\",\n        \"event\": {\n          \"event_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n          \"sent_at\": \"1953-07-13T20:18:43.154Z\"\n        },\n        \"audit_metadata\": {\n          \"key_0\": {},\n          \"key_1\": {},\n          \"key_2\": {}\n        },\n        \"created_at\": \"2011-09-05T06:03:34.342Z\"\n      }\n    ],\n    \"workflow_approvals\": [\n      {\n        \"workflow_approval_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"approving_user\": {\n          \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n          \"email\": \"user@example.com\",\n          \"first_name\": \"John\",\n          \"last_name\": \"Smith\"\n        },\n        \"event_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"is_still_valid\": true,\n        \"comment\": \"Approved with conditions\",\n        \"approval_type\": \"program_officer_approval\",\n        \"approval_response_type\": \"approved\",\n        \"created_at\": \"1992-02-07T15:21:13.777Z\"\n      },\n      {\n        \"workflow_approval_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"approving_user\": {\n          \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n          \"email\": \"user@example.com\",\n          \"first_name\": \"John\",\n          \"last_name\": \"Smith\"\n        },\n        \"event_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"is_still_valid\": true,\n        \"comment\": \"Approved with conditions\",\n        \"approval_type\": \"program_officer_approval\",\n        \"approval_response_type\": \"declined\",\n        \"created_at\": \"1965-06-07T22:30:01.197Z\"\n      }\n    ],\n    \"workflow_approval_config\": {\n      \"key_0\": {\n        \"approval_type\": \"program_officer_approval\",\n        \"required_privileges\": [\n          \"budget_officer_approval\",\n          \"update_opportunity\"\n        ],\n        \"allowed_approval_response_types\": [\n          \"declined\",\n          \"declined\"\n        ],\n        \"possible_users\": [\n          {\n            \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n            \"email\": \"user@example.com\",\n            \"first_name\": \"John\",\n            \"last_name\": \"Smith\"\n          },\n          {\n            \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n            \"email\": \"user@example.com\",\n            \"first_name\": \"John\",\n            \"last_name\": \"Smith\"\n          }\n        ]\n      }\n    },\n    \"valid_events\": [\n      \"receive_program_officer_approval\"\n    ],\n    \"opportunity_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"application_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"application_submission_id\": \"123e4567-e89b-12d3-a456-426614174000\"\n  },\n  \"status_code\": 200\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ef58c8c8-3730-4e83-9ac8-e223688792e7",
+              "name": "Authentication error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    ":workflow_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 485,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b632dfbb-787a-4e98-9b9a-d2357e3aff8b",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    ":workflow_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 485,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8c3b0d81-e419-40d1-ada1-bfb644b02be3",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    ":workflow_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 485,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4ebbe20b-e595-4d6a-aaac-f7cf8740a00b",
+          "name": "Get Workflow by Event ID",
+          "request": {
+            "name": "Get Workflow by Event ID",
+            "description": {
+              "content": "Retrieve detailed information about a workflow associated with a specific event. Access is controlled by entity-based privileges (VIEW_OPPORTUNITY or VIEW_APPLICATION).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "workflows",
+                "events",
+                ":event_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "event_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-SGG-Token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "009991ce-088d-49e9-ad5e-328f62a1d37a",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    "events",
+                    ":event_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "event_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Success\",\n  \"data\": {\n    \"workflow_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"workflow_type\": \"opportunity_publish\",\n    \"current_workflow_state\": \"draft\",\n    \"is_active\": true,\n    \"created_at\": \"2020-03-29T00:20:55.937Z\",\n    \"updated_at\": \"1987-03-21T10:21:57.540Z\",\n    \"workflow_audit_events\": [\n      {\n        \"workflow_audit_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"acting_user\": {\n          \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n          \"email\": \"user@example.com\",\n          \"first_name\": \"John\",\n          \"last_name\": \"Smith\"\n        },\n        \"transition_event\": \"approve\",\n        \"source_state\": \"pending_review\",\n        \"target_state\": \"approved\",\n        \"event\": {\n          \"event_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n          \"sent_at\": \"1951-02-08T21:33:39.991Z\"\n        },\n        \"audit_metadata\": {\n          \"key_0\": {},\n          \"key_1\": {}\n        },\n        \"created_at\": \"1990-10-21T14:44:59.192Z\"\n      },\n      {\n        \"workflow_audit_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"acting_user\": {\n          \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n          \"email\": \"user@example.com\",\n          \"first_name\": \"John\",\n          \"last_name\": \"Smith\"\n        },\n        \"transition_event\": \"approve\",\n        \"source_state\": \"pending_review\",\n        \"target_state\": \"approved\",\n        \"event\": {\n          \"event_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n          \"sent_at\": \"1953-07-13T20:18:43.154Z\"\n        },\n        \"audit_metadata\": {\n          \"key_0\": {},\n          \"key_1\": {},\n          \"key_2\": {}\n        },\n        \"created_at\": \"2011-09-05T06:03:34.342Z\"\n      }\n    ],\n    \"workflow_approvals\": [\n      {\n        \"workflow_approval_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"approving_user\": {\n          \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n          \"email\": \"user@example.com\",\n          \"first_name\": \"John\",\n          \"last_name\": \"Smith\"\n        },\n        \"event_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"is_still_valid\": true,\n        \"comment\": \"Approved with conditions\",\n        \"approval_type\": \"program_officer_approval\",\n        \"approval_response_type\": \"approved\",\n        \"created_at\": \"1992-02-07T15:21:13.777Z\"\n      },\n      {\n        \"workflow_approval_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"approving_user\": {\n          \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n          \"email\": \"user@example.com\",\n          \"first_name\": \"John\",\n          \"last_name\": \"Smith\"\n        },\n        \"event_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"is_still_valid\": true,\n        \"comment\": \"Approved with conditions\",\n        \"approval_type\": \"program_officer_approval\",\n        \"approval_response_type\": \"declined\",\n        \"created_at\": \"1965-06-07T22:30:01.197Z\"\n      }\n    ],\n    \"workflow_approval_config\": {\n      \"key_0\": {\n        \"approval_type\": \"program_officer_approval\",\n        \"required_privileges\": [\n          \"budget_officer_approval\",\n          \"update_opportunity\"\n        ],\n        \"allowed_approval_response_types\": [\n          \"declined\",\n          \"declined\"\n        ],\n        \"possible_users\": [\n          {\n            \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n            \"email\": \"user@example.com\",\n            \"first_name\": \"John\",\n            \"last_name\": \"Smith\"\n          },\n          {\n            \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n            \"email\": \"user@example.com\",\n            \"first_name\": \"John\",\n            \"last_name\": \"Smith\"\n          }\n        ]\n      }\n    },\n    \"valid_events\": [\n      \"receive_program_officer_approval\"\n    ],\n    \"opportunity_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"application_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n    \"application_submission_id\": \"123e4567-e89b-12d3-a456-426614174000\"\n  },\n  \"status_code\": 200\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2e729db0-56d6-4f52-8933-81244d80bd96",
+              "name": "Authentication error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    "events",
+                    ":event_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "event_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 485,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "24680783-aeab-4b34-b610-716fd04d26d0",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    "events",
+                    ":event_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "event_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 485,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e25d33bf-4e6d-4863-8c43-b9abdc89b311",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    "events",
+                    ":event_id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "event_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 485,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "58c10f8c-eaba-41ea-9522-84f9df163f51",
+          "name": "Get Workflow Audit Events",
+          "request": {
+            "name": "Get Workflow Audit Events",
+            "description": {
+              "content": "Retrieve a paginated list of audit events for a specific workflow. Access is controlled by entity-based privileges (VIEW_OPPORTUNITY or VIEW_APPLICATION).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "workflows",
+                ":workflow_id",
+                "audit"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "workflow_id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-SGG-Token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pagination\": {\n    \"sort_order\": [\n      {\n        \"order_by\": \"created_at\",\n        \"sort_direction\": \"descending\"\n      }\n    ],\n    \"page_size\": 25,\n    \"page_offset\": 1\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ae55f761-02c2-42db-a595-256e82ab1435",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    ":workflow_id",
+                    "audit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pagination\": {\n    \"sort_order\": [\n      {\n        \"order_by\": \"created_at\",\n        \"sort_direction\": \"descending\"\n      }\n    ],\n    \"page_size\": 25,\n    \"page_offset\": 1\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pagination_info\": {\n    \"page_offset\": 1,\n    \"page_size\": 25,\n    \"total_records\": 42,\n    \"total_pages\": 2,\n    \"sort_order\": [\n      {\n        \"order_by\": \"id\",\n        \"sort_direction\": \"descending\"\n      },\n      {\n        \"order_by\": \"id\",\n        \"sort_direction\": \"descending\"\n      }\n    ]\n  },\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"workflow_audit_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"acting_user\": {\n        \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"email\": \"user@example.com\",\n        \"first_name\": \"John\",\n        \"last_name\": \"Smith\"\n      },\n      \"transition_event\": \"approve\",\n      \"source_state\": \"pending_review\",\n      \"target_state\": \"approved\",\n      \"event\": {\n        \"event_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"sent_at\": \"1998-05-12T08:48:05.148Z\"\n      },\n      \"audit_metadata\": {\n        \"key_0\": {}\n      },\n      \"created_at\": \"1980-10-03T13:43:19.718Z\"\n    },\n    {\n      \"workflow_audit_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"acting_user\": {\n        \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"email\": \"user@example.com\",\n        \"first_name\": \"John\",\n        \"last_name\": \"Smith\"\n      },\n      \"transition_event\": \"approve\",\n      \"source_state\": \"pending_review\",\n      \"target_state\": \"approved\",\n      \"event\": {\n        \"event_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n        \"sent_at\": \"1948-04-16T03:20:44.774Z\"\n      },\n      \"audit_metadata\": {\n        \"key_0\": {},\n        \"key_1\": {}\n      },\n      \"created_at\": \"2023-07-07T16:57:34.969Z\"\n    }\n  ],\n  \"status_code\": 200\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f6ff5e1c-12fa-416c-aa81-1f48f3ebf108",
+              "name": "Authentication error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    ":workflow_id",
+                    "audit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pagination\": {\n    \"sort_order\": [\n      {\n        \"order_by\": \"created_at\",\n        \"sort_direction\": \"descending\"\n      }\n    ],\n    \"page_size\": 25,\n    \"page_offset\": 1\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 485,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1f9a8bcc-a0a2-4a8e-9771-f77a4403a5be",
+              "name": "Forbidden",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    ":workflow_id",
+                    "audit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pagination\": {\n    \"sort_order\": [\n      {\n        \"order_by\": \"created_at\",\n        \"sort_direction\": \"descending\"\n      }\n    ],\n    \"page_size\": 25,\n    \"page_offset\": 1\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 485,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "f8dba683-77ce-4c09-9693-ab4a0dd00206",
+              "name": "Not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    ":workflow_id",
+                    "audit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pagination\": {\n    \"sort_order\": [\n      {\n        \"order_by\": \"created_at\",\n        \"sort_direction\": \"descending\"\n      }\n    ],\n    \"page_size\": 25,\n    \"page_offset\": 1\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 485,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "55b02fac-dd8e-447d-9aef-94490dec1c45",
+              "name": "Validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "workflows",
+                    ":workflow_id",
+                    "audit"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "workflow_id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"pagination\": {\n    \"sort_order\": [\n      {\n        \"order_by\": \"created_at\",\n        \"sort_direction\": \"descending\"\n      }\n    ],\n    \"page_size\": 25,\n    \"page_offset\": 1\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 485,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "{{baseURL}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "ac548ffd-aba9-454a-9108-a41e1206a292",
+    "name": "Simpler Grants Workflow API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "\nBack end API for simpler.grants.gov.\n\nThis API is in active development as we build out new functionalities for Simpler.Grants.gov. It is currently stable for everyday use, and will be versioned with advance notice for any breaking changes.\n\nLearn more in our [API documentation](https://wiki.simpler.grants.gov/product/api).\nSee [Release Phases](https://github.com/github/roadmap?tab=readme-ov-file#release-phases) for further details.\n\n\nContact Support:\n Name: Simpler Grants.gov\n Email: simpler@grants.gov",
+      "type": "text/plain"
+    }
+  }
+}

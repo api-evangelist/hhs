@@ -1,0 +1,101 @@
+{
+  "item": [
+    {
+      "id": "d24779b6-b130-40d9-90fe-6170033b0ddc",
+      "name": "LOCAL ONLY",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0896fb66-e7b3-43de-88de-7e405ca65b2f",
+          "name": "Local Users Get",
+          "request": {
+            "name": "Local Users Get",
+            "description": {},
+            "url": {
+              "path": [
+                "local",
+                "local-users"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "1e4dc43f-a77c-47e3-bd0d-a3cd9140ee19",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "local",
+                    "local-users"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"first_name\": \"Bob\",\n      \"last_name\": \"Smith\",\n      \"oauth_id\": \"my_example_user\",\n      \"user_jwt\": \"abc123\",\n      \"user_api_key\": \"my_example_user_token\"\n    },\n    {\n      \"user_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"first_name\": \"Bob\",\n      \"last_name\": \"Smith\",\n      \"oauth_id\": \"my_example_user\",\n      \"user_jwt\": \"abc123\",\n      \"user_api_key\": \"my_example_user_token\"\n    }\n  ],\n  \"status_code\": 200\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "{{baseURL}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "0ca516c3-3e0e-415a-bb7d-6c8f7a0462f7",
+    "name": "Simpler Grants LOCAL ONLY API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "\nBack end API for simpler.grants.gov.\n\nThis API is in active development as we build out new functionalities for Simpler.Grants.gov. It is currently stable for everyday use, and will be versioned with advance notice for any breaking changes.\n\nLearn more in our [API documentation](https://wiki.simpler.grants.gov/product/api).\nSee [Release Phases](https://github.com/github/roadmap?tab=readme-ov-file#release-phases) for further details.\n\n\nContact Support:\n Name: Simpler Grants.gov\n Email: simpler@grants.gov",
+      "type": "text/plain"
+    }
+  }
+}

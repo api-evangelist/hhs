@@ -1,0 +1,254 @@
+{
+  "item": [
+    {
+      "id": "e9eeef6c-4714-4f79-9100-a819b2140130",
+      "name": "Agency v1",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "05778a47-fb5e-4593-889e-a632277d4e65",
+          "name": "Agency Search",
+          "request": {
+            "name": "Agency Search",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "agencies",
+                "search"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-SGG-Token"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pagination\": {\n    \"page_offset\": \"<integer>\",\n    \"page_size\": \"<integer>\",\n    \"sort_order\": [\n      {\n        \"order_by\": \"agency_code\",\n        \"sort_direction\": \"ascending\"\n      }\n    ]\n  },\n  \"query\": \"<string>\",\n  \"query_operator\": [\n    \"OR\"\n  ],\n  \"filters\": {\n    \"has_active_opportunity\": {\n      \"one_of\": [\n        \"<boolean>\",\n        \"<boolean>\"\n      ]\n    },\n    \"opportunity_statuses\": {\n      \"one_of\": [\n        \"<string>\"\n      ]\n    },\n    \"is_test_agency\": {\n      \"one_of\": [\n        \"<boolean>\",\n        \"<boolean>\"\n      ]\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "07e9f97b-fc06-4502-ab47-5781ce4edf21",
+              "name": "Successful response",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agencies",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"USAID\",\n  \"pagination\": {\n    \"sort_order\": [\n      {\n        \"order_by\": \"agency_name\",\n        \"sort_direction\": \"descending\"\n      }\n    ],\n    \"page_offset\": 1,\n    \"page_size\": 25\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"pagination_info\": {\n    \"page_offset\": 1,\n    \"page_size\": 25,\n    \"total_records\": 42,\n    \"total_pages\": 2,\n    \"sort_order\": [\n      {\n        \"order_by\": \"id\",\n        \"sort_direction\": \"descending\"\n      },\n      {\n        \"order_by\": \"id\",\n        \"sort_direction\": \"descending\"\n      }\n    ]\n  },\n  \"message\": \"Success\",\n  \"data\": [\n    {\n      \"agency_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"agency_name\": \"Department of Examples\",\n      \"agency_code\": \"ABC\",\n      \"top_level_agency\": {\n        \"value\": \"<Circular reference to #/components/schemas/AgencyV1Schema detected>\"\n      },\n      \"is_test_agency\": false,\n      \"opportunity_statuses\": [\n        \"posted\"\n      ],\n      \"created_at\": \"1994-11-01T22:34:14.888Z\",\n      \"updated_at\": \"1948-02-08T17:02:03.976Z\"\n    },\n    {\n      \"agency_id\": \"123e4567-e89b-12d3-a456-426614174000\",\n      \"agency_name\": \"Department of Examples\",\n      \"agency_code\": \"ABC\",\n      \"top_level_agency\": {\n        \"value\": \"<Circular reference to #/components/schemas/AgencyV1Schema detected>\"\n      },\n      \"is_test_agency\": false,\n      \"opportunity_statuses\": [\n        \"posted\"\n      ],\n      \"created_at\": \"1982-10-27T07:39:17.434Z\",\n      \"updated_at\": \"1982-12-13T08:01:37.117Z\"\n    }\n  ],\n  \"status_code\": 200\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "efea83df-749f-46c4-b115-5a19e9e15314",
+              "name": "Authentication error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agencies",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"USAID\",\n  \"pagination\": {\n    \"sort_order\": [\n      {\n        \"order_by\": \"agency_name\",\n        \"sort_direction\": \"descending\"\n      }\n    ],\n    \"page_offset\": 1,\n    \"page_size\": 25\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 1553,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "054d9313-9dd8-41a8-b1d0-3b152d4c53fe",
+              "name": "Validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "agencies",
+                    "search"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-SGG-Token",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"query\": \"USAID\",\n  \"pagination\": {\n    \"sort_order\": [\n      {\n        \"order_by\": \"agency_name\",\n        \"sort_direction\": \"descending\"\n      }\n    ],\n    \"page_offset\": 1,\n    \"page_size\": 25\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {},\n  \"message\": \"Error\",\n  \"status_code\": 1553,\n  \"internal_request_id\": \"550e8400-e29b-41d4-a716-446655440000\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "{{baseURL}}",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "37172476-ce35-49d4-8a7f-0be66d0d11e9",
+    "name": "Simpler Grants Agency v1 API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "\nBack end API for simpler.grants.gov.\n\nThis API is in active development as we build out new functionalities for Simpler.Grants.gov. It is currently stable for everyday use, and will be versioned with advance notice for any breaking changes.\n\nLearn more in our [API documentation](https://wiki.simpler.grants.gov/product/api).\nSee [Release Phases](https://github.com/github/roadmap?tab=readme-ov-file#release-phases) for further details.\n\n\nContact Support:\n Name: Simpler Grants.gov\n Email: simpler@grants.gov",
+      "type": "text/plain"
+    }
+  }
+}
