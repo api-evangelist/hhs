@@ -114,6 +114,12 @@ apis:
   tags:
   - HRSA
   - Health Centers
+  - HIV AIDS
+  - Provider Locator
+  - SOAP
+  tags_raw:
+  - HRSA
+  - Health Centers
   - HIV/AIDS
   - Provider Locator
   - SOAP
@@ -719,6 +725,8 @@ apis:
   humanURL: https://open.fda.gov/apis/
   baseURL: https://api.fda.gov
   tags:
+  - Workflows
+  tags_raw:
   - Workflow
   properties:
   - type: OpenAPI
