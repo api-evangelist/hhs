@@ -1,0 +1,66 @@
+slug: hhs
+provider: HHS (US Department of Health and Human Services)
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Public Sector & Government
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 5
+edges:
+- tag: Application Alpha
+  spec_file: hhs-application-alpha-api-openapi.yml
+  capability_id: BC-3260.30
+  capability_id_l1: BC-3260
+  capability_name: Application Intake & Review
+  confidence: 0.9
+  evidence: POST /alpha/applications/start — Create a new application for a competition; POST /alpha/applications/{application_id}/submit
+    — Submit an application
+  reason: 'Full lifecycle of grant applications against a competition on simpler.grants.gov: create, update,
+    attach documents, complete forms, submit. This is grant application intake and submission handling.'
+- tag: Opportunity v1 - for Grantors
+  spec_file: hhs-opportunity-v1-for-grantors-api-openapi.yml
+  capability_id: BC-3260.20
+  capability_id_l1: BC-3260
+  capability_name: Solicitation and Notice Management
+  confidence: 0.9
+  evidence: POST /v1/grantors/opportunities — Create a new opportunity; POST /v1/grantors/opportunities/{opportunity_id}/publish
+    — Publish an opportunity
+  reason: Grantor-side authoring, summary maintenance, attachment upload and publication of grant funding
+    opportunities — squarely solicitation/notice-of-funding-availability management.
+- tag: Award Recommendation Alpha
+  spec_file: hhs-award-recommendation-alpha-api-openapi.yml
+  capability_id: BC-3260.40
+  capability_id_l1: BC-3260
+  capability_name: Award & Funding Decision
+  confidence: 0.85
+  evidence: POST /alpha/award-recommendations — Create Award Recommendation; PUT /alpha/award-recommendations/{id}/reviews/{award_recommendation_review_id}
+    — Update Award Recommendation Review
+  reason: Recommendations, risk records and reviews leading to grant award decisions in a federal grants
+    system. Sits at the review-to-award boundary; award decisioning is the dominant reading (merit review
+    of applications is the alternative sub-capability).
+- tag: CommonGrants Protocol
+  spec_file: hhs-commongrants-protocol-api-openapi.yml
+  capability_id: BC-3260.20
+  capability_id_l1: BC-3260
+  capability_name: Solicitation and Notice Management
+  confidence: 0.8
+  evidence: GET /common-grants/opportunities — List opportunities; POST /common-grants/opportunities/search
+    — Search opportunities; schemas OppFunding, assistanceListings, federalFundingSource
+  reason: Publication and discovery of federal funding opportunities (notices of funding availability)
+    via the CommonGrants protocol — solicitation/notice publication within government grants management.
+- tag: Opportunity v1
+  spec_file: hhs-opportunity-v1-api-openapi.yml
+  capability_id: BC-3260.20
+  capability_id_l1: BC-3260
+  capability_name: Solicitation and Notice Management
+  confidence: 0.75
+  evidence: POST /v1/opportunities/search — Search opportunities (JSON or CSV); OpportunitySummaryV1Schema,
+    FundingInstrumentFilterV1Schema, AwardFloorFilterV1Schema
+  reason: Public discovery/search of federal grant funding opportunities with funding-instrument, award-floor
+    and close-date filters — the consumption side of government funding-opportunity notice publication.

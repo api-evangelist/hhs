@@ -770,6 +770,9 @@ apis:
   - type: Plans
     url: plans/simpler-grants.yml
 common:
+  - type: CapabilityMap
+    url: capabilities/hhs-capability-edges.yml
+    name: HHS (US Department of Health and Human Services) Business Capability Map
   - type: DomainSecurity
     url: security/hhs-domain-security.yml
   - type: GitHub
