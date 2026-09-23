@@ -1,18 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  description: '
-
-    Back end API for simpler.grants.gov.
+  description: 'Back end API for simpler.grants.gov.
 
 
     This API is in active development as we build out new functionalities for Simpler.Grants.gov. It is currently stable for everyday use, and will be versioned with advance notice for any breaking changes.
 
 
-    Learn more in our [API documentation](https://wiki.simpler.grants.gov/product/api).
+    Learn more in our API documentation.
 
-    See [Release Phases](https://github.com/github/roadmap?tab=readme-ov-file#release-phases) for further details.
-
-    '
+    See Release Phases for further details.'
   contact:
     name: Simpler Grants.gov
     url: https://simpler.grants.gov/
@@ -67,8 +63,10 @@ paths:
             schema:
               $ref: '#/components/schemas/AwardRecommendationCreateRequestSchema'
       security:
-      - ApiJwtAuth: &id001 []
-      - ApiUserKeyAuth: *id001
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: postAlphaAwardRecommendations
+      x-operation-id-source: derived
   /alpha/award-recommendations/list:
     post:
       parameters: []
@@ -113,8 +111,10 @@ paths:
             schema:
               $ref: '#/components/schemas/AwardRecommendationListRequestSchema'
       security:
-      - ApiJwtAuth: &id002 []
-      - ApiUserKeyAuth: *id002
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: postAlphaAwardRecommendationsList
+      x-operation-id-source: derived
   /alpha/award-recommendations/{award_recommendation_id}:
     get:
       parameters:
@@ -153,8 +153,10 @@ paths:
       summary: Get Award Recommendation
       description: Retrieve an award recommendation by ID, including opportunity details, attachments, and reviews.
       security:
-      - ApiJwtAuth: &id003 []
-      - ApiUserKeyAuth: *id003
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: getAlphaAwardRecommendationsByAwardRecommendationId
+      x-operation-id-source: derived
     put:
       parameters:
       - in: path
@@ -203,8 +205,10 @@ paths:
             schema:
               $ref: '#/components/schemas/AwardRecommendationUpdateRequestSchema'
       security:
-      - ApiJwtAuth: &id004 []
-      - ApiUserKeyAuth: *id004
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: putAlphaAwardRecommendationsByAwardRecommendationId
+      x-operation-id-source: derived
   /alpha/award-recommendations/{award_recommendation_id}/risks:
     post:
       parameters:
@@ -254,8 +258,10 @@ paths:
             schema:
               $ref: '#/components/schemas/AwardRecommendationRiskRequestSchema'
       security:
-      - ApiJwtAuth: &id005 []
-      - ApiUserKeyAuth: *id005
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: postAlphaAwardRecommendationsByAwardRecommendationIdRisks
+      x-operation-id-source: derived
   /alpha/award-recommendations/{award_recommendation_id}/risks/list:
     post:
       parameters:
@@ -305,8 +311,10 @@ paths:
             schema:
               $ref: '#/components/schemas/AwardRecommendationRiskListRequestSchema'
       security:
-      - ApiJwtAuth: &id006 []
-      - ApiUserKeyAuth: *id006
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: postAlphaAwardRecommendationsByAwardRecommendationIdRisksList
+      x-operation-id-source: derived
   /alpha/award-recommendations/{award_recommendation_id}/audit_history:
     post:
       parameters:
@@ -356,8 +364,10 @@ paths:
             schema:
               $ref: '#/components/schemas/AwardRecommendationAuditRequestSchema'
       security:
-      - ApiJwtAuth: &id007 []
-      - ApiUserKeyAuth: *id007
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: postAlphaAwardRecommendationsByAwardRecommendationIdAuditHistory
+      x-operation-id-source: derived
   /alpha/award-recommendations/{award_recommendation_id}/submissions/list:
     post:
       parameters:
@@ -407,8 +417,10 @@ paths:
             schema:
               $ref: '#/components/schemas/AwardRecommendationSubmissionListRequestSchema'
       security:
-      - ApiJwtAuth: &id008 []
-      - ApiUserKeyAuth: *id008
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: postAlphaAwardRecommendationsByAwardRecommendationIdSubmissionsList
+      x-operation-id-source: derived
   /alpha/award-recommendations/{award_recommendation_id}/submission-details:
     put:
       parameters:
@@ -464,8 +476,10 @@ paths:
             schema:
               $ref: '#/components/schemas/AwardRecommendationSubmissionDetailsBatchUpdateRequestSchema'
       security:
-      - ApiJwtAuth: &id009 []
-      - ApiUserKeyAuth: *id009
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: putAlphaAwardRecommendationsByAwardRecommendationIdSubmissionDetails
+      x-operation-id-source: derived
   /alpha/award-recommendations/{award_recommendation_id}/risks/{award_recommendation_risk_id}:
     put:
       parameters:
@@ -520,8 +534,10 @@ paths:
             schema:
               $ref: '#/components/schemas/AwardRecommendationRiskRequestSchema'
       security:
-      - ApiJwtAuth: &id010 []
-      - ApiUserKeyAuth: *id010
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: putAlphaAwardRecommendationsByAwardRecommendationIdRisksByAwardRecommendationRiskId
+      x-operation-id-source: derived
     delete:
       parameters:
       - in: path
@@ -564,8 +580,10 @@ paths:
       summary: Delete Award Recommendation Risk
       description: Soft delete a risk for an award recommendation.
       security:
-      - ApiJwtAuth: &id011 []
-      - ApiUserKeyAuth: *id011
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: deleteAlphaAwardRecommendationsByAwardRecommendationIdRisksByAwardRecommendationRiskId
+      x-operation-id-source: derived
   /alpha/award-recommendations/{award_recommendation_id}/reviews/{award_recommendation_review_id}:
     put:
       parameters:
@@ -620,8 +638,10 @@ paths:
             schema:
               $ref: '#/components/schemas/AwardRecommendationReviewUpdateRequestSchema'
       security:
-      - ApiJwtAuth: &id012 []
-      - ApiUserKeyAuth: *id012
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: putAlphaAwardRecommendationsByAwardRecommendationIdReviewsByAwardRecommendationReviewId
+      x-operation-id-source: derived
   /alpha/award-recommendations/{award_recommendation_id}/attachments/{award_recommendation_attachment_id}:
     delete:
       parameters:
@@ -665,200 +685,12 @@ paths:
       summary: Delete Award Recommendation Attachment
       description: Soft delete an attachment for an award recommendation.
       security:
-      - ApiJwtAuth: &id013 []
-      - ApiUserKeyAuth: *id013
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: deleteAlphaAwardRecommendationsByAwardRecommendationIdAttachmentsByAwardRecommendationAttachmentId
+      x-operation-id-source: derived
 components:
   schemas:
-    SimpleUserSchema:
-      type: object
-      properties:
-        user_id:
-          type: string
-          format: uuid
-          description: ID of the user
-          example: 123e4567-e89b-12d3-a456-426614174000
-        email:
-          type: string
-          description: Email address of the user
-          example: example@example.com
-        first_name:
-          type:
-          - string
-          - 'null'
-          description: Users first name
-          example: John
-        last_name:
-          type:
-          - string
-          - 'null'
-          description: Users last name
-          example: Smith
-    AwardRecSubmissionTypeFilterSchema:
-      type: object
-      properties:
-        one_of:
-          type: array
-          minItems: 1
-          items:
-            enum:
-            - recommended_for_funding
-            - recommended_without_funding
-            - not_recommended
-            type:
-            - string
-    AwardRecSubmissionPaginationSchema:
-      type: object
-      properties:
-        sort_order:
-          type: array
-          default:
-          - order_by: application_submission_number
-            sort_direction: ascending
-          minItems: 1
-          maxItems: 5
-          description: The list of sorting rules
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/SortOrderAwardRecSubmissionPaginationSchema'
-        page_size:
-          type: integer
-          minimum: 1
-          maximum: 5000
-          description: The size of the page to fetch
-          example: 25
-        page_offset:
-          type: integer
-          minimum: 1
-          description: The page number to fetch, starts counting from 1
-          example: 1
-      required:
-      - page_offset
-      - page_size
-    SortOrderAwardRecommendationListPaginationSchema:
-      type: object
-      properties:
-        order_by:
-          type: string
-          enum:
-          - created_at
-          description: The field to sort the response by
-        sort_direction:
-          description: Whether to sort the response ascending or descending
-          enum:
-          - ascending
-          - descending
-          type:
-          - string
-      required:
-      - order_by
-      - sort_direction
-    AwardRecommendationRiskListResponseSchema:
-      type: object
-      properties:
-        pagination_info:
-          description: The pagination information for paginated endpoints
-          type:
-          - object
-          $ref: '#/components/schemas/PaginationInfoSchema'
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type: array
-          description: The list of award recommendation risks
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/AwardRecommendationRiskResponseDataSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    AwardRecommendationReviewSchema:
-      type: object
-      properties:
-        award_recommendation_review_id:
-          type: string
-          format: uuid
-          description: The review's unique identifier
-          example: 123e4567-e89b-12d3-a456-426614174000
-        award_recommendation_review_type:
-          description: The type of the review
-          enum:
-          - merit_review
-          - application_budget_review
-          - programmatic_review
-          - business_and_risk_review
-          type:
-          - string
-        is_reviewed:
-          type: boolean
-          description: Whether the review has been completed
-    AwardRecommendationRiskDeleteResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          example: null
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    AwardRecommendationAttachmentDeleteResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          example: null
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    AwardRecommendationSubmissionDetailSchema:
-      type: object
-      properties:
-        recommended_amount:
-          type:
-          - number
-          - 'null'
-          description: The recommended funding amount
-          example: '200000.00'
-        scoring_comment:
-          type:
-          - string
-          - 'null'
-          description: Comments from the scoring process
-        general_comment:
-          type:
-          - string
-          - 'null'
-          description: General comments about the submission
-        award_recommendation_type:
-          description: The recommendation type for this submission
-          enum:
-          - recommended_for_funding
-          - recommended_without_funding
-          - not_recommended
-          type:
-          - string
-          - 'null'
-          - 'null'
-        has_exception:
-          type: boolean
-          description: Whether the submission has an exception
-        exception_detail:
-          type:
-          - string
-          - 'null'
-          description: Details about the exception, if any
     AwardRecommendationBaseSchema:
       type: object
       properties:
@@ -935,6 +767,106 @@ components:
             type:
             - object
             $ref: '#/components/schemas/AwardRecommendationReviewSchema'
+    AwardRecommendationReviewUpdateResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          description: The updated review
+          type:
+          - object
+          $ref: '#/components/schemas/AwardRecommendationReviewSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    AwardRecommendationAttachmentSchema:
+      type: object
+      properties:
+        award_recommendation_attachment_id:
+          type: string
+          format: uuid
+          description: The attachment's unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        download_path:
+          type: string
+          description: The presigned URL to download the attachment
+          example: https://s3.amazonaws.com/bucket/path/to/my_example.pdf
+        file_name:
+          type: string
+          description: The file name of the attachment
+          example: my_example.pdf
+        award_recommendation_attachment_type:
+          description: The type of the attachment
+          enum:
+          - standard_terms
+          - standard_conditions
+          - program_terms
+          - program_conditions
+          - other
+          type:
+          - string
+        uploading_user:
+          description: The user who uploaded the attachment
+          type:
+          - object
+          $ref: '#/components/schemas/SimpleUserSchema'
+        created_at:
+          type: string
+          format: date-time
+          description: When the attachment was created
+        updated_at:
+          type: string
+          format: date-time
+          description: When the attachment was last updated
+    SortOrderAwardRecSubmissionPaginationSchema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          enum:
+          - application_submission_number
+          description: The field to sort the response by
+        sort_direction:
+          description: Whether to sort the response ascending or descending
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+      required:
+      - order_by
+      - sort_direction
+    SortOrderSchema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          description: The field that the records were sorted by
+          example: id
+        sort_direction:
+          description: The direction the records are sorted
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+    AwardRecommendationOrganizationSchema:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          format: uuid
+          description: The organization ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        organization_name:
+          type:
+          - string
+          - 'null'
+          description: The organization name
     AwardRecommendationSubmissionDetailUpdateSchema:
       type: object
       properties:
@@ -975,71 +907,103 @@ components:
           - 'null'
           description: Details about the exception, if any
           example: Budget exceeds guidelines by 12%. Recommend partial funding with revised scope focusing on core deliverables.
-    AwardRecommendationApplicationSchema:
+    AwardRecommendationSubmissionFilterSchema:
       type: object
       properties:
-        application_id:
-          type: string
-          format: uuid
-          description: The application ID
-          example: 123e4567-e89b-12d3-a456-426614174000
-        competition_id:
-          type: string
-          format: uuid
-          description: The competition ID
-          example: 123e4567-e89b-12d3-a456-426614174000
-        organization:
-          description: The organization that submitted the application
+        award_recommendation_type:
           type:
           - object
-          - 'null'
-          anyOf:
-          - $ref: '#/components/schemas/AwardRecommendationOrganizationSchema'
-          - type: 'null'
-    ValidationIssueSchema:
+          $ref: '#/components/schemas/AwardRecSubmissionTypeFilterSchema'
+        has_exception:
+          type:
+          - object
+          $ref: '#/components/schemas/AwardRecSubmissionExceptionFilterSchema'
+    AwardRecommendationRiskResponseDataSchema:
       type: object
       properties:
-        type:
+        award_recommendation_risk_id:
           type: string
-          description: The type of error
-          example: invalid
+          format: uuid
+          description: The award recommendation risk ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        comment:
+          type: string
+          description: Summary of the risk
+          example: Applicant has unresolved audit findings
+        award_recommendation_risk_number:
+          type: string
+          description: The generated risk number
+          example: HHS-00012345
+        award_recommendation_risk_type:
+          description: The type of risk
+          enum:
+          - additional_monitoring
+          type:
+          - string
+        award_recommendation_application_submission_ids:
+          type: array
+          description: List of award recommendation application submission IDs linked to this risk
+          items:
+            type: string
+            format: uuid
+            example: 123e4567-e89b-12d3-a456-426614174000
+        applications:
+          type: array
+          description: List of application submissions linked to this risk
+          example:
+          - application_submission_id: 123e4567-e89b-12d3-a456-426614174000
+            application_submission_number: GRANT-2024-001
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ApplicationSubmissionInfoSchema'
+    AwardRecommendationAttachmentDeleteResponseSchema:
+      type: object
+      properties:
         message:
           type: string
           description: The message to return
-          example: Not a valid string.
-        field:
-          type: string
-          description: The field that failed
-          example: summary.summary_description
-        value:
-          type: string
-          description: The value that failed
-          example: invalid string
-    AwardRecommendationAuditAttachmentSchema:
+          example: Success
+        data:
+          example: null
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    AwardRecommendationRiskResponseSchema:
       type: object
       properties:
-        award_recommendation_attachment_id:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          description: The award recommendation risk
+          type:
+          - object
+          $ref: '#/components/schemas/AwardRecommendationRiskResponseDataSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    AwardRecommendationAuditAppSubmissionSchema:
+      type: object
+      properties:
+        award_recommendation_application_submission_id:
           type: string
           format: uuid
-          description: The attachment's unique identifier
+          description: The award recommendation application submission's unique identifier
           example: 123e4567-e89b-12d3-a456-426614174000
-        file_name:
+        application_submission_id:
           type: string
-          description: The file name of the attachment
-          example: my_example.pdf
-        award_recommendation_attachment_type:
-          description: The type of the attachment
-          enum:
-          - standard_terms
-          - standard_conditions
-          - program_terms
-          - program_conditions
-          - other
+          format: uuid
+          description: The application submission ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        application_submission_number:
           type:
           - string
-        is_deleted:
-          type: boolean
-          description: Whether the attachment has been deleted
+          - 'null'
+          description: The application submission number
     AwardRecRiskPaginationSchema:
       type: object
       properties:
@@ -1069,34 +1033,83 @@ components:
       required:
       - page_offset
       - page_size
-    AwardRecommendationSubmissionDataSchema:
+    AwardRecommendationReviewSchema:
       type: object
       properties:
-        award_recommendation_application_submission_id:
+        award_recommendation_review_id:
           type: string
           format: uuid
-          description: The award recommendation application submission ID
+          description: The review's unique identifier
           example: 123e4567-e89b-12d3-a456-426614174000
-        application_submission:
-          description: The application submission
+        award_recommendation_review_type:
+          description: The type of the review
+          enum:
+          - merit_review
+          - application_budget_review
+          - programmatic_review
+          - business_and_risk_review
           type:
-          - object
-          $ref: '#/components/schemas/AwardRecommendationApplicationSubmissionSchema'
-        submission_detail:
-          description: The recommendation details for this submission
-          type:
-          - object
-          $ref: '#/components/schemas/AwardRecommendationSubmissionDetailSchema'
-    AwardRecSubmissionExceptionFilterSchema:
+          - string
+        is_reviewed:
+          type: boolean
+          description: Whether the review has been completed
+    AwardRecommendationApplicationSubmissionSchema:
       type: object
       properties:
-        one_of:
+        application_submission_id:
+          type: string
+          format: uuid
+          description: The application submission ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        application_submission_number:
           type:
-          - array
+          - string
           - 'null'
+          description: The application submission number
+          example: SUB-2026-00001
+        project_title:
+          type:
+          - string
+          - 'null'
+          description: The project title
+          example: Rural broadband expansion initiative
+        total_requested_amount:
+          type:
+          - number
+          - 'null'
+          description: The total requested funding amount
+          example: '250000.00'
+        application:
+          description: The application associated with this submission
+          type:
+          - object
+          $ref: '#/components/schemas/AwardRecommendationApplicationSchema'
+    AwardRecommendationRiskRequestSchema:
+      type: object
+      properties:
+        comment:
+          type: string
+          description: Summary of the risk
+          example: Applicant has unresolved audit findings
+        award_recommendation_risk_type:
+          description: The type of risk
+          enum:
+          - additional_monitoring
+          type:
+          - string
+        award_recommendation_application_submission_ids:
+          type: array
+          minItems: 1
+          description: List of award recommendation application submission IDs to link to this risk
           items:
-            type: boolean
-    AwardRecommendationReviewUpdateResponseSchema:
+            type: string
+            format: uuid
+            example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+      - award_recommendation_application_submission_ids
+      - award_recommendation_risk_type
+      - comment
+    AwardRecommendationRiskDeleteResponseSchema:
       type: object
       properties:
         message:
@@ -1104,67 +1117,11 @@ components:
           description: The message to return
           example: Success
         data:
-          description: The updated review
-          type:
-          - object
-          $ref: '#/components/schemas/AwardRecommendationReviewSchema'
+          example: null
         status_code:
           type: integer
           description: The HTTP status code
           example: 200
-    AwardRecommendationUpdateRequestSchema:
-      type: object
-      properties:
-        award_selection_method:
-          description: The method used to select the award
-          enum:
-          - merit_review_ranking_only
-          - merit_review_ranking_with_other_factors
-          - formula
-          - single_source
-          - sole_source
-          - other
-          type:
-          - string
-        additional_info:
-          type:
-          - string
-          - 'null'
-          description: Additional info about the award recommendation
-          example: Program office requests expedited processing due to deadline in September.
-        funding_strategy:
-          type:
-          - string
-          - 'null'
-          description: Funding strategy information for the award recommendation
-          example: Full funding for top 10 applications, partial funding for next 15 based on available budget.
-        selection_method_detail:
-          type:
-          - string
-          - 'null'
-          description: Additional details about the selection method
-          example: Top-ranked applicants based on expert panel scores
-        other_key_information:
-          type:
-          - string
-          - 'null'
-          description: Other key information for the award recommendation
-          example: This opportunity aligns with the agency's rural access initiative and requires interagency coordination.
-      required:
-      - award_selection_method
-    AwardRecommendationOrganizationSchema:
-      type: object
-      properties:
-        organization_id:
-          type: string
-          format: uuid
-          description: The organization ID
-          example: 123e4567-e89b-12d3-a456-426614174000
-        organization_name:
-          type:
-          - string
-          - 'null'
-          description: The organization name
     AwardRecommendationOpportunitySchema:
       type: object
       properties:
@@ -1193,6 +1150,177 @@ components:
           anyOf:
           - $ref: '#/components/schemas/AwardRecommendationOpportunitySummarySchema'
           - type: 'null'
+    SimpleUserSchema:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          description: ID of the user
+          example: 123e4567-e89b-12d3-a456-426614174000
+        email:
+          type: string
+          description: Email address of the user
+          example: example@example.com
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: Users first name
+          example: John
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: Users last name
+          example: Smith
+    AwardRecSubmissionExceptionFilterSchema:
+      type: object
+      properties:
+        one_of:
+          type:
+          - array
+          - 'null'
+          items:
+            type: boolean
+    AwardRecommendationSubmissionDataSchema:
+      type: object
+      properties:
+        award_recommendation_application_submission_id:
+          type: string
+          format: uuid
+          description: The award recommendation application submission ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        application_submission:
+          description: The application submission
+          type:
+          - object
+          $ref: '#/components/schemas/AwardRecommendationApplicationSubmissionSchema'
+        submission_detail:
+          description: The recommendation details for this submission
+          type:
+          - object
+          $ref: '#/components/schemas/AwardRecommendationSubmissionDetailSchema'
+    AwardRecommendationApplicationSchema:
+      type: object
+      properties:
+        application_id:
+          type: string
+          format: uuid
+          description: The application ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        competition_id:
+          type: string
+          format: uuid
+          description: The competition ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        organization:
+          description: The organization that submitted the application
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/AwardRecommendationOrganizationSchema'
+          - type: 'null'
+    AwardRecSubmissionPaginationSchema:
+      type: object
+      properties:
+        sort_order:
+          type: array
+          default:
+          - order_by: application_submission_number
+            sort_direction: ascending
+          minItems: 1
+          maxItems: 5
+          description: The list of sorting rules
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderAwardRecSubmissionPaginationSchema'
+        page_size:
+          type: integer
+          minimum: 1
+          maximum: 5000
+          description: The size of the page to fetch
+          example: 25
+        page_offset:
+          type: integer
+          minimum: 1
+          description: The page number to fetch, starts counting from 1
+          example: 1
+      required:
+      - page_offset
+      - page_size
+    AwardRecommendationGetResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          description: The award recommendation details
+          type:
+          - object
+          $ref: '#/components/schemas/AwardRecommendationWithAttachmentsSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    AwardRecommendationListResponseSchema:
+      type: object
+      properties:
+        pagination_info:
+          description: The pagination information for paginated endpoints
+          type:
+          - object
+          $ref: '#/components/schemas/PaginationInfoSchema'
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          description: The list of award recommendations
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/AwardRecommendationBaseSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    AwardRecommendationSubmissionListResponseSchema:
+      type: object
+      properties:
+        pagination_info:
+          description: The pagination information for paginated endpoints
+          type:
+          - object
+          $ref: '#/components/schemas/PaginationInfoSchema'
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          description: The list of award recommendation submissions
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/AwardRecommendationSubmissionDataSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    AwardRecommendationReviewUpdateRequestSchema:
+      type: object
+      properties:
+        is_reviewed:
+          type: boolean
+          description: Whether the review has been completed
+      required:
+      - is_reviewed
     PaginationInfoSchema:
       type: object
       properties:
@@ -1219,95 +1347,95 @@ components:
             type:
             - object
             $ref: '#/components/schemas/SortOrderSchema'
-    AwardRecommendationSubmissionListRequestSchema:
+    AwardRecommendationListFilterSchema:
       type: object
       properties:
-        filters:
+        agency_id:
+          description: Filter award recommendations by agency. The user must have the view_award_recommendation privilege in each agency listed.
           type:
           - object
-          $ref: '#/components/schemas/AwardRecommendationSubmissionFilterSchema'
-        pagination:
-          type:
-          - object
-          $ref: '#/components/schemas/AwardRecSubmissionPaginationSchema'
+          $ref: '#/components/schemas/AwardRecommendationListAgencyIdFilterSchema'
       required:
-      - pagination
-    AwardRecommendationAuditReviewSchema:
+      - agency_id
+    AwardRecommendationSubmissionDetailSchema:
       type: object
       properties:
-        award_recommendation_review_id:
-          type: string
-          format: uuid
-          description: The review's unique identifier
-          example: 123e4567-e89b-12d3-a456-426614174000
-        is_reviewed:
+        recommended_amount:
+          type:
+          - number
+          - 'null'
+          description: The recommended funding amount
+          example: '200000.00'
+        scoring_comment:
+          type:
+          - string
+          - 'null'
+          description: Comments from the scoring process
+        general_comment:
+          type:
+          - string
+          - 'null'
+          description: General comments about the submission
+        award_recommendation_type:
+          description: The recommendation type for this submission
+          enum:
+          - recommended_for_funding
+          - recommended_without_funding
+          - not_recommended
+          type:
+          - string
+          - 'null'
+          - 'null'
+        has_exception:
           type: boolean
-          description: Whether the review has been completed
-    AwardRecommendationListAgencyIdFilterSchema:
+          description: Whether the submission has an exception
+        exception_detail:
+          type:
+          - string
+          - 'null'
+          description: Details about the exception, if any
+    AwardRecSubmissionTypeFilterSchema:
       type: object
       properties:
         one_of:
-          type:
-          - array
-          - 'null'
+          type: array
           minItems: 1
           items:
-            type: string
-            format: uuid
-            example: 123e4567-e89b-12d3-a456-426614174000
-    AwardRecommendationAuditRequestSchema:
+            enum:
+            - recommended_for_funding
+            - recommended_without_funding
+            - not_recommended
+            type:
+            - string
+    AwardRecAuditPaginationSchema:
       type: object
       properties:
-        filters:
-          type:
-          - object
-          - 'null'
-          anyOf:
-          - $ref: '#/components/schemas/AwardRecommendationAuditFilterSchema'
-          - type: 'null'
-        pagination:
-          type:
-          - object
-          $ref: '#/components/schemas/AwardRecAuditPaginationSchema'
-      required:
-      - pagination
-    AwardRecommendationAuditFilterSchema:
-      type: object
-      properties:
-        award_recommendation_audit_event:
-          type:
-          - object
-          $ref: '#/components/schemas/AwardRecAuditEventFilterSchema'
-    AwardRecommendationListRequestSchema:
-      type: object
-      properties:
-        filters:
-          type:
-          - object
-          $ref: '#/components/schemas/AwardRecommendationListFilterSchema'
-        pagination:
-          type:
-          - object
-          $ref: '#/components/schemas/AwardRecommendationListPaginationSchema'
-      required:
-      - filters
-      - pagination
-    AwardRecommendationGetResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          description: The award recommendation details
-          type:
-          - object
-          $ref: '#/components/schemas/AwardRecommendationWithAttachmentsSchema'
-        status_code:
+        sort_order:
+          type: array
+          default:
+          - order_by: created_at
+            sort_direction: descending
+          minItems: 1
+          maxItems: 5
+          description: The list of sorting rules
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderAwardRecAuditPaginationSchema'
+        page_size:
           type: integer
-          description: The HTTP status code
-          example: 200
+          minimum: 1
+          maximum: 5000
+          description: The size of the page to fetch
+          example: 25
+        page_offset:
+          type: integer
+          minimum: 1
+          description: The page number to fetch, starts counting from 1
+          example: 1
+      required:
+      - page_offset
+      - page_size
     AwardRecommendationAuditWorkflowApprovalSchema:
       type: object
       properties:
@@ -1337,27 +1465,39 @@ components:
           - requires_modification
           type:
           - string
-    AwardRecommendationAuditRiskSchema:
+    AwardRecommendationSubmissionListRequestSchema:
       type: object
       properties:
-        award_recommendation_risk_id:
-          type: string
-          format: uuid
-          description: The risk's unique identifier
-          example: 123e4567-e89b-12d3-a456-426614174000
-        award_recommendation_risk_type:
-          description: The type of risk
-          enum:
-          - additional_monitoring
+        filters:
           type:
-          - string
-        award_recommendation_risk_number:
+          - object
+          $ref: '#/components/schemas/AwardRecommendationSubmissionFilterSchema'
+        pagination:
+          type:
+          - object
+          $ref: '#/components/schemas/AwardRecSubmissionPaginationSchema'
+      required:
+      - pagination
+    ValidationIssueSchema:
+      type: object
+      properties:
+        type:
           type: string
-          description: The risk number
-        is_deleted:
-          type: boolean
-          description: Whether the risk has been deleted
-    SortOrderAwardRecAuditPaginationSchema:
+          description: The type of error
+          example: invalid
+        message:
+          type: string
+          description: The message to return
+          example: Not a valid string.
+        field:
+          type: string
+          description: The field that failed
+          example: summary.summary_description
+        value:
+          type: string
+          description: The value that failed
+          example: invalid string
+    SortOrderAwardRecRiskPaginationSchema:
       type: object
       properties:
         order_by:
@@ -1375,112 +1515,71 @@ components:
       required:
       - order_by
       - sort_direction
-    AwardRecommendationSubmissionDetailsBatchUpdateRequestSchema:
+    AwardRecommendationAuditAttachmentSchema:
       type: object
       properties:
-        award_recommendation_submissions:
-          type: object
-          minLength: 1
-          description: Dictionary of submission IDs to update details, where keys are award_recommendation_application_submission_id
-          additionalProperties:
-            type:
-            - object
-            $ref: '#/components/schemas/AwardRecommendationSubmissionDetailUpdateSchema'
-      required:
-      - award_recommendation_submissions
-    AwardRecommendationOpportunitySummarySchema:
-      type: object
-      properties:
-        opportunity_status:
-          description: The status of the opportunity
+        award_recommendation_attachment_id:
+          type: string
+          format: uuid
+          description: The attachment's unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        file_name:
+          type: string
+          description: The file name of the attachment
+          example: my_example.pdf
+        award_recommendation_attachment_type:
+          description: The type of the attachment
           enum:
-          - forecasted
-          - posted
-          - closed
-          - archived
+          - standard_terms
+          - standard_conditions
+          - program_terms
+          - program_conditions
+          - other
           type:
           - string
-          - 'null'
-          - 'null'
-        summary_description:
-          type:
-          - string
-          - 'null'
-          description: The summary of the opportunity
-          example: This opportunity aims to unravel the mysteries of the universe.
-    AwardRecommendationSubmissionFilterSchema:
+        is_deleted:
+          type: boolean
+          description: Whether the attachment has been deleted
+    ErrorResponseSchema:
       type: object
       properties:
-        award_recommendation_type:
-          type:
-          - object
-          $ref: '#/components/schemas/AwardRecSubmissionTypeFilterSchema'
-        has_exception:
-          type:
-          - object
-          $ref: '#/components/schemas/AwardRecSubmissionExceptionFilterSchema'
-    AwardRecommendationListPaginationSchema:
-      type: object
-      properties:
-        sort_order:
-          type: array
-          default:
-          - order_by: created_at
-            sort_direction: descending
-          minItems: 1
-          maxItems: 5
-          description: The list of sorting rules
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/SortOrderAwardRecommendationListPaginationSchema'
-        page_size:
-          type: integer
-          minimum: 1
-          maximum: 5000
-          description: The size of the page to fetch
-          example: 25
-        page_offset:
-          type: integer
-          minimum: 1
-          description: The page number to fetch, starts counting from 1
-          example: 1
-      required:
-      - page_offset
-      - page_size
-    AwardRecommendationListFilterSchema:
-      type: object
-      properties:
-        agency_id:
-          description: Filter award recommendations by agency. The user must have the view_award_recommendation privilege in each agency listed.
-          type:
-          - object
-          $ref: '#/components/schemas/AwardRecommendationListAgencyIdFilterSchema'
-      required:
-      - agency_id
-    AwardRecommendationSubmissionListResponseSchema:
-      type: object
-      properties:
-        pagination_info:
-          description: The pagination information for paginated endpoints
-          type:
-          - object
-          $ref: '#/components/schemas/PaginationInfoSchema'
+        data:
+          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
+          example: {}
         message:
           type: string
-          description: The message to return
-          example: Success
-        data:
+          description: General description of the error
+          example: Error
+        status_code:
+          type: integer
+          description: The HTTP status code of the error
+        errors:
           type: array
-          description: The list of award recommendation submissions
+          example: []
           items:
             type:
             - object
-            $ref: '#/components/schemas/AwardRecommendationSubmissionDataSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        internal_request_id:
+          type: string
+          description: An internal tracking ID
+          example: 550e8400-e29b-41d4-a716-446655440000
+    AwardRecommendationAuditRequestSchema:
+      type: object
+      properties:
+        filters:
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/AwardRecommendationAuditFilterSchema'
+          - type: 'null'
+        pagination:
+          type:
+          - object
+          $ref: '#/components/schemas/AwardRecAuditPaginationSchema'
+      required:
+      - pagination
     AwardRecommendationWithAttachmentsSchema:
       type: object
       properties:
@@ -1564,109 +1663,58 @@ components:
             type:
             - object
             $ref: '#/components/schemas/AwardRecommendationAttachmentSchema'
-    SortOrderAwardRecRiskPaginationSchema:
+    AwardRecommendationSubmissionDetailsBatchUpdateRequestSchema:
       type: object
       properties:
-        order_by:
-          type: string
-          enum:
-          - created_at
-          description: The field to sort the response by
-        sort_direction:
-          description: Whether to sort the response ascending or descending
-          enum:
-          - ascending
-          - descending
-          type:
-          - string
+        award_recommendation_submissions:
+          type: object
+          minLength: 1
+          description: Dictionary of submission IDs to update details, where keys are award_recommendation_application_submission_id
+          additionalProperties:
+            type:
+            - object
+            $ref: '#/components/schemas/AwardRecommendationSubmissionDetailUpdateSchema'
       required:
-      - order_by
-      - sort_direction
-    AwardRecommendationRiskResponseDataSchema:
+      - award_recommendation_submissions
+    AwardRecommendationSubmissionDetailsBatchUpdateResponseSchema:
       type: object
       properties:
-        award_recommendation_risk_id:
+        message:
           type: string
-          format: uuid
-          description: The award recommendation risk ID
-          example: 123e4567-e89b-12d3-a456-426614174000
-        comment:
-          type: string
-          description: Summary of the risk
-          example: Applicant has unresolved audit findings
-        award_recommendation_risk_number:
-          type: string
-          description: The generated risk number
-          example: HHS-00012345
-        award_recommendation_risk_type:
-          description: The type of risk
-          enum:
-          - additional_monitoring
-          type:
-          - string
-        award_recommendation_application_submission_ids:
+          description: The message to return
+          example: Success
+        data:
           type: array
-          description: List of award recommendation application submission IDs linked to this risk
-          items:
-            type: string
-            format: uuid
-            example: 123e4567-e89b-12d3-a456-426614174000
-        applications:
-          type: array
-          description: List of application submissions linked to this risk
-          example:
-          - application_submission_id: 123e4567-e89b-12d3-a456-426614174000
-            application_submission_number: GRANT-2024-001
+          description: The updated award recommendation submissions
           items:
             type:
             - object
-            $ref: '#/components/schemas/ApplicationSubmissionInfoSchema'
-    AwardRecommendationCreateRequestSchema:
+            $ref: '#/components/schemas/AwardRecommendationSubmissionDataSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    AwardRecommendationListRequestSchema:
       type: object
       properties:
-        opportunity_id:
-          type: string
-          format: uuid
-          description: The opportunity ID for the award recommendation
-          example: 123e4567-e89b-12d3-a456-426614174000
-        award_selection_method:
-          description: The method used to select the award
-          enum:
-          - merit_review_ranking_only
-          - merit_review_ranking_with_other_factors
-          - formula
-          - single_source
-          - sole_source
-          - other
+        filters:
           type:
-          - string
-        additional_info:
+          - object
+          $ref: '#/components/schemas/AwardRecommendationListFilterSchema'
+        pagination:
           type:
-          - string
-          - 'null'
-          description: Additional info about the award recommendation
-          example: Program office requests expedited processing due to deadline in September.
-        funding_strategy:
-          type:
-          - string
-          - 'null'
-          description: Funding strategy information for the award recommendation
-          example: Full funding for top 10 applications, partial funding for next 15 based on available budget.
-        selection_method_detail:
-          type:
-          - string
-          - 'null'
-          description: Additional details about the selection method
-          example: Top-ranked applicants based on expert panel scores
-        other_key_information:
-          type:
-          - string
-          - 'null'
-          description: Other key information for the award recommendation
-          example: This opportunity aligns with the agency's rural access initiative and requires interagency coordination.
+          - object
+          $ref: '#/components/schemas/AwardRecommendationListPaginationSchema'
       required:
-      - award_selection_method
-      - opportunity_id
+      - filters
+      - pagination
+    AwardRecommendationAuditFilterSchema:
+      type: object
+      properties:
+        award_recommendation_audit_event:
+          type:
+          - object
+          $ref: '#/components/schemas/AwardRecAuditEventFilterSchema'
     AwardRecAuditEventFilterSchema:
       type: object
       properties:
@@ -1695,46 +1743,25 @@ components:
             - review_deleted
             type:
             - string
-    AwardRecommendationAttachmentSchema:
+    SortOrderAwardRecAuditPaginationSchema:
       type: object
       properties:
-        award_recommendation_attachment_id:
+        order_by:
           type: string
-          format: uuid
-          description: The attachment's unique identifier
-          example: 123e4567-e89b-12d3-a456-426614174000
-        download_path:
-          type: string
-          description: The presigned URL to download the attachment
-          example: https://s3.amazonaws.com/bucket/path/to/my_example.pdf
-        file_name:
-          type: string
-          description: The file name of the attachment
-          example: my_example.pdf
-        award_recommendation_attachment_type:
-          description: The type of the attachment
           enum:
-          - standard_terms
-          - standard_conditions
-          - program_terms
-          - program_conditions
-          - other
+          - created_at
+          description: The field to sort the response by
+        sort_direction:
+          description: Whether to sort the response ascending or descending
+          enum:
+          - ascending
+          - descending
           type:
           - string
-        uploading_user:
-          description: The user who uploaded the attachment
-          type:
-          - object
-          $ref: '#/components/schemas/SimpleUserSchema'
-        created_at:
-          type: string
-          format: date-time
-          description: When the attachment was created
-        updated_at:
-          type: string
-          format: date-time
-          description: When the attachment was last updated
-    AwardRecAuditPaginationSchema:
+      required:
+      - order_by
+      - sort_direction
+    AwardRecommendationListPaginationSchema:
       type: object
       properties:
         sort_order:
@@ -1748,7 +1775,7 @@ components:
           items:
             type:
             - object
-            $ref: '#/components/schemas/SortOrderAwardRecAuditPaginationSchema'
+            $ref: '#/components/schemas/SortOrderAwardRecommendationListPaginationSchema'
         page_size:
           type: integer
           minimum: 1
@@ -1763,82 +1790,6 @@ components:
       required:
       - page_offset
       - page_size
-    AwardRecommendationSubmissionDetailsBatchUpdateResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type: array
-          description: The updated award recommendation submissions
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/AwardRecommendationSubmissionDataSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    ApplicationSubmissionInfoSchema:
-      type: object
-      properties:
-        award_recommendation_application_submission_id:
-          type: string
-          format: uuid
-          description: The award recommendation application submission ID
-          example: 123e4567-e89b-12d3-a456-426614174000
-        application_submission_id:
-          type: string
-          format: uuid
-          description: The application submission ID
-          example: 123e4567-e89b-12d3-a456-426614174000
-        application_submission_number:
-          type: string
-          description: The application submission number
-          example: GRANT-2024-001
-    AwardRecommendationRiskRequestSchema:
-      type: object
-      properties:
-        comment:
-          type: string
-          description: Summary of the risk
-          example: Applicant has unresolved audit findings
-        award_recommendation_risk_type:
-          description: The type of risk
-          enum:
-          - additional_monitoring
-          type:
-          - string
-        award_recommendation_application_submission_ids:
-          type: array
-          minItems: 1
-          description: List of award recommendation application submission IDs to link to this risk
-          items:
-            type: string
-            format: uuid
-            example: 123e4567-e89b-12d3-a456-426614174000
-      required:
-      - award_recommendation_application_submission_ids
-      - award_recommendation_risk_type
-      - comment
-    AwardRecommendationRiskResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          description: The award recommendation risk
-          type:
-          - object
-          $ref: '#/components/schemas/AwardRecommendationRiskResponseDataSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
     AwardRecommendationAuditResponseSchema:
       type: object
       properties:
@@ -1861,38 +1812,39 @@ components:
           type: integer
           description: The HTTP status code
           example: 200
-    AwardRecommendationApplicationSubmissionSchema:
+    AwardRecommendationAuditRiskSchema:
       type: object
       properties:
-        application_submission_id:
+        award_recommendation_risk_id:
           type: string
           format: uuid
-          description: The application submission ID
+          description: The risk's unique identifier
           example: 123e4567-e89b-12d3-a456-426614174000
-        application_submission_number:
+        award_recommendation_risk_type:
+          description: The type of risk
+          enum:
+          - additional_monitoring
           type:
           - string
-          - 'null'
-          description: The application submission number
-          example: SUB-2026-00001
-        project_title:
+        award_recommendation_risk_number:
+          type: string
+          description: The risk number
+        is_deleted:
+          type: boolean
+          description: Whether the risk has been deleted
+    AwardRecommendationListAgencyIdFilterSchema:
+      type: object
+      properties:
+        one_of:
           type:
-          - string
+          - array
           - 'null'
-          description: The project title
-          example: Rural broadband expansion initiative
-        total_requested_amount:
-          type:
-          - number
-          - 'null'
-          description: The total requested funding amount
-          example: '250000.00'
-        application:
-          description: The application associated with this submission
-          type:
-          - object
-          $ref: '#/components/schemas/AwardRecommendationApplicationSchema'
-    AwardRecommendationListResponseSchema:
+          minItems: 1
+          items:
+            type: string
+            format: uuid
+            example: 123e4567-e89b-12d3-a456-426614174000
+    AwardRecommendationRiskListResponseSchema:
       type: object
       properties:
         pagination_info:
@@ -1906,11 +1858,11 @@ components:
           example: Success
         data:
           type: array
-          description: The list of award recommendations
+          description: The list of award recommendation risks
           items:
             type:
             - object
-            $ref: '#/components/schemas/AwardRecommendationBaseSchema'
+            $ref: '#/components/schemas/AwardRecommendationRiskResponseDataSchema'
         status_code:
           type: integer
           description: The HTTP status code
@@ -1999,6 +1951,52 @@ components:
           type: string
           format: date-time
           description: When the audit event was created
+    AwardRecommendationCreateRequestSchema:
+      type: object
+      properties:
+        opportunity_id:
+          type: string
+          format: uuid
+          description: The opportunity ID for the award recommendation
+          example: 123e4567-e89b-12d3-a456-426614174000
+        award_selection_method:
+          description: The method used to select the award
+          enum:
+          - merit_review_ranking_only
+          - merit_review_ranking_with_other_factors
+          - formula
+          - single_source
+          - sole_source
+          - other
+          type:
+          - string
+        additional_info:
+          type:
+          - string
+          - 'null'
+          description: Additional info about the award recommendation
+          example: Program office requests expedited processing due to deadline in September.
+        funding_strategy:
+          type:
+          - string
+          - 'null'
+          description: Funding strategy information for the award recommendation
+          example: Full funding for top 10 applications, partial funding for next 15 based on available budget.
+        selection_method_detail:
+          type:
+          - string
+          - 'null'
+          description: Additional details about the selection method
+          example: Top-ranked applicants based on expert panel scores
+        other_key_information:
+          type:
+          - string
+          - 'null'
+          description: Other key information for the award recommendation
+          example: This opportunity aligns with the agency's rural access initiative and requires interagency coordination.
+      required:
+      - award_selection_method
+      - opportunity_id
     AwardRecommendationRiskListRequestSchema:
       type: object
       properties:
@@ -2008,37 +2006,13 @@ components:
           $ref: '#/components/schemas/AwardRecRiskPaginationSchema'
       required:
       - pagination
-    ErrorResponseSchema:
-      type: object
-      properties:
-        data:
-          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
-          example: {}
-        message:
-          type: string
-          description: General description of the error
-          example: Error
-        status_code:
-          type: integer
-          description: The HTTP status code of the error
-        errors:
-          type: array
-          example: []
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/ValidationIssueSchema'
-        internal_request_id:
-          type: string
-          description: An internal tracking ID
-          example: 550e8400-e29b-41d4-a716-446655440000
-    SortOrderAwardRecSubmissionPaginationSchema:
+    SortOrderAwardRecommendationListPaginationSchema:
       type: object
       properties:
         order_by:
           type: string
           enum:
-          - application_submission_number
+          - created_at
           description: The field to sort the response by
         sort_direction:
           description: Whether to sort the response ascending or descending
@@ -2050,27 +2024,64 @@ components:
       required:
       - order_by
       - sort_direction
-    SortOrderSchema:
+    AwardRecommendationAuditReviewSchema:
       type: object
       properties:
-        order_by:
+        award_recommendation_review_id:
           type: string
-          description: The field that the records were sorted by
-          example: id
-        sort_direction:
-          description: The direction the records are sorted
+          format: uuid
+          description: The review's unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        is_reviewed:
+          type: boolean
+          description: Whether the review has been completed
+    AwardRecommendationUpdateRequestSchema:
+      type: object
+      properties:
+        award_selection_method:
+          description: The method used to select the award
           enum:
-          - ascending
-          - descending
+          - merit_review_ranking_only
+          - merit_review_ranking_with_other_factors
+          - formula
+          - single_source
+          - sole_source
+          - other
           type:
           - string
-    AwardRecommendationAuditAppSubmissionSchema:
+        additional_info:
+          type:
+          - string
+          - 'null'
+          description: Additional info about the award recommendation
+          example: Program office requests expedited processing due to deadline in September.
+        funding_strategy:
+          type:
+          - string
+          - 'null'
+          description: Funding strategy information for the award recommendation
+          example: Full funding for top 10 applications, partial funding for next 15 based on available budget.
+        selection_method_detail:
+          type:
+          - string
+          - 'null'
+          description: Additional details about the selection method
+          example: Top-ranked applicants based on expert panel scores
+        other_key_information:
+          type:
+          - string
+          - 'null'
+          description: Other key information for the award recommendation
+          example: This opportunity aligns with the agency's rural access initiative and requires interagency coordination.
+      required:
+      - award_selection_method
+    ApplicationSubmissionInfoSchema:
       type: object
       properties:
         award_recommendation_application_submission_id:
           type: string
           format: uuid
-          description: The award recommendation application submission's unique identifier
+          description: The award recommendation application submission ID
           example: 123e4567-e89b-12d3-a456-426614174000
         application_submission_id:
           type: string
@@ -2078,18 +2089,29 @@ components:
           description: The application submission ID
           example: 123e4567-e89b-12d3-a456-426614174000
         application_submission_number:
+          type: string
+          description: The application submission number
+          example: GRANT-2024-001
+    AwardRecommendationOpportunitySummarySchema:
+      type: object
+      properties:
+        opportunity_status:
+          description: The status of the opportunity
+          enum:
+          - forecasted
+          - posted
+          - closed
+          - archived
           type:
           - string
           - 'null'
-          description: The application submission number
-    AwardRecommendationReviewUpdateRequestSchema:
-      type: object
-      properties:
-        is_reviewed:
-          type: boolean
-          description: Whether the review has been completed
-      required:
-      - is_reviewed
+          - 'null'
+        summary_description:
+          type:
+          - string
+          - 'null'
+          description: The summary of the opportunity
+          example: This opportunity aims to unravel the mysteries of the universe.
   securitySchemes:
     ApiJwtAuth:
       type: apiKey

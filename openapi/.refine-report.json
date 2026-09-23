@@ -1,7 +1,7 @@
 {
   "provider": "hhs",
   "sources": [
-    "simpler-grants-gov.yml"
+    "_original/simpler-grants-gov.yml"
   ],
   "outputs": [
     "hhs-agency-v1-api-openapi.yml",
@@ -21,11 +21,30 @@
     "hhs-user-v1-internal-only-api-openapi.yml",
     "hhs-workflow-api-openapi.yml"
   ],
-  "archived": [
-    "archived openapi/simpler-grants-gov.yml"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "simpler-grants-gov.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "hhs-agency-v1-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hhs-application-alpha-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hhs-award-recommendation-alpha-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hhs-commongrants-protocol-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hhs-competition-alpha-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hhs-extract-v1-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hhs-file-v1-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hhs-form-alpha-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hhs-health-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hhs-internal-v1-admin-only-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hhs-local-only-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hhs-opportunity-v1-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hhs-opportunity-v1-for-grantors-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hhs-organization-v1-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hhs-user-v1-internal-only-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "hhs-workflow-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

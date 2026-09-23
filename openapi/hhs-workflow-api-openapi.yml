@@ -1,18 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  description: '
-
-    Back end API for simpler.grants.gov.
+  description: 'Back end API for simpler.grants.gov.
 
 
     This API is in active development as we build out new functionalities for Simpler.Grants.gov. It is currently stable for everyday use, and will be versioned with advance notice for any breaking changes.
 
 
-    Learn more in our [API documentation](https://wiki.simpler.grants.gov/product/api).
+    Learn more in our API documentation.
 
-    See [Release Phases](https://github.com/github/roadmap?tab=readme-ov-file#release-phases) for further details.
-
-    '
+    See Release Phases for further details.'
   contact:
     name: Simpler Grants.gov
     url: https://simpler.grants.gov/
@@ -67,8 +63,10 @@ paths:
             schema:
               $ref: '#/components/schemas/WorkflowEventRequestSchema'
       security:
-      - ApiJwtAuth: &id001 []
-      - ApiUserKeyAuth: *id001
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: putV1WorkflowsEvents
+      x-operation-id-source: derived
   /v1/workflows/{workflow_id}:
     get:
       parameters:
@@ -107,8 +105,10 @@ paths:
       summary: Get Workflow Details
       description: Retrieve detailed information about a specific workflow including audit history, approvals, and approval configuration. Access is controlled by entity-based privileges (VIEW_OPPORTUNITY or VIEW_APPLICATION).
       security:
-      - ApiJwtAuth: &id002 []
-      - ApiUserKeyAuth: *id002
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: getV1WorkflowsByWorkflowId
+      x-operation-id-source: derived
   /v1/workflows/events/{event_id}:
     get:
       parameters:
@@ -147,8 +147,10 @@ paths:
       summary: Get Workflow by Event ID
       description: Retrieve detailed information about a workflow associated with a specific event. Access is controlled by entity-based privileges (VIEW_OPPORTUNITY or VIEW_APPLICATION).
       security:
-      - ApiJwtAuth: &id003 []
-      - ApiUserKeyAuth: *id003
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: getV1WorkflowsEventsByEventId
+      x-operation-id-source: derived
   /v1/workflows/{workflow_id}/audit:
     post:
       parameters:
@@ -198,11 +200,27 @@ paths:
             schema:
               $ref: '#/components/schemas/WorkflowAuditRequestSchema'
       security:
-      - ApiJwtAuth: &id004 []
-      - ApiUserKeyAuth: *id004
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: postV1WorkflowsByWorkflowIdAudit
+      x-operation-id-source: derived
 components:
   schemas:
-    WorkflowEventResponseSchema:
+    SortOrderSchema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          description: The field that the records were sorted by
+          example: id
+        sort_direction:
+          description: The direction the records are sorted
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+    WorkflowGetResponseSchema:
       type: object
       properties:
         message:
@@ -210,32 +228,222 @@ components:
           description: The message to return
           example: Success
         data:
+          description: The workflow details with audit history and approval configuration
           type:
           - object
-          $ref: '#/components/schemas/WorkflowEventResponseDataSchema'
+          $ref: '#/components/schemas/WorkflowGetResponseDataSchema'
         status_code:
           type: integer
           description: The HTTP status code
           example: 200
-    ValidationIssueSchema:
+    WorkflowAuditEventSchema:
       type: object
       properties:
-        type:
+        workflow_audit_id:
           type: string
-          description: The type of error
-          example: invalid
+          format: uuid
+          description: The audit event's unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        acting_user:
+          description: The user who triggered the transition
+          type:
+          - object
+          $ref: '#/components/schemas/WorkflowUserSchema'
+        transition_event:
+          type: string
+          description: The event that triggered the state transition
+          example: approve
+        source_state:
+          type: string
+          description: The state before the transition
+          example: pending_review
+        target_state:
+          type: string
+          description: The state after the transition
+          example: approved
+        event:
+          description: The workflow event that triggered this audit
+          type:
+          - object
+          $ref: '#/components/schemas/WorkflowEventHistorySchema'
+        audit_metadata:
+          type:
+          - object
+          - 'null'
+          description: Additional metadata about the audit event
+          example:
+            comment: Looks good
+          additionalProperties: {}
+        created_at:
+          type: string
+          format: date-time
+          description: When the audit event was created
+    SortOrderWorkflowAuditPaginationSchema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          enum:
+          - created_at
+          description: The field to sort the response by
+        sort_direction:
+          description: Whether to sort the response ascending or descending
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+      required:
+      - order_by
+      - sort_direction
+    WorkflowEventResponseDataSchema:
+      type: object
+      properties:
+        event_id:
+          type: string
+          format: uuid
+          description: The tracking ID for the workflow event
+          example: 123e4567-e89b-12d3-a456-426614174000
+    StartWorkflowContextSchema:
+      type: object
+      properties:
+        workflow_type:
+          description: The type of workflow to initiate
+          enum:
+          - opportunity_publish
+          - application_submission
+          - initial_prototype
+          - basic_test_workflow
+          - no_concurrent_test_workflow
+          - limited_approval_test_workflow
+          type:
+          - string
+        entity_type:
+          description: The type of entity to associate with the workflow - different workflows require different entities.
+          enum:
+          - opportunity
+          - application
+          - award_recommendation
+          type:
+          - string
+        entity_id:
+          type: string
+          format: uuid
+          description: The ID of the entity, for example an opportunity_id
+          example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+      - entity_id
+      - entity_type
+      - workflow_type
+    WorkflowApprovalConfigItemSchema:
+      type: object
+      properties:
+        approval_type:
+          description: The type of approval required
+          example:
+          - program_officer_approval
+          enum:
+          - initial_prototype_approval
+          - program_officer_approval
+          - budget_officer_approval
+          type:
+          - string
+        required_privileges:
+          type: array
+          description: List of privileges required to provide this approval
+          example:
+          - - program_officer_approval
+          items:
+            enum:
+            - manage_org_members
+            - manage_org_admin_members
+            - view_org_membership
+            - start_application
+            - list_application
+            - view_application
+            - modify_application
+            - submit_application
+            - update_form
+            - manage_agency_members
+            - get_submitted_applications
+            - legacy_agency_viewer
+            - legacy_agency_grant_retriever
+            - legacy_agency_assigner
+            - manage_internal_roles
+            - manage_competition
+            - read_test_user_token
+            - view_opportunity
+            - create_opportunity
+            - update_opportunity
+            - publish_opportunity
+            - internal_workflow_access
+            - view_org_saved_opportunities
+            - modify_org_saved_opportunities
+            - internal_workflow_event_send
+            - view_award_recommendation
+            - create_award_recommendation
+            - update_award_recommendation
+            - submit_award_recommendation
+            - program_officer_approval
+            - budget_officer_approval
+            - internal_s3_scan
+            type:
+            - string
+        allowed_approval_response_types:
+          type: array
+          description: List of approval response types allowed for this approval
+          example:
+          - - approved
+          - - requires_modification
+          items:
+            enum:
+            - approved
+            - declined
+            - requires_modification
+            type:
+            - string
+        possible_users:
+          type: array
+          description: List of users in the workflow's agency who have the required privileges
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/WorkflowUserSchema'
+    WorkflowEventHistorySchema:
+      type: object
+      properties:
+        event_id:
+          type: string
+          format: uuid
+          description: The tracking ID for the workflow event
+          example: 123e4567-e89b-12d3-a456-426614174000
+        sent_at:
+          type: string
+          format: date-time
+          description: When the event was sent
+    WorkflowAuditResponseSchema:
+      type: object
+      properties:
+        pagination_info:
+          description: The pagination information for paginated endpoints
+          type:
+          - object
+          $ref: '#/components/schemas/PaginationInfoSchema'
         message:
           type: string
           description: The message to return
-          example: Not a valid string.
-        field:
-          type: string
-          description: The field that failed
-          example: summary.summary_description
-        value:
-          type: string
-          description: The value that failed
-          example: invalid string
+          example: Success
+        data:
+          type: array
+          description: Ordered list of audit events (sorted by created_at)
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/WorkflowAuditEventSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
     PaginationInfoSchema:
       type: object
       properties:
@@ -262,6 +470,108 @@ components:
             type:
             - object
             $ref: '#/components/schemas/SortOrderSchema'
+    WorkflowEventResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type:
+          - object
+          $ref: '#/components/schemas/WorkflowEventResponseDataSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    WorkflowAuditPaginationSchema:
+      type: object
+      properties:
+        sort_order:
+          type: array
+          default:
+          - order_by: created_at
+            sort_direction: descending
+          minItems: 1
+          maxItems: 5
+          description: The list of sorting rules
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderWorkflowAuditPaginationSchema'
+        page_size:
+          type: integer
+          default: 25
+          minimum: 1
+          maximum: 5000
+          description: The size of the page to fetch
+          example: 25
+        page_offset:
+          type: integer
+          default: 1
+          minimum: 1
+          description: The page number to fetch, starts counting from 1
+          example: 1
+    ValidationIssueSchema:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error
+          example: invalid
+        message:
+          type: string
+          description: The message to return
+          example: Not a valid string.
+        field:
+          type: string
+          description: The field that failed
+          example: summary.summary_description
+        value:
+          type: string
+          description: The value that failed
+          example: invalid string
+    ProcessWorkflowContextSchema:
+      type: object
+      properties:
+        workflow_id:
+          type: string
+          format: uuid
+          description: The ID of the existing workflow to progress
+          example: 123e4567-e89b-12d3-a456-426614174000
+        event_to_send:
+          type: string
+          minLength: 1
+          description: The specific event/action to trigger in the state machine
+          example: approve
+      required:
+      - event_to_send
+      - workflow_id
+    ErrorResponseSchema:
+      type: object
+      properties:
+        data:
+          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
+          example: {}
+        message:
+          type: string
+          description: General description of the error
+          example: Error
+        status_code:
+          type: integer
+          description: The HTTP status code of the error
+        errors:
+          type: array
+          example: []
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        internal_request_id:
+          type: string
+          description: An internal tracking ID
+          example: 550e8400-e29b-41d4-a716-446655440000
     WorkflowApprovalSchema:
       type: object
       properties:
@@ -314,117 +624,6 @@ components:
           type: string
           format: date-time
           description: When the approval was created
-    WorkflowUserSchema:
-      type: object
-      properties:
-        user_id:
-          type: string
-          format: uuid
-          description: The user's unique identifier
-          example: 123e4567-e89b-12d3-a456-426614174000
-        email:
-          type:
-          - string
-          - 'null'
-          description: The user's email address
-          example: user@example.com
-        first_name:
-          type:
-          - string
-          - 'null'
-          description: The user's first name
-          example: John
-        last_name:
-          type:
-          - string
-          - 'null'
-          description: The user's last name
-          example: Smith
-    ProcessWorkflowContextSchema:
-      type: object
-      properties:
-        workflow_id:
-          type: string
-          format: uuid
-          description: The ID of the existing workflow to progress
-          example: 123e4567-e89b-12d3-a456-426614174000
-        event_to_send:
-          type: string
-          minLength: 1
-          description: The specific event/action to trigger in the state machine
-          example: approve
-      required:
-      - event_to_send
-      - workflow_id
-    WorkflowEventResponseDataSchema:
-      type: object
-      properties:
-        event_id:
-          type: string
-          format: uuid
-          description: The tracking ID for the workflow event
-          example: 123e4567-e89b-12d3-a456-426614174000
-    StartWorkflowContextSchema:
-      type: object
-      properties:
-        workflow_type:
-          description: The type of workflow to initiate
-          enum:
-          - opportunity_publish
-          - application_submission
-          - initial_prototype
-          - basic_test_workflow
-          - no_concurrent_test_workflow
-          - limited_approval_test_workflow
-          type:
-          - string
-        entity_type:
-          description: The type of entity to associate with the workflow - different workflows require different entities.
-          enum:
-          - opportunity
-          - application
-          - award_recommendation
-          type:
-          - string
-        entity_id:
-          type: string
-          format: uuid
-          description: The ID of the entity, for example an opportunity_id
-          example: 123e4567-e89b-12d3-a456-426614174000
-      required:
-      - entity_id
-      - entity_type
-      - workflow_type
-    WorkflowEventRequestSchema:
-      type: object
-      properties:
-        event_type:
-          description: 'The category of event: either starting a new workflow or processing an existing one'
-          enum:
-          - start_workflow
-          - process_workflow
-          type:
-          - string
-        start_workflow_context:
-          description: Context and entities required to initialize a new workflow. Only allowed if event_type is 'start_workflow'.
-          type:
-          - object
-          $ref: '#/components/schemas/StartWorkflowContextSchema'
-        process_workflow_context:
-          description: Information required to progress an existing workflow state. Only allowed if event_type is 'process_workflow'.
-          type:
-          - object
-          $ref: '#/components/schemas/ProcessWorkflowContextSchema'
-        metadata:
-          type: object
-          default: {}
-          description: 'A freeform JSON object for the particular event, if needed[cite: 127].'
-          example:
-            source_system: grants_solutions
-            priority: high
-          additionalProperties: {}
-      required:
-      - event_type
     WorkflowGetResponseDataSchema:
       type: object
       properties:
@@ -517,18 +716,6 @@ components:
           format: uuid
           description: The application submission ID if this is a submission workflow
           example: 123e4567-e89b-12d3-a456-426614174000
-    WorkflowEventHistorySchema:
-      type: object
-      properties:
-        event_id:
-          type: string
-          format: uuid
-          description: The tracking ID for the workflow event
-          example: 123e4567-e89b-12d3-a456-426614174000
-        sent_at:
-          type: string
-          format: date-time
-          description: When the event was sent
     WorkflowAuditRequestSchema:
       type: object
       properties:
@@ -539,245 +726,62 @@ components:
           $ref: '#/components/schemas/WorkflowAuditPaginationSchema'
       required:
       - pagination
-    WorkflowAuditPaginationSchema:
+    WorkflowEventRequestSchema:
       type: object
       properties:
-        sort_order:
-          type: array
-          default:
-          - order_by: created_at
-            sort_direction: descending
-          minItems: 1
-          maxItems: 5
-          description: The list of sorting rules
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/SortOrderWorkflowAuditPaginationSchema'
-        page_size:
-          type: integer
-          default: 25
-          minimum: 1
-          maximum: 5000
-          description: The size of the page to fetch
-          example: 25
-        page_offset:
-          type: integer
-          default: 1
-          minimum: 1
-          description: The page number to fetch, starts counting from 1
-          example: 1
-    WorkflowApprovalConfigItemSchema:
-      type: object
-      properties:
-        approval_type:
-          description: The type of approval required
-          example:
-          - program_officer_approval
+        event_type:
+          description: 'The category of event: either starting a new workflow or processing an existing one'
           enum:
-          - initial_prototype_approval
-          - program_officer_approval
-          - budget_officer_approval
+          - start_workflow
+          - process_workflow
           type:
           - string
-        required_privileges:
-          type: array
-          description: List of privileges required to provide this approval
-          example:
-          - - program_officer_approval
-          items:
-            enum:
-            - manage_org_members
-            - manage_org_admin_members
-            - view_org_membership
-            - start_application
-            - list_application
-            - view_application
-            - modify_application
-            - submit_application
-            - update_form
-            - manage_agency_members
-            - get_submitted_applications
-            - legacy_agency_viewer
-            - legacy_agency_grant_retriever
-            - legacy_agency_assigner
-            - manage_internal_roles
-            - manage_competition
-            - read_test_user_token
-            - view_opportunity
-            - create_opportunity
-            - update_opportunity
-            - publish_opportunity
-            - internal_workflow_access
-            - view_org_saved_opportunities
-            - modify_org_saved_opportunities
-            - internal_workflow_event_send
-            - view_award_recommendation
-            - create_award_recommendation
-            - update_award_recommendation
-            - submit_award_recommendation
-            - program_officer_approval
-            - budget_officer_approval
-            - internal_s3_scan
-            type:
-            - string
-        allowed_approval_response_types:
-          type: array
-          description: List of approval response types allowed for this approval
-          example:
-          - - approved
-          - - requires_modification
-          items:
-            enum:
-            - approved
-            - declined
-            - requires_modification
-            type:
-            - string
-        possible_users:
-          type: array
-          description: List of users in the workflow's agency who have the required privileges
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/WorkflowUserSchema'
-    WorkflowGetResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          description: The workflow details with audit history and approval configuration
+        start_workflow_context:
+          description: Context and entities required to initialize a new workflow. Only allowed if event_type is 'start_workflow'.
           type:
           - object
-          $ref: '#/components/schemas/WorkflowGetResponseDataSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    SortOrderWorkflowAuditPaginationSchema:
-      type: object
-      properties:
-        order_by:
-          type: string
-          enum:
-          - created_at
-          description: The field to sort the response by
-        sort_direction:
-          description: Whether to sort the response ascending or descending
-          enum:
-          - ascending
-          - descending
+          $ref: '#/components/schemas/StartWorkflowContextSchema'
+        process_workflow_context:
+          description: Information required to progress an existing workflow state. Only allowed if event_type is 'process_workflow'.
           type:
-          - string
+          - object
+          $ref: '#/components/schemas/ProcessWorkflowContextSchema'
+        metadata:
+          type: object
+          default: {}
+          description: 'A freeform JSON object for the particular event, if needed[cite: 127].'
+          example:
+            source_system: grants_solutions
+            priority: high
+          additionalProperties: {}
       required:
-      - order_by
-      - sort_direction
-    ErrorResponseSchema:
+      - event_type
+    WorkflowUserSchema:
       type: object
       properties:
-        data:
-          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
-          example: {}
-        message:
-          type: string
-          description: General description of the error
-          example: Error
-        status_code:
-          type: integer
-          description: The HTTP status code of the error
-        errors:
-          type: array
-          example: []
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/ValidationIssueSchema'
-        internal_request_id:
-          type: string
-          description: An internal tracking ID
-          example: 550e8400-e29b-41d4-a716-446655440000
-    WorkflowAuditResponseSchema:
-      type: object
-      properties:
-        pagination_info:
-          description: The pagination information for paginated endpoints
-          type:
-          - object
-          $ref: '#/components/schemas/PaginationInfoSchema'
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type: array
-          description: Ordered list of audit events (sorted by created_at)
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/WorkflowAuditEventSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    WorkflowAuditEventSchema:
-      type: object
-      properties:
-        workflow_audit_id:
+        user_id:
           type: string
           format: uuid
-          description: The audit event's unique identifier
+          description: The user's unique identifier
           example: 123e4567-e89b-12d3-a456-426614174000
-        acting_user:
-          description: The user who triggered the transition
-          type:
-          - object
-          $ref: '#/components/schemas/WorkflowUserSchema'
-        transition_event:
-          type: string
-          description: The event that triggered the state transition
-          example: approve
-        source_state:
-          type: string
-          description: The state before the transition
-          example: pending_review
-        target_state:
-          type: string
-          description: The state after the transition
-          example: approved
-        event:
-          description: The workflow event that triggered this audit
-          type:
-          - object
-          $ref: '#/components/schemas/WorkflowEventHistorySchema'
-        audit_metadata:
-          type:
-          - object
-          - 'null'
-          description: Additional metadata about the audit event
-          example:
-            comment: Looks good
-          additionalProperties: {}
-        created_at:
-          type: string
-          format: date-time
-          description: When the audit event was created
-    SortOrderSchema:
-      type: object
-      properties:
-        order_by:
-          type: string
-          description: The field that the records were sorted by
-          example: id
-        sort_direction:
-          description: The direction the records are sorted
-          enum:
-          - ascending
-          - descending
+        email:
           type:
           - string
+          - 'null'
+          description: The user's email address
+          example: user@example.com
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: The user's first name
+          example: John
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: The user's last name
+          example: Smith
   securitySchemes:
     ApiJwtAuth:
       type: apiKey

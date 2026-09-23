@@ -1,18 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  description: '
-
-    Back end API for simpler.grants.gov.
+  description: 'Back end API for simpler.grants.gov.
 
 
     This API is in active development as we build out new functionalities for Simpler.Grants.gov. It is currently stable for everyday use, and will be versioned with advance notice for any breaking changes.
 
 
-    Learn more in our [API documentation](https://wiki.simpler.grants.gov/product/api).
+    Learn more in our API documentation.
 
-    See [Release Phases](https://github.com/github/roadmap?tab=readme-ov-file#release-phases) for further details.
-
-    '
+    See Release Phases for further details.'
   contact:
     name: Simpler Grants.gov
     url: https://simpler.grants.gov/
@@ -61,54 +57,12 @@ paths:
       summary: Stream file scan results
       description: Stream the scan status of a pending file as newline-delimited JSON. Each chunk matches the documented response schema. The endpoint polls DynamoDB on a configurable interval and ends the stream when the scan reaches a terminal status (complete/infected) or the configured max duration elapses.
       security:
-      - ApiJwtAuth: &id001 []
-      - ApiUserKeyAuth: *id001
+      - ApiJwtAuth: []
+      - ApiUserKeyAuth: []
+      operationId: getV1FilesByPendingFileIdResults
+      x-operation-id-source: derived
 components:
   schemas:
-    FileScanResultsDataSchema:
-      type: object
-      properties:
-        status:
-          description: The current scan status of the file
-          example:
-          - pending
-          enum:
-          - pending
-          - in_progress
-          - complete
-          - infected
-          type:
-          - string
-      required:
-      - status
-    FileScanResultsResponseSchema:
-      type: object
-      properties:
-        data:
-          type:
-          - object
-          $ref: '#/components/schemas/FileScanResultsDataSchema'
-      required:
-      - data
-    ValidationIssueSchema:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of error
-          example: invalid
-        message:
-          type: string
-          description: The message to return
-          example: Not a valid string.
-        field:
-          type: string
-          description: The field that failed
-          example: summary.summary_description
-        value:
-          type: string
-          description: The value that failed
-          example: invalid string
     ErrorResponseSchema:
       type: object
       properties:
@@ -133,6 +87,50 @@ components:
           type: string
           description: An internal tracking ID
           example: 550e8400-e29b-41d4-a716-446655440000
+    FileScanResultsDataSchema:
+      type: object
+      properties:
+        status:
+          description: The current scan status of the file
+          example:
+          - pending
+          enum:
+          - pending
+          - in_progress
+          - complete
+          - infected
+          type:
+          - string
+      required:
+      - status
+    ValidationIssueSchema:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error
+          example: invalid
+        message:
+          type: string
+          description: The message to return
+          example: Not a valid string.
+        field:
+          type: string
+          description: The field that failed
+          example: summary.summary_description
+        value:
+          type: string
+          description: The value that failed
+          example: invalid string
+    FileScanResultsResponseSchema:
+      type: object
+      properties:
+        data:
+          type:
+          - object
+          $ref: '#/components/schemas/FileScanResultsDataSchema'
+      required:
+      - data
   securitySchemes:
     ApiJwtAuth:
       type: apiKey

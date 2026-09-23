@@ -1,18 +1,14 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  description: '
-
-    Back end API for simpler.grants.gov.
+  description: 'Back end API for simpler.grants.gov.
 
 
     This API is in active development as we build out new functionalities for Simpler.Grants.gov. It is currently stable for everyday use, and will be versioned with advance notice for any breaking changes.
 
 
-    Learn more in our [API documentation](https://wiki.simpler.grants.gov/product/api).
+    Learn more in our API documentation.
 
-    See [Release Phases](https://github.com/github/roadmap?tab=readme-ov-file#release-phases) for further details.
-
-    '
+    See Release Phases for further details.'
   contact:
     name: Simpler Grants.gov
     url: https://simpler.grants.gov/
@@ -36,8 +32,27 @@ paths:
       tags:
       - LOCAL ONLY
       summary: Local Users Get
+      operationId: getLocalLocalUsers
+      x-operation-id-source: derived
 components:
   schemas:
+    LocalUserTokenResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/LocalUserTokenSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
     LocalUserTokenSchema:
       type: object
       properties:
@@ -66,23 +81,6 @@ components:
           type: string
           description: The API key of the user, can be used with our X-API-Key auth
           example: my_example_user_token
-    LocalUserTokenResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type: array
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/LocalUserTokenSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
   securitySchemes:
     ApiJwtAuth:
       type: apiKey
