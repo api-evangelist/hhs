@@ -66,49 +66,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    PaginationInfoSchema:
-      type: object
-      properties:
-        page_offset:
-          type: integer
-          description: The page number that was fetched
-          example: 1
-        page_size:
-          type: integer
-          description: The size of the page fetched
-          example: 25
-        total_records:
-          type: integer
-          description: The total number of records fetchable
-          example: 42
-        total_pages:
-          type: integer
-          description: The total number of pages that can be fetched
-          example: 2
-        sort_order:
-          type: array
-          description: The sort order passed in originally
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/SortOrderSchema'
-    ExtractMetadataFilterV1Schema:
-      type: object
-      properties:
-        extract_type:
-          description: The type of extract to filter by
-          example: opportunities_json
-          enum:
-          - opportunities_json
-          - opportunities_csv
-          type:
-          - string
-          - 'null'
-          - 'null'
-        created_at:
-          type:
-          - object
-          $ref: '#/components/schemas/DateRangeSchema'
     ExtractMetadataPaginationV1Schema:
       type: object
       properties:
@@ -136,103 +93,6 @@ components:
       - page_offset
       - page_size
       - sort_order
-    ExtractMetadataRequestSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          description: The REST resource object
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-        filters:
-          type:
-          - object
-          $ref: '#/components/schemas/ExtractMetadataFilterV1Schema'
-        pagination:
-          type:
-          - object
-          $ref: '#/components/schemas/ExtractMetadataPaginationV1Schema'
-      required:
-      - pagination
-    ExtractMetadataListResponseSchema:
-      type: object
-      properties:
-        pagination_info:
-          description: The pagination information for paginated endpoints
-          type:
-          - object
-          $ref: '#/components/schemas/PaginationInfoSchema'
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type: array
-          description: A list of extract metadata records
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/ExtractMetadataResponseSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    SortOrderSchema:
-      type: object
-      properties:
-        order_by:
-          type: string
-          description: The field that the records were sorted by
-          example: id
-        sort_direction:
-          description: The direction the records are sorted
-          enum:
-          - ascending
-          - descending
-          type:
-          - string
-    ValidationIssueSchema:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of error
-          example: invalid
-        message:
-          type: string
-          description: The message to return
-          example: Not a valid string.
-        field:
-          type: string
-          description: The field that failed
-          example: summary.summary_description
-        value:
-          type: string
-          description: The value that failed
-          example: invalid string
-    SortOrderExtractMetadataPaginationV1Schema:
-      type: object
-      properties:
-        order_by:
-          type: string
-          enum:
-          - created_at
-          description: The field to sort the response by
-        sort_direction:
-          description: Whether to sort the response ascending or descending
-          enum:
-          - ascending
-          - descending
-          type:
-          - string
-      required:
-      - order_by
-      - sort_direction
     ErrorResponseSchema:
       type: object
       properties:
@@ -284,6 +144,146 @@ components:
           type: string
           description: The type of extract
           example: opportunity_data_extract
+    PaginationInfoSchema:
+      type: object
+      properties:
+        page_offset:
+          type: integer
+          description: The page number that was fetched
+          example: 1
+        page_size:
+          type: integer
+          description: The size of the page fetched
+          example: 25
+        total_records:
+          type: integer
+          description: The total number of records fetchable
+          example: 42
+        total_pages:
+          type: integer
+          description: The total number of pages that can be fetched
+          example: 2
+        sort_order:
+          type: array
+          description: The sort order passed in originally
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderSchema'
+    SortOrderSchema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          description: The field that the records were sorted by
+          example: id
+        sort_direction:
+          description: The direction the records are sorted
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+    ExtractMetadataFilterV1Schema:
+      type: object
+      properties:
+        extract_type:
+          description: The type of extract to filter by
+          example: opportunities_json
+          enum:
+          - opportunities_json
+          - opportunities_csv
+          type:
+          - string
+          - 'null'
+          - 'null'
+        created_at:
+          type:
+          - object
+          $ref: '#/components/schemas/DateRangeSchema'
+    SortOrderExtractMetadataPaginationV1Schema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          enum:
+          - created_at
+          description: The field to sort the response by
+        sort_direction:
+          description: Whether to sort the response ascending or descending
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+      required:
+      - order_by
+      - sort_direction
+    ExtractMetadataListResponseSchema:
+      type: object
+      properties:
+        pagination_info:
+          description: The pagination information for paginated endpoints
+          type:
+          - object
+          $ref: '#/components/schemas/PaginationInfoSchema'
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          description: A list of extract metadata records
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ExtractMetadataResponseSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    ExtractMetadataRequestSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          description: The REST resource object
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+        filters:
+          type:
+          - object
+          $ref: '#/components/schemas/ExtractMetadataFilterV1Schema'
+        pagination:
+          type:
+          - object
+          $ref: '#/components/schemas/ExtractMetadataPaginationV1Schema'
+      required:
+      - pagination
+    ValidationIssueSchema:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error
+          example: invalid
+        message:
+          type: string
+          description: The message to return
+          example: Not a valid string.
+        field:
+          type: string
+          description: The field that failed
+          example: summary.summary_description
+        value:
+          type: string
+          description: The value that failed
+          example: invalid string
     DateRangeSchema:
       type: object
       properties:

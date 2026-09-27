@@ -83,41 +83,6 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    PaginationInfoSchema:
-      type: object
-      properties:
-        page_offset:
-          type: integer
-          description: The page number that was fetched
-          example: 1
-        page_size:
-          type: integer
-          description: The size of the page fetched
-          example: 25
-        total_records:
-          type: integer
-          description: The total number of records fetchable
-          example: 42
-        total_pages:
-          type: integer
-          description: The total number of pages that can be fetched
-          example: 2
-        sort_order:
-          type: array
-          description: The sort order passed in originally
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/SortOrderSchema'
-    OpportunityStatusesFilterV1Schema:
-      type: object
-      properties:
-        one_of:
-          type: array
-          minItems: 1
-          items:
-            type: string
-            example: archived
     AgencyV1Schema:
       type: object
       properties:
@@ -185,6 +150,40 @@ components:
       required:
       - order_by
       - sort_direction
+    ErrorResponseSchema:
+      type: object
+      properties:
+        data:
+          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
+          example: {}
+        message:
+          type: string
+          description: General description of the error
+          example: Error
+        status_code:
+          type: integer
+          description: The HTTP status code of the error
+        errors:
+          type: array
+          example: []
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        internal_request_id:
+          type: string
+          description: An internal tracking ID
+          example: 550e8400-e29b-41d4-a716-446655440000
+    HasActiveOpportunityFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type:
+          - array
+          - 'null'
+          items:
+            type: boolean
+            example: true
     AgencySearchPaginationV1Schema:
       type: object
       properties:
@@ -214,20 +213,6 @@ components:
       required:
       - page_offset
       - page_size
-    SortOrderSchema:
-      type: object
-      properties:
-        order_by:
-          type: string
-          description: The field that the records were sorted by
-          example: id
-        sort_direction:
-          description: The direction the records are sorted
-          enum:
-          - ascending
-          - descending
-          type:
-          - string
     AgencySearchResponseV1Schema:
       type: object
       properties:
@@ -248,74 +233,6 @@ components:
           type: integer
           description: The HTTP status code
           example: 200
-    AgencySearchFilterV1Schema:
-      type: object
-      properties:
-        has_active_opportunity:
-          type:
-          - object
-          $ref: '#/components/schemas/HasActiveOpportunityFilterV1Schema'
-        opportunity_statuses:
-          type:
-          - object
-          $ref: '#/components/schemas/OpportunityStatusesFilterV1Schema'
-        is_test_agency:
-          type:
-          - object
-          $ref: '#/components/schemas/IsTestAgencyFilterV1Schema'
-    ValidationIssueSchema:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of error
-          example: invalid
-        message:
-          type: string
-          description: The message to return
-          example: Not a valid string.
-        field:
-          type: string
-          description: The field that failed
-          example: summary.summary_description
-        value:
-          type: string
-          description: The value that failed
-          example: invalid string
-    ErrorResponseSchema:
-      type: object
-      properties:
-        data:
-          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
-          example: {}
-        message:
-          type: string
-          description: General description of the error
-          example: Error
-        status_code:
-          type: integer
-          description: The HTTP status code of the error
-        errors:
-          type: array
-          example: []
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/ValidationIssueSchema'
-        internal_request_id:
-          type: string
-          description: An internal tracking ID
-          example: 550e8400-e29b-41d4-a716-446655440000
-    IsTestAgencyFilterV1Schema:
-      type: object
-      properties:
-        one_of:
-          type:
-          - array
-          - 'null'
-          items:
-            type: boolean
-            example: true
     AgencySearchRequestSchema:
       type: object
       properties:
@@ -345,7 +262,71 @@ components:
           $ref: '#/components/schemas/AgencySearchPaginationV1Schema'
       required:
       - pagination
-    HasActiveOpportunityFilterV1Schema:
+    PaginationInfoSchema:
+      type: object
+      properties:
+        page_offset:
+          type: integer
+          description: The page number that was fetched
+          example: 1
+        page_size:
+          type: integer
+          description: The size of the page fetched
+          example: 25
+        total_records:
+          type: integer
+          description: The total number of records fetchable
+          example: 42
+        total_pages:
+          type: integer
+          description: The total number of pages that can be fetched
+          example: 2
+        sort_order:
+          type: array
+          description: The sort order passed in originally
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderSchema'
+    SortOrderSchema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          description: The field that the records were sorted by
+          example: id
+        sort_direction:
+          description: The direction the records are sorted
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+    OpportunityStatusesFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            example: archived
+    AgencySearchFilterV1Schema:
+      type: object
+      properties:
+        has_active_opportunity:
+          type:
+          - object
+          $ref: '#/components/schemas/HasActiveOpportunityFilterV1Schema'
+        opportunity_statuses:
+          type:
+          - object
+          $ref: '#/components/schemas/OpportunityStatusesFilterV1Schema'
+        is_test_agency:
+          type:
+          - object
+          $ref: '#/components/schemas/IsTestAgencyFilterV1Schema'
+    IsTestAgencyFilterV1Schema:
       type: object
       properties:
         one_of:
@@ -355,6 +336,25 @@ components:
           items:
             type: boolean
             example: true
+    ValidationIssueSchema:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error
+          example: invalid
+        message:
+          type: string
+          description: The message to return
+          example: Not a valid string.
+        field:
+          type: string
+          description: The field that failed
+          example: summary.summary_description
+        value:
+          type: string
+          description: The value that failed
+          example: invalid string
   securitySchemes:
     ApiJwtAuth:
       type: apiKey

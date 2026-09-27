@@ -55,30 +55,21 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    ErrorResponseSchema:
+    InternalRoleAssignmentRequestSchema:
       type: object
       properties:
-        data:
-          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
-          example: {}
-        message:
+        internal_role_id:
           type: string
-          description: General description of the error
-          example: Error
-        status_code:
-          type: integer
-          description: The HTTP status code of the error
-        errors:
-          type: array
-          example: []
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/ValidationIssueSchema'
-        internal_request_id:
+          format: uuid
+          description: The UUID of the internal role to assign
+          example: 57e8875f-c154-41be-a5f6-602f4c92d6e6
+        user_email:
           type: string
-          description: An internal tracking ID
-          example: 550e8400-e29b-41d4-a716-446655440000
+          description: The email address of the user receiving the role
+          example: example@example.com
+      required:
+      - internal_role_id
+      - user_email
     InternalRoleAssignmentResponseSchema:
       type: object
       properties:
@@ -111,21 +102,30 @@ components:
           type: string
           description: The value that failed
           example: invalid string
-    InternalRoleAssignmentRequestSchema:
+    ErrorResponseSchema:
       type: object
       properties:
-        internal_role_id:
+        data:
+          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
+          example: {}
+        message:
           type: string
-          format: uuid
-          description: The UUID of the internal role to assign
-          example: 57e8875f-c154-41be-a5f6-602f4c92d6e6
-        user_email:
+          description: General description of the error
+          example: Error
+        status_code:
+          type: integer
+          description: The HTTP status code of the error
+        errors:
+          type: array
+          example: []
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        internal_request_id:
           type: string
-          description: The email address of the user receiving the role
-          example: example@example.com
-      required:
-      - internal_role_id
-      - user_email
+          description: An internal tracking ID
+          example: 550e8400-e29b-41d4-a716-446655440000
   securitySchemes:
     ApiJwtAuth:
       type: apiKey

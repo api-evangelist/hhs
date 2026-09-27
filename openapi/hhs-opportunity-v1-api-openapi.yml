@@ -346,61 +346,31 @@ components:
           - 'null'
           description: The assistance listing number, see https://sam.gov/content/assistance-listings for more detail
           example: '43.012'
-    SortOrderOpportunityPaginationV1Schema:
+    CloseDateFilterV1Schema:
       type: object
       properties:
-        order_by:
-          type: string
-          enum:
-          - relevancy
-          - opportunity_id
-          - opportunity_number
-          - opportunity_title
-          - post_date
-          - close_date
-          - agency_code
-          - agency_name
-          - top_level_agency_name
-          - award_floor
-          - award_ceiling
-          description: The field to sort the response by
-        sort_direction:
-          description: Whether to sort the response ascending or descending
-          enum:
-          - ascending
-          - descending
+        start_date:
           type:
           - string
-      required:
-      - order_by
-      - sort_direction
-    ExperimentalV1Schema:
-      type: object
-      properties:
-        scoring_rule:
-          default:
-          - default
-          description: Scoring rule to query against OpenSearch
-          enum:
-          - default
-          - expanded
-          - agency
+          - 'null'
+          format: date
+        end_date:
           type:
           - string
-    SortOrderSchema:
-      type: object
-      properties:
-        order_by:
-          type: string
-          description: The field that the records were sorted by
-          example: id
-        sort_direction:
-          description: The direction the records are sorted
-          enum:
-          - ascending
-          - descending
+          - 'null'
+          format: date
+        start_date_relative:
           type:
-          - string
+          - integer
+          - 'null'
+          minimum: -1000000
+          maximum: 1000000
+        end_date_relative:
+          type:
+          - integer
+          - 'null'
+          minimum: -1000000
+          maximum: 1000000
     OpportunitySummaryV1Schema:
       type: object
       properties:
@@ -625,137 +595,200 @@ components:
           type: string
           format: date-time
           description: When the opportunity summary was last updated
-    OpportunityFacetV1Schema:
+    SortOrderOpportunityPaginationV1Schema:
       type: object
       properties:
-        opportunity_status:
-          type: object
-          description: The counts of opportunity_status values in the full response
-          example:
-            posted: 1
-            forecasted: 2
-          additionalProperties:
-            type: integer
-        applicant_type:
-          type: object
-          description: The counts of applicant_type values in the full response
-          example:
-            state_governments: 3
-            county_governments: 2
-            city_or_township_governments: 1
-          additionalProperties:
-            type: integer
-        funding_instrument:
-          type: object
-          description: The counts of funding_instrument values in the full response
-          example:
-            cooperative_agreement: 4
-            grant: 3
-          additionalProperties:
-            type: integer
-        funding_category:
-          type: object
-          description: The counts of funding_category values in the full response
-          example:
-            recovery_act: 2
-            arts: 3
-            agriculture: 5
-          additionalProperties:
-            type: integer
-        agency:
-          type: object
-          description: The counts of agency values in the full response
-          example:
-            USAID: 4
-            DOC: 3
-          additionalProperties:
-            type: integer
-        is_cost_sharing:
-          type: object
-          description: The counts of is_cost_sharing values in the full response
-          example:
-            'true': 1
-            'false': 3
-          additionalProperties:
-            type: integer
-        close_date:
-          type: object
-          description: The counts of close_date values in the full response
-          additionalProperties:
-            type: integer
-        post_date:
-          type: object
-          description: The counts of post_date values in the full response
-          additionalProperties:
-            type: integer
-    EstimatedTotalProgramFundingFilterV1Schema:
-      type: object
-      properties:
-        min:
+        order_by:
+          type: string
+          enum:
+          - relevancy
+          - opportunity_id
+          - opportunity_number
+          - opportunity_title
+          - post_date
+          - close_date
+          - agency_code
+          - agency_name
+          - top_level_agency_name
+          - award_floor
+          - award_ceiling
+          description: The field to sort the response by
+        sort_direction:
+          description: Whether to sort the response ascending or descending
+          enum:
+          - ascending
+          - descending
           type:
-          - integer
-          - 'null'
-          minimum: 0
-          example: 0
-        max:
-          type:
-          - integer
-          - 'null'
-          minimum: 0
-          example: 10000000
-    FundingCategoryFilterV1Schema:
+          - string
+      required:
+      - order_by
+      - sort_direction
+    FormInstructionSchema:
       type: object
       properties:
-        one_of:
+        form_instruction_id:
+          type: string
+          format: uuid
+          description: The UUID of the form instruction
+          example: 123e4567-e89b-12d3-a456-426614174000
+        file_name:
+          type: string
+          description: The name of the form instruction file
+          example: instructions.pdf
+        download_path:
+          type: string
+          description: The download URL for the form instruction file
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the form instruction was created
+        updated_at:
+          type: string
+          format: date-time
+          description: The timestamp when the form instruction was last updated
+    ExperimentalV1Schema:
+      type: object
+      properties:
+        scoring_rule:
+          default:
+          - default
+          description: Scoring rule to query against OpenSearch
+          enum:
+          - default
+          - expanded
+          - agency
+          type:
+          - string
+    OpportunitySearchResponseV1Schema:
+      type: object
+      properties:
+        pagination_info:
+          description: The pagination information for paginated endpoints
+          type:
+          - object
+          $ref: '#/components/schemas/PaginationInfoSchema'
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
           type: array
-          minItems: 1
           items:
-            enum:
-            - recovery_act
-            - agriculture
-            - arts
-            - business_and_commerce
-            - community_development
-            - consumer_protection
-            - disaster_prevention_and_relief
-            - education
-            - employment_labor_and_training
-            - energy
-            - environment
-            - food_and_nutrition
-            - health
-            - housing
-            - humanities
-            - infrastructure_investment_and_jobs_act
-            - information_and_statistics
-            - income_security_and_social_services
-            - law_justice_and_legal_services
-            - natural_resources
-            - opportunity_zone_benefits
-            - regional_development
-            - science_technology_and_other_research_and_development
-            - transportation
-            - affordable_care_act
-            - other
-            - energy_infrastructure_and_critical_mineral_and_materials
-            - recreation_and_tourism
-            type:
-            - string
-    AwardCeilingFilterV1Schema:
+            $ref: '#/components/schemas/OpportunityV1Schema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+        facet_counts:
+          description: Counts of filter/facet values in the full response
+          type:
+          - object
+          $ref: '#/components/schemas/OpportunityFacetV1Schema'
+    OpportunityV1Schema:
       type: object
       properties:
-        min:
+        opportunity_id:
+          type: string
+          format: uuid
+          description: The internal ID of the opportunity
+          example: 123e4567-e89b-12d3-a456-426614174000
+        legacy_opportunity_id:
           type:
           - integer
           - 'null'
-          minimum: 0
-          example: 0
-        max:
+          description: The internal legacy ID of the opportunity
+          example: 12345
+        opportunity_number:
           type:
-          - integer
+          - string
           - 'null'
-          minimum: 0
-          example: 10000000
+          description: The funding opportunity number
+          example: ABC-123-XYZ-001
+        opportunity_title:
+          type:
+          - string
+          - 'null'
+          description: The title of the opportunity
+          example: Research into conservation techniques
+        agency:
+          type:
+          - string
+          - 'null'
+          description: 'DEPRECATED - use: agency_code'
+          example: US-ABC
+        agency_code:
+          type:
+          - string
+          - 'null'
+          description: The agency who created the opportunity
+          example: US-ABC
+        agency_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the agency who created the opportunity
+          example: Department of Examples
+        top_level_agency_name:
+          type:
+          - string
+          - 'null'
+          description: The name of the top level agency who created the oppportunity
+          example: Department of Examples
+        category:
+          description: The opportunity category
+          example:
+          - discretionary
+          enum:
+          - discretionary
+          - mandatory
+          - continuation
+          - earmark
+          - other
+          type:
+          - string
+          - 'null'
+          - 'null'
+        category_explanation:
+          type:
+          - string
+          - 'null'
+          description: Explanation of the category when the category is 'O' (other)
+          example: null
+        opportunity_assistance_listings:
+          type: array
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/OpportunityAssistanceListingV1Schema'
+        summary:
+          type:
+          - object
+          $ref: '#/components/schemas/OpportunitySummaryV1Schema'
+        opportunity_status:
+          description: The current status of the opportunity
+          example:
+          - posted
+          enum:
+          - forecasted
+          - posted
+          - closed
+          - archived
+          type:
+          - string
+        top_level_agency_code:
+          type:
+          - string
+          - 'null'
+          description: The top-level (parent) agency
+          example: HHS
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
     OpportunityWithAttachmentsV1Schema:
       type: object
       properties:
@@ -875,121 +908,117 @@ components:
             type:
             - object
             $ref: '#/components/schemas/CompetitionAlphaSchema'
-    AgencyOppSearchFilterV1Schema:
+    ErrorResponseSchema:
       type: object
       properties:
-        one_of:
-          type: array
-          minItems: 1
-          items:
-            type: string
-            minLength: 2
-            example: USAID
-    OpportunityV1Schema:
-      type: object
-      properties:
-        opportunity_id:
+        data:
+          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
+          example: {}
+        message:
           type: string
-          format: uuid
-          description: The internal ID of the opportunity
-          example: 123e4567-e89b-12d3-a456-426614174000
-        legacy_opportunity_id:
-          type:
-          - integer
-          - 'null'
-          description: The internal legacy ID of the opportunity
-          example: 12345
-        opportunity_number:
-          type:
-          - string
-          - 'null'
-          description: The funding opportunity number
-          example: ABC-123-XYZ-001
-        opportunity_title:
-          type:
-          - string
-          - 'null'
-          description: The title of the opportunity
-          example: Research into conservation techniques
-        agency:
-          type:
-          - string
-          - 'null'
-          description: 'DEPRECATED - use: agency_code'
-          example: US-ABC
-        agency_code:
-          type:
-          - string
-          - 'null'
-          description: The agency who created the opportunity
-          example: US-ABC
-        agency_name:
-          type:
-          - string
-          - 'null'
-          description: The name of the agency who created the opportunity
-          example: Department of Examples
-        top_level_agency_name:
-          type:
-          - string
-          - 'null'
-          description: The name of the top level agency who created the oppportunity
-          example: Department of Examples
-        category:
-          description: The opportunity category
-          example:
-          - discretionary
-          enum:
-          - discretionary
-          - mandatory
-          - continuation
-          - earmark
-          - other
-          type:
-          - string
-          - 'null'
-          - 'null'
-        category_explanation:
-          type:
-          - string
-          - 'null'
-          description: Explanation of the category when the category is 'O' (other)
-          example: null
-        opportunity_assistance_listings:
+          description: General description of the error
+          example: Error
+        status_code:
+          type: integer
+          description: The HTTP status code of the error
+        errors:
           type: array
+          example: []
           items:
             type:
             - object
-            $ref: '#/components/schemas/OpportunityAssistanceListingV1Schema'
-        summary:
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        internal_request_id:
+          type: string
+          description: An internal tracking ID
+          example: 550e8400-e29b-41d4-a716-446655440000
+    OpportunitySearchCSVRequestV1Schema:
+      type: object
+      properties:
+        query:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Query string which searches against several text fields
+          example: research
+        query_operator:
+          default:
+          - AND
+          description: Query operator for combining search conditions
+          example: OR
+          enum:
+          - AND
+          - OR
+          type:
+          - string
+        filters:
           type:
           - object
-          $ref: '#/components/schemas/OpportunitySummaryV1Schema'
+          $ref: '#/components/schemas/OpportunitySearchFilterV1Schema'
+      additionalProperties: false
+    OpportunityFacetV1Schema:
+      type: object
+      properties:
         opportunity_status:
-          description: The current status of the opportunity
+          type: object
+          description: The counts of opportunity_status values in the full response
           example:
-          - posted
-          enum:
-          - forecasted
-          - posted
-          - closed
-          - archived
-          type:
-          - string
-        top_level_agency_code:
-          type:
-          - string
-          - 'null'
-          description: The top-level (parent) agency
-          example: HHS
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
+            posted: 1
+            forecasted: 2
+          additionalProperties:
+            type: integer
+        applicant_type:
+          type: object
+          description: The counts of applicant_type values in the full response
+          example:
+            state_governments: 3
+            county_governments: 2
+            city_or_township_governments: 1
+          additionalProperties:
+            type: integer
+        funding_instrument:
+          type: object
+          description: The counts of funding_instrument values in the full response
+          example:
+            cooperative_agreement: 4
+            grant: 3
+          additionalProperties:
+            type: integer
+        funding_category:
+          type: object
+          description: The counts of funding_category values in the full response
+          example:
+            recovery_act: 2
+            arts: 3
+            agriculture: 5
+          additionalProperties:
+            type: integer
+        agency:
+          type: object
+          description: The counts of agency values in the full response
+          example:
+            USAID: 4
+            DOC: 3
+          additionalProperties:
+            type: integer
+        is_cost_sharing:
+          type: object
+          description: The counts of is_cost_sharing values in the full response
+          example:
+            'true': 1
+            'false': 3
+          additionalProperties:
+            type: integer
+        close_date:
+          type: object
+          description: The counts of close_date values in the full response
+          additionalProperties:
+            type: integer
+        post_date:
+          type: object
+          description: The counts of post_date values in the full response
+          additionalProperties:
+            type: integer
     CompetitionAlphaSchema:
       type: object
       properties:
@@ -1069,116 +1098,36 @@ components:
         is_simpler_grants_enabled:
           type: boolean
           description: Whether simpler grants are enabled for this competition
-    CompetitionInstructionAlphaSchema:
+    EstimatedTotalProgramFundingFilterV1Schema:
       type: object
       properties:
-        file_name:
-          type: string
-          description: The name of the instruction file
-          example: competition_instructions.pdf
-        download_path:
-          type: string
-          description: The URL to download the instruction file
-          example: https://cdn.example.com/competition-instructions/file.pdf
-        created_at:
-          type: string
-          format: date-time
-          description: The date and time when the instruction was created
-        updated_at:
-          type: string
-          format: date-time
-          description: The date and time when the instruction was last updated
-    OpportunitySearchCSVRequestV1Schema:
-      type: object
-      properties:
-        query:
-          type: string
-          minLength: 1
-          maxLength: 100
-          description: Query string which searches against several text fields
-          example: research
-        query_operator:
-          default:
-          - AND
-          description: Query operator for combining search conditions
-          example: OR
-          enum:
-          - AND
-          - OR
-          type:
-          - string
-        filters:
-          type:
-          - object
-          $ref: '#/components/schemas/OpportunitySearchFilterV1Schema'
-      additionalProperties: false
-    PostDateFilterV1Schema:
-      type: object
-      properties:
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        start_date_relative:
+        min:
           type:
           - integer
           - 'null'
-          minimum: -1000000
-          maximum: 1000000
-        end_date_relative:
+          minimum: 0
+          example: 0
+        max:
           type:
           - integer
           - 'null'
-          minimum: -1000000
-          maximum: 1000000
-    OpportunitySearchRequestV1Schema:
+          minimum: 0
+          example: 10000000
+    AwardFloorFilterV1Schema:
       type: object
       properties:
-        query:
-          type: string
-          minLength: 1
-          maxLength: 100
-          description: Query string which searches against several text fields
-          example: research
-        query_operator:
-          default:
-          - AND
-          description: Query operator for combining search conditions
-          example: OR
-          enum:
-          - AND
-          - OR
+        min:
           type:
-          - string
-        filters:
+          - integer
+          - 'null'
+          minimum: 0
+          example: 0
+        max:
           type:
-          - object
-          $ref: '#/components/schemas/OpportunitySearchFilterV1Schema'
-        experimental:
-          type:
-          - object
-          $ref: '#/components/schemas/ExperimentalV1Schema'
-        pagination:
-          type:
-          - object
-          $ref: '#/components/schemas/OpportunityPaginationV1Schema'
-        format:
-          default:
-          - json
-          description: Response serialization. `json` returns the standard envelope with facet counts. `csv` returns a CSV file; pagination and sort_order match the JSON response for the same request. For a bulk export (up to 5000 rows, fixed sort by post_date descending), use `POST /v1/opportunities/search/csv` instead.
-          enum:
-          - json
-          - csv
-          type:
-          - string
-      required:
-      - pagination
+          - integer
+          - 'null'
+          minimum: 0
+          example: 10000
     ApplicantTypeFilterV1Schema:
       type: object
       properties:
@@ -1204,266 +1153,6 @@ components:
             - small_businesses
             - other
             - unrestricted
-            type:
-            - string
-    PaginationInfoSchema:
-      type: object
-      properties:
-        page_offset:
-          type: integer
-          description: The page number that was fetched
-          example: 1
-        page_size:
-          type: integer
-          description: The size of the page fetched
-          example: 25
-        total_records:
-          type: integer
-          description: The total number of records fetchable
-          example: 42
-        total_pages:
-          type: integer
-          description: The total number of pages that can be fetched
-          example: 2
-        sort_order:
-          type: array
-          description: The sort order passed in originally
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/SortOrderSchema'
-    ExpectedNumberAwardsFilterV1Schema:
-      type: object
-      properties:
-        min:
-          type:
-          - integer
-          - 'null'
-          minimum: 0
-          example: 0
-        max:
-          type:
-          - integer
-          - 'null'
-          minimum: 0
-          example: 25
-    OpportunitySearchResponseV1Schema:
-      type: object
-      properties:
-        pagination_info:
-          description: The pagination information for paginated endpoints
-          type:
-          - object
-          $ref: '#/components/schemas/PaginationInfoSchema'
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/OpportunityV1Schema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-        facet_counts:
-          description: Counts of filter/facet values in the full response
-          type:
-          - object
-          $ref: '#/components/schemas/OpportunityFacetV1Schema'
-    OpportunityGetResponseV1Schema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type:
-          - object
-          $ref: '#/components/schemas/OpportunityWithAttachmentsV1Schema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    OpportunitySearchFilterV1Schema:
-      type: object
-      properties:
-        funding_instrument:
-          type:
-          - object
-          $ref: '#/components/schemas/FundingInstrumentFilterV1Schema'
-        funding_category:
-          type:
-          - object
-          $ref: '#/components/schemas/FundingCategoryFilterV1Schema'
-        applicant_type:
-          type:
-          - object
-          $ref: '#/components/schemas/ApplicantTypeFilterV1Schema'
-        opportunity_status:
-          type:
-          - object
-          $ref: '#/components/schemas/OpportunityStatusFilterV1Schema'
-        agency:
-          type:
-          - object
-          $ref: '#/components/schemas/AgencyOppSearchFilterV1Schema'
-        assistance_listing_number:
-          type:
-          - object
-          $ref: '#/components/schemas/AssistanceListingNumberFilterV1Schema'
-        is_cost_sharing:
-          type:
-          - object
-          $ref: '#/components/schemas/IsCostSharingFilterV1Schema'
-        expected_number_of_awards:
-          type:
-          - object
-          $ref: '#/components/schemas/ExpectedNumberAwardsFilterV1Schema'
-        award_floor:
-          type:
-          - object
-          $ref: '#/components/schemas/AwardFloorFilterV1Schema'
-        award_ceiling:
-          type:
-          - object
-          $ref: '#/components/schemas/AwardCeilingFilterV1Schema'
-        estimated_total_program_funding:
-          type:
-          - object
-          $ref: '#/components/schemas/EstimatedTotalProgramFundingFilterV1Schema'
-        post_date:
-          type:
-          - object
-          $ref: '#/components/schemas/PostDateFilterV1Schema'
-        close_date:
-          type:
-          - object
-          $ref: '#/components/schemas/CloseDateFilterV1Schema'
-        top_level_agency:
-          type:
-          - object
-          $ref: '#/components/schemas/TopLevelAgencyOppSearchFilterV1Schema'
-    FormInstructionSchema:
-      type: object
-      properties:
-        form_instruction_id:
-          type: string
-          format: uuid
-          description: The UUID of the form instruction
-          example: 123e4567-e89b-12d3-a456-426614174000
-        file_name:
-          type: string
-          description: The name of the form instruction file
-          example: instructions.pdf
-        download_path:
-          type: string
-          description: The download URL for the form instruction file
-        created_at:
-          type: string
-          format: date-time
-          description: The timestamp when the form instruction was created
-        updated_at:
-          type: string
-          format: date-time
-          description: The timestamp when the form instruction was last updated
-    OpportunityStatusFilterV1Schema:
-      type: object
-      properties:
-        one_of:
-          type: array
-          minItems: 1
-          items:
-            enum:
-            - forecasted
-            - posted
-            - closed
-            - archived
-            type:
-            - string
-    ValidationIssueSchema:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of error
-          example: invalid
-        message:
-          type: string
-          description: The message to return
-          example: Not a valid string.
-        field:
-          type: string
-          description: The field that failed
-          example: summary.summary_description
-        value:
-          type: string
-          description: The value that failed
-          example: invalid string
-    CompetitionFormAlphaSchema:
-      type: object
-      properties:
-        is_required:
-          type: boolean
-          description: Whether the form is required for all applications to the competition
-        form:
-          description: The form template information for this competition
-          type:
-          - object
-          $ref: '#/components/schemas/FormAlphaSchema'
-    AwardFloorFilterV1Schema:
-      type: object
-      properties:
-        min:
-          type:
-          - integer
-          - 'null'
-          minimum: 0
-          example: 0
-        max:
-          type:
-          - integer
-          - 'null'
-          minimum: 0
-          example: 10000
-    ErrorResponseSchema:
-      type: object
-      properties:
-        data:
-          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
-          example: {}
-        message:
-          type: string
-          description: General description of the error
-          example: Error
-        status_code:
-          type: integer
-          description: The HTTP status code of the error
-        errors:
-          type: array
-          example: []
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/ValidationIssueSchema'
-        internal_request_id:
-          type: string
-          description: An internal tracking ID
-          example: 550e8400-e29b-41d4-a716-446655440000
-    FundingInstrumentFilterV1Schema:
-      type: object
-      properties:
-        one_of:
-          type: array
-          minItems: 1
-          items:
-            enum:
-            - cooperative_agreement
-            - grant
-            - procurement_contract
-            - other
             type:
             - string
     FormAlphaSchema:
@@ -1606,6 +1295,120 @@ components:
           type: string
           format: date-time
           description: The timestamp when the form was last updated
+    CompetitionInstructionAlphaSchema:
+      type: object
+      properties:
+        file_name:
+          type: string
+          description: The name of the instruction file
+          example: competition_instructions.pdf
+        download_path:
+          type: string
+          description: The URL to download the instruction file
+          example: https://cdn.example.com/competition-instructions/file.pdf
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time when the instruction was created
+        updated_at:
+          type: string
+          format: date-time
+          description: The date and time when the instruction was last updated
+    FundingCategoryFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            enum:
+            - recovery_act
+            - agriculture
+            - arts
+            - business_and_commerce
+            - community_development
+            - consumer_protection
+            - disaster_prevention_and_relief
+            - education
+            - employment_labor_and_training
+            - energy
+            - environment
+            - food_and_nutrition
+            - health
+            - housing
+            - humanities
+            - infrastructure_investment_and_jobs_act
+            - information_and_statistics
+            - income_security_and_social_services
+            - law_justice_and_legal_services
+            - natural_resources
+            - opportunity_zone_benefits
+            - regional_development
+            - science_technology_and_other_research_and_development
+            - transportation
+            - affordable_care_act
+            - other
+            - energy_infrastructure_and_critical_mineral_and_materials
+            - recreation_and_tourism
+            type:
+            - string
+    OpportunityGetResponseV1Schema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type:
+          - object
+          $ref: '#/components/schemas/OpportunityWithAttachmentsV1Schema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    OpportunitySearchRequestV1Schema:
+      type: object
+      properties:
+        query:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Query string which searches against several text fields
+          example: research
+        query_operator:
+          default:
+          - AND
+          description: Query operator for combining search conditions
+          example: OR
+          enum:
+          - AND
+          - OR
+          type:
+          - string
+        filters:
+          type:
+          - object
+          $ref: '#/components/schemas/OpportunitySearchFilterV1Schema'
+        experimental:
+          type:
+          - object
+          $ref: '#/components/schemas/ExperimentalV1Schema'
+        pagination:
+          type:
+          - object
+          $ref: '#/components/schemas/OpportunityPaginationV1Schema'
+        format:
+          default:
+          - json
+          description: Response serialization. `json` returns the standard envelope with facet counts. `csv` returns a CSV file; pagination and sort_order match the JSON response for the same request. For a bulk export (up to 5000 rows, fixed sort by post_date descending), use `POST /v1/opportunities/search/csv` instead.
+          enum:
+          - json
+          - csv
+          type:
+          - string
+      required:
+      - pagination
     AssistanceListingNumberFilterV1Schema:
       type: object
       properties:
@@ -1616,6 +1419,204 @@ components:
             type: string
             pattern: ^\d{2}\.[A-Za-z0-9]{2,3}$
             example: '45.149'
+    ValidationIssueSchema:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error
+          example: invalid
+        message:
+          type: string
+          description: The message to return
+          example: Not a valid string.
+        field:
+          type: string
+          description: The field that failed
+          example: summary.summary_description
+        value:
+          type: string
+          description: The value that failed
+          example: invalid string
+    OpportunitySearchFilterV1Schema:
+      type: object
+      properties:
+        funding_instrument:
+          type:
+          - object
+          $ref: '#/components/schemas/FundingInstrumentFilterV1Schema'
+        funding_category:
+          type:
+          - object
+          $ref: '#/components/schemas/FundingCategoryFilterV1Schema'
+        applicant_type:
+          type:
+          - object
+          $ref: '#/components/schemas/ApplicantTypeFilterV1Schema'
+        opportunity_status:
+          type:
+          - object
+          $ref: '#/components/schemas/OpportunityStatusFilterV1Schema'
+        agency:
+          type:
+          - object
+          $ref: '#/components/schemas/AgencyOppSearchFilterV1Schema'
+        assistance_listing_number:
+          type:
+          - object
+          $ref: '#/components/schemas/AssistanceListingNumberFilterV1Schema'
+        is_cost_sharing:
+          type:
+          - object
+          $ref: '#/components/schemas/IsCostSharingFilterV1Schema'
+        expected_number_of_awards:
+          type:
+          - object
+          $ref: '#/components/schemas/ExpectedNumberAwardsFilterV1Schema'
+        award_floor:
+          type:
+          - object
+          $ref: '#/components/schemas/AwardFloorFilterV1Schema'
+        award_ceiling:
+          type:
+          - object
+          $ref: '#/components/schemas/AwardCeilingFilterV1Schema'
+        estimated_total_program_funding:
+          type:
+          - object
+          $ref: '#/components/schemas/EstimatedTotalProgramFundingFilterV1Schema'
+        post_date:
+          type:
+          - object
+          $ref: '#/components/schemas/PostDateFilterV1Schema'
+        close_date:
+          type:
+          - object
+          $ref: '#/components/schemas/CloseDateFilterV1Schema'
+        top_level_agency:
+          type:
+          - object
+          $ref: '#/components/schemas/TopLevelAgencyOppSearchFilterV1Schema'
+    CompetitionFormAlphaSchema:
+      type: object
+      properties:
+        is_required:
+          type: boolean
+          description: Whether the form is required for all applications to the competition
+        form:
+          description: The form template information for this competition
+          type:
+          - object
+          $ref: '#/components/schemas/FormAlphaSchema'
+    IsCostSharingFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type:
+          - array
+          - 'null'
+          items:
+            type: boolean
+            example: true
+    OpportunityStatusFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            enum:
+            - forecasted
+            - posted
+            - closed
+            - archived
+            type:
+            - string
+    PaginationInfoSchema:
+      type: object
+      properties:
+        page_offset:
+          type: integer
+          description: The page number that was fetched
+          example: 1
+        page_size:
+          type: integer
+          description: The size of the page fetched
+          example: 25
+        total_records:
+          type: integer
+          description: The total number of records fetchable
+          example: 42
+        total_pages:
+          type: integer
+          description: The total number of pages that can be fetched
+          example: 2
+        sort_order:
+          type: array
+          description: The sort order passed in originally
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderSchema'
+    SortOrderSchema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          description: The field that the records were sorted by
+          example: id
+        sort_direction:
+          description: The direction the records are sorted
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+    TopLevelAgencyOppSearchFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            minLength: 2
+            example: USAID
+    PostDateFilterV1Schema:
+      type: object
+      properties:
+        start_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
+        start_date_relative:
+          type:
+          - integer
+          - 'null'
+          minimum: -1000000
+          maximum: 1000000
+        end_date_relative:
+          type:
+          - integer
+          - 'null'
+          minimum: -1000000
+          maximum: 1000000
+    AgencyOppSearchFilterV1Schema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            minLength: 2
+            example: USAID
     OpportunityAttachmentV1Schema:
       type: object
       properties:
@@ -1651,6 +1652,21 @@ components:
           type: string
           description: A description of the attachment
           example: The full announcement NOFO
+    AwardCeilingFilterV1Schema:
+      type: object
+      properties:
+        min:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          example: 0
+        max:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          example: 10000000
     OpportunityPaginationV1Schema:
       type: object
       properties:
@@ -1680,51 +1696,35 @@ components:
       required:
       - page_offset
       - page_size
-    CloseDateFilterV1Schema:
-      type: object
-      properties:
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        start_date_relative:
-          type:
-          - integer
-          - 'null'
-          minimum: -1000000
-          maximum: 1000000
-        end_date_relative:
-          type:
-          - integer
-          - 'null'
-          minimum: -1000000
-          maximum: 1000000
-    TopLevelAgencyOppSearchFilterV1Schema:
+    FundingInstrumentFilterV1Schema:
       type: object
       properties:
         one_of:
           type: array
           minItems: 1
           items:
-            type: string
-            minLength: 2
-            example: USAID
-    IsCostSharingFilterV1Schema:
+            enum:
+            - cooperative_agreement
+            - grant
+            - procurement_contract
+            - other
+            type:
+            - string
+    ExpectedNumberAwardsFilterV1Schema:
       type: object
       properties:
-        one_of:
+        min:
           type:
-          - array
+          - integer
           - 'null'
-          items:
-            type: boolean
-            example: true
+          minimum: 0
+          example: 0
+        max:
+          type:
+          - integer
+          - 'null'
+          minimum: 0
+          example: 25
   securitySchemes:
     ApiJwtAuth:
       type: apiKey

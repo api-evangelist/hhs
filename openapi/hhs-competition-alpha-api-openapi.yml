@@ -174,37 +174,6 @@ components:
             $ref: '#/components/schemas/FormReplaceSchema'
       required:
       - forms
-    FormInstructionSchema:
-      type: object
-      properties:
-        form_instruction_id:
-          type: string
-          format: uuid
-          description: The UUID of the form instruction
-          example: 123e4567-e89b-12d3-a456-426614174000
-        file_name:
-          type: string
-          description: The name of the form instruction file
-          example: instructions.pdf
-        download_path:
-          type: string
-          description: The download URL for the form instruction file
-        created_at:
-          type: string
-          format: date-time
-          description: The timestamp when the form instruction was created
-        updated_at:
-          type: string
-          format: date-time
-          description: The timestamp when the form instruction was last updated
-    CompetitionFlagUpdateSchema:
-      type: object
-      properties:
-        is_simpler_grants_enabled:
-          type: boolean
-          description: Whether simpler grants are enabled for this competition
-      required:
-      - is_simpler_grants_enabled
     CompetitionFormAlphaSchema:
       type: object
       properties:
@@ -216,104 +185,6 @@ components:
           type:
           - object
           $ref: '#/components/schemas/FormAlphaSchema'
-    ValidationIssueSchema:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of error
-          example: invalid
-        message:
-          type: string
-          description: The message to return
-          example: Not a valid string.
-        field:
-          type: string
-          description: The field that failed
-          example: summary.summary_description
-        value:
-          type: string
-          description: The value that failed
-          example: invalid string
-    CompetitionAlphaSchema:
-      type: object
-      properties:
-        competition_id:
-          type: string
-          format: uuid
-          description: The competition ID
-          example: 123e4567-e89b-12d3-a456-426614174000
-        opportunity_id:
-          type: string
-          format: uuid
-          description: The opportunity ID that the competition is associated with
-          example: 123e4567-e89b-12d3-a456-426614174000
-        competition_forms:
-          type: array
-          description: List of forms required for this competition
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/CompetitionFormAlphaSchema'
-        competition_instructions:
-          type: array
-          description: List of instruction files associated with this competition
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/CompetitionInstructionAlphaSchema'
-        competition_title:
-          type:
-          - string
-          - 'null'
-          description: The title of the competition
-          example: Proposal for Advanced Research
-        opening_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: The opening date of the competition, the first day applications are accepted
-        closing_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: The closing date of the competition, the last day applications are accepted
-        contact_info:
-          type:
-          - string
-          - 'null'
-          description: Contact info getting assistance with the competition
-          example: 'Bob Smith
-
-            FakeMail@fake.com'
-        opportunity_assistance_listing:
-          description: Assistance listing information for this competition
-          type:
-          - object
-          - 'null'
-          anyOf:
-          - $ref: '#/components/schemas/OpportunityAssistanceListingV1Schema'
-          - type: 'null'
-        open_to_applicants:
-          type: array
-          description: List of applicant types who are eligible for this competition
-          example:
-          - - individual
-          - - organization
-          items:
-            enum:
-            - individual
-            - organization
-            type:
-            - string
-        is_open:
-          type: boolean
-          description: Whether the competition is open and accepting applications
-        is_simpler_grants_enabled:
-          type: boolean
-          description: Whether simpler grants are enabled for this competition
     ErrorResponseSchema:
       type: object
       properties:
@@ -338,40 +209,6 @@ components:
           type: string
           description: An internal tracking ID
           example: 550e8400-e29b-41d4-a716-446655440000
-    CompetitionInstructionAlphaSchema:
-      type: object
-      properties:
-        file_name:
-          type: string
-          description: The name of the instruction file
-          example: competition_instructions.pdf
-        download_path:
-          type: string
-          description: The URL to download the instruction file
-          example: https://cdn.example.com/competition-instructions/file.pdf
-        created_at:
-          type: string
-          format: date-time
-          description: The date and time when the instruction was created
-        updated_at:
-          type: string
-          format: date-time
-          description: The date and time when the instruction was last updated
-    CompetitionResponseAlphaSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type:
-          - object
-          $ref: '#/components/schemas/CompetitionAlphaSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
     FormAlphaSchema:
       type: object
       properties:
@@ -512,6 +349,90 @@ components:
           type: string
           format: date-time
           description: The timestamp when the form was last updated
+    CompetitionInstructionAlphaSchema:
+      type: object
+      properties:
+        file_name:
+          type: string
+          description: The name of the instruction file
+          example: competition_instructions.pdf
+        download_path:
+          type: string
+          description: The URL to download the instruction file
+          example: https://cdn.example.com/competition-instructions/file.pdf
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time when the instruction was created
+        updated_at:
+          type: string
+          format: date-time
+          description: The date and time when the instruction was last updated
+    FormInstructionSchema:
+      type: object
+      properties:
+        form_instruction_id:
+          type: string
+          format: uuid
+          description: The UUID of the form instruction
+          example: 123e4567-e89b-12d3-a456-426614174000
+        file_name:
+          type: string
+          description: The name of the form instruction file
+          example: instructions.pdf
+        download_path:
+          type: string
+          description: The download URL for the form instruction file
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the form instruction was created
+        updated_at:
+          type: string
+          format: date-time
+          description: The timestamp when the form instruction was last updated
+    CompetitionFlagUpdateSchema:
+      type: object
+      properties:
+        is_simpler_grants_enabled:
+          type: boolean
+          description: Whether simpler grants are enabled for this competition
+      required:
+      - is_simpler_grants_enabled
+    CompetitionResponseAlphaSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type:
+          - object
+          $ref: '#/components/schemas/CompetitionAlphaSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    ValidationIssueSchema:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error
+          example: invalid
+        message:
+          type: string
+          description: The message to return
+          example: Not a valid string.
+        field:
+          type: string
+          description: The field that failed
+          example: summary.summary_description
+        value:
+          type: string
+          description: The value that failed
+          example: invalid string
     FormReplaceSchema:
       type: object
       properties:
@@ -526,6 +447,85 @@ components:
       required:
       - form_id
       - is_required
+    CompetitionAlphaSchema:
+      type: object
+      properties:
+        competition_id:
+          type: string
+          format: uuid
+          description: The competition ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        opportunity_id:
+          type: string
+          format: uuid
+          description: The opportunity ID that the competition is associated with
+          example: 123e4567-e89b-12d3-a456-426614174000
+        competition_forms:
+          type: array
+          description: List of forms required for this competition
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/CompetitionFormAlphaSchema'
+        competition_instructions:
+          type: array
+          description: List of instruction files associated with this competition
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/CompetitionInstructionAlphaSchema'
+        competition_title:
+          type:
+          - string
+          - 'null'
+          description: The title of the competition
+          example: Proposal for Advanced Research
+        opening_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The opening date of the competition, the first day applications are accepted
+        closing_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The closing date of the competition, the last day applications are accepted
+        contact_info:
+          type:
+          - string
+          - 'null'
+          description: Contact info getting assistance with the competition
+          example: 'Bob Smith
+
+            FakeMail@fake.com'
+        opportunity_assistance_listing:
+          description: Assistance listing information for this competition
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/OpportunityAssistanceListingV1Schema'
+          - type: 'null'
+        open_to_applicants:
+          type: array
+          description: List of applicant types who are eligible for this competition
+          example:
+          - - individual
+          - - organization
+          items:
+            enum:
+            - individual
+            - organization
+            type:
+            - string
+        is_open:
+          type: boolean
+          description: Whether the competition is open and accepting applications
+        is_simpler_grants_enabled:
+          type: boolean
+          description: Whether simpler grants are enabled for this competition
   securitySchemes:
     ApiJwtAuth:
       type: apiKey

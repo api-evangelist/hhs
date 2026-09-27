@@ -576,64 +576,21 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    OrganizationGetResponseSchema:
+    InvitationStatusFilterSchema:
       type: object
       properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          description: Organization information
-          type:
-          - object
-          $ref: '#/components/schemas/OrganizationDataSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    SamGovEntityResponseSchema:
-      type: object
-      properties:
-        uei:
-          type: string
-          description: Unique Entity Identifier
-          example: 000123456789
-        legal_business_name:
-          type: string
-          description: Legal business name from SAM.gov
-          example: Example Inc.
-        expiration_date:
-          type: string
-          format: date
-          description: SAM.gov registration expiration date
-          example: '2025-08-11'
-        ebiz_poc_email:
-          type: string
-          description: Email address of the Electronic Business Point of Contact
-          example: ebiz@example.com
-        ebiz_poc_first_name:
-          type: string
-          description: First name of the Electronic Business Point of Contact
-          example: John
-        ebiz_poc_last_name:
-          type: string
-          description: Last name of the Electronic Business Point of Contact
-          example: Smith
-    SortOrderSchema:
-      type: object
-      properties:
-        order_by:
-          type: string
-          description: The field that the records were sorted by
-          example: id
-        sort_direction:
-          description: The direction the records are sorted
-          enum:
-          - ascending
-          - descending
-          type:
-          - string
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            example: pending
+            enum:
+            - accepted
+            - rejected
+            - expired
+            - pending
+            type:
+            - string
     SortOrderOrganizationUsersPaginationSchema:
       type: object
       properties:
@@ -655,32 +612,267 @@ components:
       required:
       - order_by
       - sort_direction
-    LegacyUserDataSchema:
+    OrganizationUpdateUserRolesResponseSchema:
       type: object
       properties:
-        email:
+        message:
           type: string
-          description: Legacy user email address
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          description: Role information
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/RoleSchema1'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    OrganizationIgnoreLegacyUserResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          example: null
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    InviteeDataSchema:
+      type: object
+      properties:
+        user_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: Invitee user unique identifier (null if not registered)
+          example: 123e4567-e89b-12d3-a456-426614174000
+        email:
+          type:
+          - string
+          - 'null'
+          description: Invitee email address
           example: user@example.com
         first_name:
           type:
           - string
           - 'null'
-          description: Legacy user first name
+          description: Invitee first name
+          example: Jane
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: Invitee last name
+          example: Smith
+    OrganizationSaveOpportunityResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          description: No data returned
+          example: {}
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    OrganizationCreateInvitationRequestSchema:
+      type: object
+      properties:
+        invitee_email:
+          type: string
+          description: Email address of the user to invite
+          example: user@example.com
+        role_ids:
+          type: array
+          minItems: 1
+          description: List of role IDs to assign to the invited user
+          example:
+          - 123e4567-e89b-12d3-a456-426614174000
+          items:
+            type: string
+            format: uuid
+            example: 123e4567-e89b-12d3-a456-426614174000
+      required:
+      - invitee_email
+      - role_ids
+    LegacyUserFilterSchema:
+      type: object
+      properties:
+        status:
+          description: Filter legacy users by status
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/LegacyUserStatusFilterSchema'
+          - type: 'null'
+    OrganizationUsersPaginationSchema:
+      type: object
+      properties:
+        sort_order:
+          type: array
+          default:
+          - order_by: email
+            sort_direction: ascending
+          minItems: 1
+          maxItems: 5
+          description: The list of sorting rules
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderOrganizationUsersPaginationSchema'
+        page_size:
+          type: integer
+          minimum: 1
+          maximum: 5000
+          description: The size of the page to fetch
+          example: 25
+        page_offset:
+          type: integer
+          minimum: 1
+          description: The page number to fetch, starts counting from 1
+          example: 1
+      required:
+      - page_offset
+      - page_size
+    LegacyUserStatusFilterSchema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            example: available
+            enum:
+            - member
+            - pending_invitation
+            - available
+            type:
+            - string
+    InviterDataSchema:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          description: Inviter user unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        email:
+          type: string
+          description: Inviter email address
+          example: admin@org.com
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: Inviter first name
           example: John
         last_name:
           type:
           - string
           - 'null'
-          description: Legacy user last name
+          description: Inviter last name
           example: Doe
-        status:
+    OrganizationDeleteSavedOpportunityResponseSchema:
+      type: object
+      properties:
+        message:
           type: string
-          description: Status of the legacy user relative to the organization
-          example: available
-      required:
-      - email
-      - status
+          description: The message to return
+          example: Success
+        data:
+          description: No data returned
+          example: {}
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    OrganizationGetResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          description: Organization information
+          type:
+          - object
+          $ref: '#/components/schemas/OrganizationDataSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    OrganizationRemoveUserResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          description: No data returned on successful removal
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    ErrorResponseSchema:
+      type: object
+      properties:
+        data:
+          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
+          example: {}
+        message:
+          type: string
+          description: General description of the error
+          example: Error
+        status_code:
+          type: integer
+          description: The HTTP status code of the error
+        errors:
+          type: array
+          example: []
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        internal_request_id:
+          type: string
+          description: An internal tracking ID
+          example: 550e8400-e29b-41d4-a716-446655440000
+    OrganizationUsersResponseSchema:
+      type: object
+      properties:
+        pagination_info:
+          description: The pagination information for paginated endpoints
+          type:
+          - object
+          $ref: '#/components/schemas/PaginationInfoSchema'
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          description: List of organization members
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/OrganizationUserSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
     OrganizationIgnoreLegacyUserRequestSchema:
       type: object
       properties:
@@ -689,22 +881,70 @@ components:
           description: Email address of the legacy user to ignore
       required:
       - email
-    OrganizationInvitationListRequestSchema:
+    OrganizationInvitationFilterSchema:
       type: object
       properties:
-        filters:
-          description: Filters to apply to the invitation list
+        status:
+          description: Filter invitations by status
           type:
           - object
           - 'null'
           anyOf:
-          - $ref: '#/components/schemas/OrganizationInvitationFilterSchema'
+          - $ref: '#/components/schemas/InvitationStatusFilterSchema'
           - type: 'null'
-        pagination:
-          description: 'Pagination parameters for organization invitation list (default sort: invitee_email ascending)'
-          type:
-          - object
-          $ref: '#/components/schemas/OrganizationInvitationListPaginationSchema'
+    OrganizationUpdateUserRolesRequestSchema:
+      type: object
+      properties:
+        role_ids:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            format: uuid
+            example: 123e4567-e89b-12d3-a456-426614174000
+    OrganizationInvitationResponseSchema:
+      type: object
+      properties:
+        organization_invitation_id:
+          type: string
+          format: uuid
+          description: Invitation unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        organization_id:
+          type: string
+          format: uuid
+          description: Organization unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        invitee_email:
+          type: string
+          description: Email address of the invited user
+          example: user@example.com
+        status:
+          type: string
+          description: Current status of the invitation
+          example: pending
+          enum:
+          - pending
+          - accepted
+          - rejected
+          - expired
+        expires_at:
+          type: string
+          format: date-time
+          description: When the invitation expires
+          example: '2024-01-15T10:30:00Z'
+        roles:
+          type: array
+          description: Roles assigned to this invitation
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/RoleSchema1'
+        created_at:
+          type: string
+          format: date-time
+          description: When the invitation was created
+          example: '2024-01-08T10:30:00Z'
     RoleSchema1:
       type: object
       properties:
@@ -758,98 +998,30 @@ components:
             - internal_s3_scan
             type:
             - string
-    OrganizationCreateInvitationRequestSchema:
+    LegacyUsersListResponseSchema:
       type: object
       properties:
-        invitee_email:
+        pagination_info:
+          description: The pagination information for paginated endpoints
+          type:
+          - object
+          $ref: '#/components/schemas/PaginationInfoSchema'
+        message:
           type: string
-          description: Email address of the user to invite
-          example: user@example.com
-        role_ids:
+          description: The message to return
+          example: Success
+        data:
           type: array
-          minItems: 1
-          description: List of role IDs to assign to the invited user
-          example:
-          - 123e4567-e89b-12d3-a456-426614174000
-          items:
-            type: string
-            format: uuid
-            example: 123e4567-e89b-12d3-a456-426614174000
-      required:
-      - invitee_email
-      - role_ids
-    OrganizationInvitationResponseSchema:
-      type: object
-      properties:
-        organization_invitation_id:
-          type: string
-          format: uuid
-          description: Invitation unique identifier
-          example: 123e4567-e89b-12d3-a456-426614174000
-        organization_id:
-          type: string
-          format: uuid
-          description: Organization unique identifier
-          example: 123e4567-e89b-12d3-a456-426614174000
-        invitee_email:
-          type: string
-          description: Email address of the invited user
-          example: user@example.com
-        status:
-          type: string
-          description: Current status of the invitation
-          example: pending
-          enum:
-          - pending
-          - accepted
-          - rejected
-          - expired
-        expires_at:
-          type: string
-          format: date-time
-          description: When the invitation expires
-          example: '2024-01-15T10:30:00Z'
-        roles:
-          type: array
-          description: Roles assigned to this invitation
+          description: List of legacy users
           items:
             type:
             - object
-            $ref: '#/components/schemas/RoleSchema1'
-        created_at:
-          type: string
-          format: date-time
-          description: When the invitation was created
-          example: '2024-01-08T10:30:00Z'
-    OrganizationUpdateUserRolesRequestSchema:
-      type: object
-      properties:
-        role_ids:
-          type: array
-          minItems: 1
-          items:
-            type: string
-            format: uuid
-            example: 123e4567-e89b-12d3-a456-426614174000
-    LegacyUsersListRequestSchema:
-      type: object
-      properties:
-        filters:
-          description: Filters to apply to the legacy user list
-          type:
-          - object
-          - 'null'
-          anyOf:
-          - $ref: '#/components/schemas/LegacyUserFilterSchema'
-          - type: 'null'
-        pagination:
-          description: 'Pagination parameters for legacy user list (default sort: email ascending)'
-          type:
-          - object
-          $ref: '#/components/schemas/LegacyUserPaginationSchema'
-      required:
-      - pagination
-    OrganizationIgnoreLegacyUserResponseSchema:
+            $ref: '#/components/schemas/LegacyUserDataSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    OrganizationListRolesResponseSchema:
       type: object
       properties:
         message:
@@ -857,7 +1029,12 @@ components:
           description: The message to return
           example: Success
         data:
-          example: null
+          type: array
+          description: Role information
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/RoleSchema1'
         status_code:
           type: integer
           description: The HTTP status code
@@ -882,45 +1059,6 @@ components:
       required:
       - order_by
       - sort_direction
-    LegacyUserFilterSchema:
-      type: object
-      properties:
-        status:
-          description: Filter legacy users by status
-          type:
-          - object
-          - 'null'
-          anyOf:
-          - $ref: '#/components/schemas/LegacyUserStatusFilterSchema'
-          - type: 'null'
-    OrganizationInvitationListPaginationSchema:
-      type: object
-      properties:
-        sort_order:
-          type: array
-          default:
-          - order_by: invitee_email
-            sort_direction: ascending
-          minItems: 1
-          maxItems: 5
-          description: The list of sorting rules
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/SortOrderOrganizationInvitationListPaginationSchema'
-        page_size:
-          type: integer
-          default: 25
-          minimum: 1
-          maximum: 5000
-          description: The size of the page to fetch
-          example: 25
-        page_offset:
-          type: integer
-          default: 1
-          minimum: 1
-          description: The page number to fetch, starts counting from 1
-          example: 1
     OrganizationInvitationDataSchema:
       type: object
       properties:
@@ -991,136 +1129,6 @@ components:
           $ref: '#/components/schemas/OrganizationUsersPaginationSchema'
       required:
       - pagination
-    OrganizationUpdateUserRolesResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type: array
-          description: Role information
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/RoleSchema1'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    OrganizationListRolesResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type: array
-          description: Role information
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/RoleSchema1'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    InviterDataSchema:
-      type: object
-      properties:
-        user_id:
-          type: string
-          format: uuid
-          description: Inviter user unique identifier
-          example: 123e4567-e89b-12d3-a456-426614174000
-        email:
-          type: string
-          description: Inviter email address
-          example: admin@org.com
-        first_name:
-          type:
-          - string
-          - 'null'
-          description: Inviter first name
-          example: John
-        last_name:
-          type:
-          - string
-          - 'null'
-          description: Inviter last name
-          example: Doe
-    SortOrderLegacyUserPaginationSchema:
-      type: object
-      properties:
-        order_by:
-          type: string
-          enum:
-          - email
-          - first_name
-          - last_name
-          - created_date
-          description: The field to sort the response by
-        sort_direction:
-          description: Whether to sort the response ascending or descending
-          enum:
-          - ascending
-          - descending
-          type:
-          - string
-      required:
-      - order_by
-      - sort_direction
-    PaginationInfoSchema:
-      type: object
-      properties:
-        page_offset:
-          type: integer
-          description: The page number that was fetched
-          example: 1
-        page_size:
-          type: integer
-          description: The size of the page fetched
-          example: 25
-        total_records:
-          type: integer
-          description: The total number of records fetchable
-          example: 42
-        total_pages:
-          type: integer
-          description: The total number of pages that can be fetched
-          example: 2
-        sort_order:
-          type: array
-          description: The sort order passed in originally
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/SortOrderSchema'
-    OrganizationInvitationListResponseSchema:
-      type: object
-      properties:
-        pagination_info:
-          description: The pagination information for paginated endpoints
-          type:
-          - object
-          $ref: '#/components/schemas/PaginationInfoSchema'
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type: array
-          description: List of organization invitations
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/OrganizationInvitationDataSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
     ValidationIssueSchema:
       type: object
       properties:
@@ -1140,69 +1148,6 @@ components:
           type: string
           description: The value that failed
           example: invalid string
-    ErrorResponseSchema:
-      type: object
-      properties:
-        data:
-          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
-          example: {}
-        message:
-          type: string
-          description: General description of the error
-          example: Error
-        status_code:
-          type: integer
-          description: The HTTP status code of the error
-        errors:
-          type: array
-          example: []
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/ValidationIssueSchema'
-        internal_request_id:
-          type: string
-          description: An internal tracking ID
-          example: 550e8400-e29b-41d4-a716-446655440000
-    InviteeDataSchema:
-      type: object
-      properties:
-        user_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: Invitee user unique identifier (null if not registered)
-          example: 123e4567-e89b-12d3-a456-426614174000
-        email:
-          type:
-          - string
-          - 'null'
-          description: Invitee email address
-          example: user@example.com
-        first_name:
-          type:
-          - string
-          - 'null'
-          description: Invitee first name
-          example: Jane
-        last_name:
-          type:
-          - string
-          - 'null'
-          description: Invitee last name
-          example: Smith
-    OrganizationInvitationFilterSchema:
-      type: object
-      properties:
-        status:
-          description: Filter invitations by status
-          type:
-          - object
-          - 'null'
-          anyOf:
-          - $ref: '#/components/schemas/InvitationStatusFilterSchema'
-          - type: 'null'
     OrganizationCreateInvitationResponseSchema:
       type: object
       properties:
@@ -1219,191 +1164,32 @@ components:
           type: integer
           description: The HTTP status code
           example: 200
-    OrganizationDataSchema:
+    LegacyUserDataSchema:
       type: object
       properties:
-        organization_id:
+        email:
           type: string
-          format: uuid
-          description: Organization unique identifier
-          example: 123e4567-e89b-12d3-a456-426614174000
-        sam_gov_entity:
-          description: SAM.gov entity information
+          description: Legacy user email address
+          example: user@example.com
+        first_name:
           type:
-          - object
+          - string
           - 'null'
-          anyOf:
-          - $ref: '#/components/schemas/SamGovEntityResponseSchema'
-          - type: 'null'
-    LegacyUserStatusFilterSchema:
-      type: object
-      properties:
-        one_of:
-          type: array
-          minItems: 1
-          items:
-            example: available
-            enum:
-            - member
-            - pending_invitation
-            - available
-            type:
-            - string
-    OrganizationSaveOpportunityRequestSchema:
-      type: object
-      properties:
-        opportunity_id:
-          type: string
-          format: uuid
-          description: Opportunity unique identifier to save
-          example: 942e4567-e89b-12d3-a456-426614174000
-      required:
-      - opportunity_id
-    LegacyUserPaginationSchema:
-      type: object
-      properties:
-        sort_order:
-          type: array
-          default:
-          - order_by: email
-            sort_direction: ascending
-          minItems: 1
-          maxItems: 5
-          description: The list of sorting rules
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/SortOrderLegacyUserPaginationSchema'
-        page_size:
-          type: integer
-          minimum: 1
-          maximum: 5000
-          description: The size of the page to fetch
-          example: 25
-        page_offset:
-          type: integer
-          minimum: 1
-          description: The page number to fetch, starts counting from 1
-          example: 1
-      required:
-      - page_offset
-      - page_size
-    OrganizationUsersPaginationSchema:
-      type: object
-      properties:
-        sort_order:
-          type: array
-          default:
-          - order_by: email
-            sort_direction: ascending
-          minItems: 1
-          maxItems: 5
-          description: The list of sorting rules
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/SortOrderOrganizationUsersPaginationSchema'
-        page_size:
-          type: integer
-          minimum: 1
-          maximum: 5000
-          description: The size of the page to fetch
-          example: 25
-        page_offset:
-          type: integer
-          minimum: 1
-          description: The page number to fetch, starts counting from 1
-          example: 1
-      required:
-      - page_offset
-      - page_size
-    OrganizationSaveOpportunityResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          description: No data returned
-          example: {}
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    OrganizationDeleteSavedOpportunityResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          description: No data returned
-          example: {}
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    OrganizationRemoveUserResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          description: No data returned on successful removal
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    OrganizationUsersResponseSchema:
-      type: object
-      properties:
-        pagination_info:
-          description: The pagination information for paginated endpoints
+          description: Legacy user first name
+          example: John
+        last_name:
           type:
-          - object
-          $ref: '#/components/schemas/PaginationInfoSchema'
-        message:
+          - string
+          - 'null'
+          description: Legacy user last name
+          example: Doe
+        status:
           type: string
-          description: The message to return
-          example: Success
-        data:
-          type: array
-          description: List of organization members
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/OrganizationUserSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    LegacyUsersListResponseSchema:
-      type: object
-      properties:
-        pagination_info:
-          description: The pagination information for paginated endpoints
-          type:
-          - object
-          $ref: '#/components/schemas/PaginationInfoSchema'
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type: array
-          description: List of legacy users
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/LegacyUserDataSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
+          description: Status of the legacy user relative to the organization
+          example: available
+      required:
+      - email
+      - status
     OrganizationUserSchema:
       type: object
       properties:
@@ -1441,21 +1227,235 @@ components:
           type: boolean
           description: Whether the user is the EBiz POC (Electronic Business Point of Contact) for the organization in SAM.gov
           example: false
-    InvitationStatusFilterSchema:
+    OrganizationInvitationListPaginationSchema:
       type: object
       properties:
-        one_of:
+        sort_order:
           type: array
+          default:
+          - order_by: invitee_email
+            sort_direction: ascending
           minItems: 1
+          maxItems: 5
+          description: The list of sorting rules
           items:
-            example: pending
-            enum:
-            - accepted
-            - rejected
-            - expired
-            - pending
             type:
-            - string
+            - object
+            $ref: '#/components/schemas/SortOrderOrganizationInvitationListPaginationSchema'
+        page_size:
+          type: integer
+          default: 25
+          minimum: 1
+          maximum: 5000
+          description: The size of the page to fetch
+          example: 25
+        page_offset:
+          type: integer
+          default: 1
+          minimum: 1
+          description: The page number to fetch, starts counting from 1
+          example: 1
+    PaginationInfoSchema:
+      type: object
+      properties:
+        page_offset:
+          type: integer
+          description: The page number that was fetched
+          example: 1
+        page_size:
+          type: integer
+          description: The size of the page fetched
+          example: 25
+        total_records:
+          type: integer
+          description: The total number of records fetchable
+          example: 42
+        total_pages:
+          type: integer
+          description: The total number of pages that can be fetched
+          example: 2
+        sort_order:
+          type: array
+          description: The sort order passed in originally
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderSchema'
+    SortOrderSchema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          description: The field that the records were sorted by
+          example: id
+        sort_direction:
+          description: The direction the records are sorted
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+    OrganizationInvitationListRequestSchema:
+      type: object
+      properties:
+        filters:
+          description: Filters to apply to the invitation list
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/OrganizationInvitationFilterSchema'
+          - type: 'null'
+        pagination:
+          description: 'Pagination parameters for organization invitation list (default sort: invitee_email ascending)'
+          type:
+          - object
+          $ref: '#/components/schemas/OrganizationInvitationListPaginationSchema'
+    SamGovEntityResponseSchema:
+      type: object
+      properties:
+        uei:
+          type: string
+          description: Unique Entity Identifier
+          example: 000123456789
+        legal_business_name:
+          type: string
+          description: Legal business name from SAM.gov
+          example: Example Inc.
+        expiration_date:
+          type: string
+          format: date
+          description: SAM.gov registration expiration date
+          example: '2025-08-11'
+        ebiz_poc_email:
+          type: string
+          description: Email address of the Electronic Business Point of Contact
+          example: ebiz@example.com
+        ebiz_poc_first_name:
+          type: string
+          description: First name of the Electronic Business Point of Contact
+          example: John
+        ebiz_poc_last_name:
+          type: string
+          description: Last name of the Electronic Business Point of Contact
+          example: Smith
+    LegacyUsersListRequestSchema:
+      type: object
+      properties:
+        filters:
+          description: Filters to apply to the legacy user list
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/LegacyUserFilterSchema'
+          - type: 'null'
+        pagination:
+          description: 'Pagination parameters for legacy user list (default sort: email ascending)'
+          type:
+          - object
+          $ref: '#/components/schemas/LegacyUserPaginationSchema'
+      required:
+      - pagination
+    LegacyUserPaginationSchema:
+      type: object
+      properties:
+        sort_order:
+          type: array
+          default:
+          - order_by: email
+            sort_direction: ascending
+          minItems: 1
+          maxItems: 5
+          description: The list of sorting rules
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderLegacyUserPaginationSchema'
+        page_size:
+          type: integer
+          minimum: 1
+          maximum: 5000
+          description: The size of the page to fetch
+          example: 25
+        page_offset:
+          type: integer
+          minimum: 1
+          description: The page number to fetch, starts counting from 1
+          example: 1
+      required:
+      - page_offset
+      - page_size
+    OrganizationInvitationListResponseSchema:
+      type: object
+      properties:
+        pagination_info:
+          description: The pagination information for paginated endpoints
+          type:
+          - object
+          $ref: '#/components/schemas/PaginationInfoSchema'
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          description: List of organization invitations
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/OrganizationInvitationDataSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    SortOrderLegacyUserPaginationSchema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          enum:
+          - email
+          - first_name
+          - last_name
+          - created_date
+          description: The field to sort the response by
+        sort_direction:
+          description: Whether to sort the response ascending or descending
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+      required:
+      - order_by
+      - sort_direction
+    OrganizationSaveOpportunityRequestSchema:
+      type: object
+      properties:
+        opportunity_id:
+          type: string
+          format: uuid
+          description: Opportunity unique identifier to save
+          example: 942e4567-e89b-12d3-a456-426614174000
+      required:
+      - opportunity_id
+    OrganizationDataSchema:
+      type: object
+      properties:
+        organization_id:
+          type: string
+          format: uuid
+          description: Organization unique identifier
+          example: 123e4567-e89b-12d3-a456-426614174000
+        sam_gov_entity:
+          description: SAM.gov entity information
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/SamGovEntityResponseSchema'
+          - type: 'null'
   securitySchemes:
     ApiJwtAuth:
       type: apiKey
