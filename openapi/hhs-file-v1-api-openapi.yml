@@ -87,6 +87,15 @@ components:
           type: string
           description: An internal tracking ID
           example: 550e8400-e29b-41d4-a716-446655440000
+    FileScanResultsResponseSchema:
+      type: object
+      properties:
+        data:
+          type:
+          - object
+          $ref: '#/components/schemas/FileScanResultsDataSchema'
+      required:
+      - data
     FileScanResultsDataSchema:
       type: object
       properties:
@@ -122,15 +131,6 @@ components:
           type: string
           description: The value that failed
           example: invalid string
-    FileScanResultsResponseSchema:
-      type: object
-      properties:
-        data:
-          type:
-          - object
-          $ref: '#/components/schemas/FileScanResultsDataSchema'
-      required:
-      - data
   securitySchemes:
     ApiJwtAuth:
       type: apiKey

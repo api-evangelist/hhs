@@ -644,21 +644,84 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    OpportunityAssistanceListingV1Schema:
+    SortOrderSchema:
       type: object
       properties:
-        program_title:
+        order_by:
+          type: string
+          description: The field that the records were sorted by
+          example: id
+        sort_direction:
+          description: The direction the records are sorted
+          enum:
+          - ascending
+          - descending
           type:
           - string
-          - 'null'
-          description: The name of the program, see https://sam.gov/content/assistance-listings for more detail
-          example: Space Technology
-        assistance_listing_number:
-          type:
-          - string
-          - 'null'
-          description: The assistance listing number, see https://sam.gov/content/assistance-listings for more detail
-          example: '43.012'
+    ApplicationAuditEventFieldFilterSchema:
+      type: object
+      properties:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            example:
+            - application_created
+            enum:
+            - application_created
+            - application_name_changed
+            - application_submitted
+            - application_submit_rejected
+            - attachment_added
+            - attachment_deleted
+            - attachment_updated
+            - submission_created
+            - user_added
+            - user_updated
+            - user_removed
+            - form_updated
+            - organization_added
+            type:
+            - string
+    CompetitionInstructionAlphaSchema:
+      type: object
+      properties:
+        file_name:
+          type: string
+          description: The name of the instruction file
+          example: competition_instructions.pdf
+        download_path:
+          type: string
+          description: The URL to download the instruction file
+          example: https://cdn.example.com/competition-instructions/file.pdf
+        created_at:
+          type: string
+          format: date-time
+          description: The date and time when the instruction was created
+        updated_at:
+          type: string
+          format: date-time
+          description: The date and time when the instruction was last updated
+    ApplicationSubmissionDataSchema:
+      type: object
+      properties:
+        application_submission_id:
+          type: string
+          format: uuid
+          description: The unique identifier of the application submission
+          example: 123e4567-e89b-12d3-a456-426614174000
+        download_path:
+          type: string
+          description: The presigned URL path for downloading the submission package
+          example: https://s3.amazonaws.com/bucket/path/to/submission.zip
+        file_size_bytes:
+          type: integer
+          description: The size of the submission file in bytes
+          example: 1234567
+        legacy_tracking_number:
+          type: integer
+          description: The legacy tracking number for the submission
+          example: 80000001
     ApplicationAuditRequestSchema:
       type: object
       properties:
@@ -675,389 +738,6 @@ components:
           $ref: '#/components/schemas/ApplicationAuditRequestPaginationSchema'
       required:
       - pagination
-    ApplicationAttachmentGetResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type:
-          - object
-          $ref: '#/components/schemas/ApplicationAttachmentGetSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    ApplicationAuditAppFormSchema:
-      type: object
-      properties:
-        application_form_id:
-          type: string
-          format: uuid
-          description: The ID of the application form
-          example: 123e4567-e89b-12d3-a456-426614174000
-        competition_form_id:
-          type: string
-          format: uuid
-          description: The ID of the competition form
-          example: 123e4567-e89b-12d3-a456-426614174000
-        form_id:
-          type: string
-          format: uuid
-          description: The ID of the form
-          example: 123e4567-e89b-12d3-a456-426614174000
-        form_name:
-          type: string
-          description: The name of the form
-    FormInstructionSchema:
-      type: object
-      properties:
-        form_instruction_id:
-          type: string
-          format: uuid
-          description: The UUID of the form instruction
-          example: 123e4567-e89b-12d3-a456-426614174000
-        file_name:
-          type: string
-          description: The name of the form instruction file
-          example: instructions.pdf
-        download_path:
-          type: string
-          description: The download URL for the form instruction file
-        created_at:
-          type: string
-          format: date-time
-          description: The timestamp when the form instruction was created
-        updated_at:
-          type: string
-          format: date-time
-          description: The timestamp when the form instruction was last updated
-    ApplicationFormUpdateRequestSchema:
-      type: object
-      properties:
-        application_response:
-          type: object
-          description: The form response data to update
-          example:
-            name: John Doe
-            email: john@example.com
-          additionalProperties: {}
-        is_included_in_submission:
-          type:
-          - boolean
-          - 'null'
-          description: Whether this form should be included in the application submission
-      required:
-      - application_response
-    ApplicationAddOrganizationResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type:
-          - object
-          $ref: '#/components/schemas/ApplicationUpdateResponseDataSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    ApplicationAttachmentUpdateRequestSchema:
-      type: object
-      properties:
-        file_attachment:
-          description: The file to attach to an application
-          type: string
-          format: binary
-      required:
-      - file_attachment
-    SortOrderApplicationSubmissionsRequestPaginationSchema:
-      type: object
-      properties:
-        order_by:
-          type: string
-          enum:
-          - created_at
-          description: The field to sort the response by
-        sort_direction:
-          description: Whether to sort the response ascending or descending
-          enum:
-          - ascending
-          - descending
-          type:
-          - string
-      required:
-      - order_by
-      - sort_direction
-    ApplicationAuditRequestPaginationSchema:
-      type: object
-      properties:
-        sort_order:
-          type: array
-          default:
-          - order_by: created_at
-            sort_direction: descending
-          minItems: 1
-          maxItems: 5
-          description: The list of sorting rules
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/SortOrderApplicationAuditRequestPaginationSchema'
-        page_size:
-          type: integer
-          minimum: 1
-          maximum: 5000
-          description: The size of the page to fetch
-          example: 25
-        page_offset:
-          type: integer
-          minimum: 1
-          description: The page number to fetch, starts counting from 1
-          example: 1
-      required:
-      - page_offset
-      - page_size
-    ErrorResponseSchema:
-      type: object
-      properties:
-        data:
-          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
-          example: {}
-        message:
-          type: string
-          description: General description of the error
-          example: Error
-        status_code:
-          type: integer
-          description: The HTTP status code of the error
-        errors:
-          type: array
-          example: []
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/ValidationIssueSchema'
-        internal_request_id:
-          type: string
-          description: An internal tracking ID
-          example: 550e8400-e29b-41d4-a716-446655440000
-    ApplicationAttachmentDeleteResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          example: null
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    ApplicationAuditFilterSchema:
-      type: object
-      properties:
-        application_audit_event:
-          type:
-          - object
-          $ref: '#/components/schemas/ApplicationAuditEventFieldFilterSchema'
-    SortOrderApplicationAuditRequestPaginationSchema:
-      type: object
-      properties:
-        order_by:
-          type: string
-          enum:
-          - created_at
-          description: The field to sort the response by
-        sort_direction:
-          description: Whether to sort the response ascending or descending
-          enum:
-          - ascending
-          - descending
-          type:
-          - string
-      required:
-      - order_by
-      - sort_direction
-    ApplicationFormInclusionUpdateResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type:
-          - object
-          $ref: '#/components/schemas/ApplicationFormGetResponseDataSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    SimpleUserSchema:
-      type: object
-      properties:
-        user_id:
-          type: string
-          format: uuid
-          description: ID of the user
-          example: 123e4567-e89b-12d3-a456-426614174000
-        email:
-          type: string
-          description: Email address of the user
-          example: example@example.com
-        first_name:
-          type:
-          - string
-          - 'null'
-          description: Users first name
-          example: John
-        last_name:
-          type:
-          - string
-          - 'null'
-          description: Users last name
-          example: Smith
-    ApplicationUpdateRequestSchema:
-      type: object
-      properties:
-        application_name:
-          type: string
-          description: The new name for the application
-          example: Updated Research Grant Application
-      required:
-      - application_name
-    ApplicationAttachmentCreateRequestSchema:
-      type: object
-      properties:
-        file_attachment:
-          description: The file to attach to an application
-          type: string
-          format: binary
-      required:
-      - file_attachment
-    ApplicationFormInclusionUpdateRequestSchema:
-      type: object
-      properties:
-        is_included_in_submission:
-          type: boolean
-          description: Whether this form should be included in the application submission
-      required:
-      - is_included_in_submission
-    ApplicationUpdateResponseDataSchema:
-      type: object
-      properties:
-        application_id:
-          type: string
-          format: uuid
-          description: The unique identifier of the updated application
-          example: 789f0123-f45g-67h8-i901-234567890123
-    CompetitionAlphaSchema:
-      type: object
-      properties:
-        competition_id:
-          type: string
-          format: uuid
-          description: The competition ID
-          example: 123e4567-e89b-12d3-a456-426614174000
-        opportunity_id:
-          type: string
-          format: uuid
-          description: The opportunity ID that the competition is associated with
-          example: 123e4567-e89b-12d3-a456-426614174000
-        competition_forms:
-          type: array
-          description: List of forms required for this competition
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/CompetitionFormAlphaSchema'
-        competition_instructions:
-          type: array
-          description: List of instruction files associated with this competition
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/CompetitionInstructionAlphaSchema'
-        competition_title:
-          type:
-          - string
-          - 'null'
-          description: The title of the competition
-          example: Proposal for Advanced Research
-        opening_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: The opening date of the competition, the first day applications are accepted
-        closing_date:
-          type:
-          - string
-          - 'null'
-          format: date
-          description: The closing date of the competition, the last day applications are accepted
-        contact_info:
-          type:
-          - string
-          - 'null'
-          description: Contact info getting assistance with the competition
-          example: 'Bob Smith
-
-            FakeMail@fake.com'
-        opportunity_assistance_listing:
-          description: Assistance listing information for this competition
-          type:
-          - object
-          - 'null'
-          anyOf:
-          - $ref: '#/components/schemas/OpportunityAssistanceListingV1Schema'
-          - type: 'null'
-        open_to_applicants:
-          type: array
-          description: List of applicant types who are eligible for this competition
-          example:
-          - - individual
-          - - organization
-          items:
-            enum:
-            - individual
-            - organization
-            type:
-            - string
-        is_open:
-          type: boolean
-          description: Whether the competition is open and accepting applications
-        is_simpler_grants_enabled:
-          type: boolean
-          description: Whether simpler grants are enabled for this competition
-    ApplicationFormGetResponseSchema:
-      type: object
-      properties:
-        warnings:
-          type: array
-          description: A list of warnings - indicating something you may want to be aware of, but did not prevent handling of the request
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/ValidationIssueSchema'
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type:
-          - object
-          $ref: '#/components/schemas/ApplicationFormGetResponseDataSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
     ApplicationFormUpdateResponseSchema:
       type: object
       properties:
@@ -1080,7 +760,30 @@ components:
           type: integer
           description: The HTTP status code
           example: 200
-    ApplicationStartResponseSchema:
+    ApplicationAttachmentCreateSchema:
+      type: object
+      properties:
+        application_attachment_id:
+          type: string
+          format: uuid
+          description: The ID of the uploaded application attachment
+          example: 123e4567-e89b-12d3-a456-426614174000
+    OpportunityAssistanceListingV1Schema:
+      type: object
+      properties:
+        program_title:
+          type:
+          - string
+          - 'null'
+          description: The name of the program, see https://sam.gov/content/assistance-listings for more detail
+          example: Space Technology
+        assistance_listing_number:
+          type:
+          - string
+          - 'null'
+          description: The assistance listing number, see https://sam.gov/content/assistance-listings for more detail
+          example: '43.012'
+    ApplicationAttachmentCreateResponseSchema:
       type: object
       properties:
         message:
@@ -1090,61 +793,7 @@ components:
         data:
           type:
           - object
-          $ref: '#/components/schemas/ApplicationStartResponseDataSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    ApplicationUserSchema:
-      type: object
-      properties:
-        user_id:
-          type: string
-          format: uuid
-          description: The unique identifier of the user
-          example: 123e4567-e89b-12d3-a456-426614174000
-        email:
-          type: string
-          description: The email address of the user
-          example: user@example.com
-    ApplicationSubmissionDataSchema:
-      type: object
-      properties:
-        application_submission_id:
-          type: string
-          format: uuid
-          description: The unique identifier of the application submission
-          example: 123e4567-e89b-12d3-a456-426614174000
-        download_path:
-          type: string
-          description: The presigned URL path for downloading the submission package
-          example: https://s3.amazonaws.com/bucket/path/to/submission.zip
-        file_size_bytes:
-          type: integer
-          description: The size of the submission file in bytes
-          example: 1234567
-        legacy_tracking_number:
-          type: integer
-          description: The legacy tracking number for the submission
-          example: 80000001
-    ApplicationGetResponseSchema:
-      type: object
-      properties:
-        warnings:
-          type: array
-          description: A list of warnings - indicating something you may want to be aware of, but did not prevent handling of the request
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/ValidationIssueSchema'
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type:
-          - object
-          $ref: '#/components/schemas/ApplicationGetResponseDataSchema'
+          $ref: '#/components/schemas/ApplicationAttachmentCreateSchema'
         status_code:
           type: integer
           description: The HTTP status code
@@ -1289,98 +938,342 @@ components:
           type: string
           format: date-time
           description: The timestamp when the form was last updated
-    ApplicationAuditAttachmentSchema:
+    ApplicationSubmissionsRequestSchema:
       type: object
       properties:
-        application_attachment_id:
+        pagination:
+          type:
+          - object
+          $ref: '#/components/schemas/ApplicationSubmissionsRequestPaginationSchema'
+      required:
+      - pagination
+    OrganizationSchema:
+      type: object
+      properties:
+        organization_id:
           type: string
           format: uuid
-          description: The ID of the application attachment
+          description: The unique identifier of the organization
+          example: 456e7890-e12c-34f5-b678-901234567890
+        sam_gov_entity:
+          description: SAM.gov entity information if organization is registered
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/SamGovEntityResponseSchema'
+          - type: 'null'
+    ApplicationSubmissionsRequestPaginationSchema:
+      type: object
+      properties:
+        sort_order:
+          type: array
+          default:
+          - order_by: created_at
+            sort_direction: descending
+          minItems: 1
+          maxItems: 5
+          description: The list of sorting rules
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderApplicationSubmissionsRequestPaginationSchema'
+        page_size:
+          type: integer
+          minimum: 1
+          maximum: 5000
+          description: The size of the page to fetch
+          example: 25
+        page_offset:
+          type: integer
+          minimum: 1
+          description: The page number to fetch, starts counting from 1
+          example: 1
+      required:
+      - page_offset
+      - page_size
+    ApplicationAuditRequestPaginationSchema:
+      type: object
+      properties:
+        sort_order:
+          type: array
+          default:
+          - order_by: created_at
+            sort_direction: descending
+          minItems: 1
+          maxItems: 5
+          description: The list of sorting rules
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderApplicationAuditRequestPaginationSchema'
+        page_size:
+          type: integer
+          minimum: 1
+          maximum: 5000
+          description: The size of the page to fetch
+          example: 25
+        page_offset:
+          type: integer
+          minimum: 1
+          description: The page number to fetch, starts counting from 1
+          example: 1
+      required:
+      - page_offset
+      - page_size
+    ApplicationFormUpdateRequestSchema:
+      type: object
+      properties:
+        application_response:
+          type: object
+          description: The form response data to update
+          example:
+            name: John Doe
+            email: john@example.com
+          additionalProperties: {}
+        is_included_in_submission:
+          type:
+          - boolean
+          - 'null'
+          description: Whether this form should be included in the application submission
+      required:
+      - application_response
+    ApplicationUpdateResponseDataSchema:
+      type: object
+      properties:
+        application_id:
+          type: string
+          format: uuid
+          description: The unique identifier of the updated application
+          example: 789f0123-f45g-67h8-i901-234567890123
+    CompetitionAlphaSchema:
+      type: object
+      properties:
+        competition_id:
+          type: string
+          format: uuid
+          description: The competition ID
+          example: 123e4567-e89b-12d3-a456-426614174000
+        opportunity_id:
+          type: string
+          format: uuid
+          description: The opportunity ID that the competition is associated with
+          example: 123e4567-e89b-12d3-a456-426614174000
+        competition_forms:
+          type: array
+          description: List of forms required for this competition
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/CompetitionFormAlphaSchema'
+        competition_instructions:
+          type: array
+          description: List of instruction files associated with this competition
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/CompetitionInstructionAlphaSchema'
+        competition_title:
+          type:
+          - string
+          - 'null'
+          description: The title of the competition
+          example: Proposal for Advanced Research
+        opening_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The opening date of the competition, the first day applications are accepted
+        closing_date:
+          type:
+          - string
+          - 'null'
+          format: date
+          description: The closing date of the competition, the last day applications are accepted
+        contact_info:
+          type:
+          - string
+          - 'null'
+          description: Contact info getting assistance with the competition
+          example: 'Bob Smith
+
+            FakeMail@fake.com'
+        opportunity_assistance_listing:
+          description: Assistance listing information for this competition
+          type:
+          - object
+          - 'null'
+          anyOf:
+          - $ref: '#/components/schemas/OpportunityAssistanceListingV1Schema'
+          - type: 'null'
+        open_to_applicants:
+          type: array
+          description: List of applicant types who are eligible for this competition
+          example:
+          - - individual
+          - - organization
+          items:
+            enum:
+            - individual
+            - organization
+            type:
+            - string
+        is_open:
+          type: boolean
+          description: Whether the competition is open and accepting applications
+        is_simpler_grants_enabled:
+          type: boolean
+          description: Whether simpler grants are enabled for this competition
+    FormInstructionSchema:
+      type: object
+      properties:
+        form_instruction_id:
+          type: string
+          format: uuid
+          description: The UUID of the form instruction
           example: 123e4567-e89b-12d3-a456-426614174000
         file_name:
           type: string
-          description: The file name of the application attachment
-          example: my_example.pdf
-        is_deleted:
-          type: boolean
-          description: Whether the attachment has been deleted
-    CompetitionInstructionAlphaSchema:
-      type: object
-      properties:
-        file_name:
-          type: string
-          description: The name of the instruction file
-          example: competition_instructions.pdf
+          description: The name of the form instruction file
+          example: instructions.pdf
         download_path:
           type: string
-          description: The URL to download the instruction file
-          example: https://cdn.example.com/competition-instructions/file.pdf
+          description: The download URL for the form instruction file
         created_at:
           type: string
           format: date-time
-          description: The date and time when the instruction was created
+          description: The timestamp when the form instruction was created
         updated_at:
           type: string
           format: date-time
-          description: The date and time when the instruction was last updated
-    ApplicationAttachmentCreateSchema:
+          description: The timestamp when the form instruction was last updated
+    ApplicationUserSchema:
       type: object
       properties:
-        application_attachment_id:
+        user_id:
           type: string
           format: uuid
-          description: The ID of the uploaded application attachment
+          description: The unique identifier of the user
           example: 123e4567-e89b-12d3-a456-426614174000
-    ApplicationAuditDataSchema:
+        email:
+          type: string
+          description: The email address of the user
+          example: user@example.com
+    PaginationInfoSchema:
       type: object
       properties:
-        application_audit_id:
+        page_offset:
+          type: integer
+          description: The page number that was fetched
+          example: 1
+        page_size:
+          type: integer
+          description: The size of the page fetched
+          example: 25
+        total_records:
+          type: integer
+          description: The total number of records fetchable
+          example: 42
+        total_pages:
+          type: integer
+          description: The total number of pages that can be fetched
+          example: 2
+        sort_order:
+          type: array
+          description: The sort order passed in originally
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderSchema'
+    ApplicationAuditResponseSchema:
+      type: object
+      properties:
+        pagination_info:
+          description: The pagination information for paginated endpoints
+          type:
+          - object
+          $ref: '#/components/schemas/PaginationInfoSchema'
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type: array
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ApplicationAuditDataSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    ApplicationAttachmentGetResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type:
+          - object
+          $ref: '#/components/schemas/ApplicationAttachmentGetSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    ApplicationFormGetResponseSchema:
+      type: object
+      properties:
+        warnings:
+          type: array
+          description: A list of warnings - indicating something you may want to be aware of, but did not prevent handling of the request
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type:
+          - object
+          $ref: '#/components/schemas/ApplicationFormGetResponseDataSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    ApplicationStartRequestSchema:
+      type: object
+      properties:
+        competition_id:
           type: string
           format: uuid
-          description: The ID of the application audit event
+          description: The unique identifier of the competition to create an application for
           example: 123e4567-e89b-12d3-a456-426614174000
-        application_audit_event:
-          description: The type of application audit event recorded
-          enum:
-          - application_created
-          - application_name_changed
-          - application_submitted
-          - application_submit_rejected
-          - attachment_added
-          - attachment_deleted
-          - attachment_updated
-          - submission_created
-          - user_added
-          - user_updated
-          - user_removed
-          - form_updated
-          - organization_added
+        application_name:
           type:
           - string
-        user:
-          description: The user who did the event that was audited
+          - 'null'
+          description: Optional name for the application
+          example: My Research Grant Application
+        organization_id:
           type:
-          - object
-          $ref: '#/components/schemas/SimpleUserSchema'
-        target_user:
-          description: The user the audit event affected (if applicable)
+          - string
+          - 'null'
+          format: uuid
+          description: Optional organization ID to associate with the application
+          example: 456e7890-e12c-34f5-b678-901234567890
+        intends_to_add_organization:
           type:
-          - object
-          $ref: '#/components/schemas/SimpleUserSchema'
-        target_application_form:
-          description: The application form modified (if applicable)
-          type:
-          - object
-          $ref: '#/components/schemas/ApplicationAuditAppFormSchema'
-        target_attachment:
-          description: The application attachment modified (if applicable)
-          type:
-          - object
-          $ref: '#/components/schemas/ApplicationAuditAttachmentSchema'
-        created_at:
-          type: string
-          format: date-time
-          description: When the audit event was created
+          - boolean
+          - 'null'
+          description: Whether the user intends to add an organization later when applying as an individual
+          example: true
+      required:
+      - competition_id
     ApplicationFormGetResponseDataSchema:
       type: object
       properties:
@@ -1456,43 +1349,6 @@ components:
           - accepted
           type:
           - string
-    ApplicationAuditResponseSchema:
-      type: object
-      properties:
-        pagination_info:
-          description: The pagination information for paginated endpoints
-          type:
-          - object
-          $ref: '#/components/schemas/PaginationInfoSchema'
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type: array
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/ApplicationAuditDataSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    ApplicationAttachmentCreateResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type:
-          - object
-          $ref: '#/components/schemas/ApplicationAttachmentCreateSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
     AbstractResponseSchema:
       type: object
       properties:
@@ -1506,54 +1362,128 @@ components:
           type: integer
           description: The HTTP status code
           example: 200
-    ApplicationStartRequestSchema:
+    ApplicationAttachmentGetSchema:
       type: object
       properties:
-        competition_id:
+        download_path:
+          type: string
+          description: The file's download path
+        file_size_bytes:
+          type: integer
+          description: The size of the file in bytes
+          example: 1024
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        application_attachment_id:
           type: string
           format: uuid
-          description: The unique identifier of the competition to create an application for
+          description: The ID of the uploaded application attachment
           example: 123e4567-e89b-12d3-a456-426614174000
-        application_name:
-          type:
-          - string
-          - 'null'
-          description: Optional name for the application
-          example: My Research Grant Application
-        organization_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: Optional organization ID to associate with the application
-          example: 456e7890-e12c-34f5-b678-901234567890
-        intends_to_add_organization:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the user intends to add an organization later when applying as an individual
-          example: true
-      required:
-      - competition_id
-    ValidationIssueSchema:
+        file_name:
+          type: string
+          description: The name of the application attachment file
+          example: my_example.pdf
+        mime_type:
+          type: string
+          description: The mime type / content type of the file
+          example: application/pdf
+    ApplicationAddOrganizationResponseSchema:
       type: object
       properties:
-        type:
-          type: string
-          description: The type of error
-          example: invalid
         message:
           type: string
           description: The message to return
-          example: Not a valid string.
-        field:
+          example: Success
+        data:
+          type:
+          - object
+          $ref: '#/components/schemas/ApplicationUpdateResponseDataSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    ApplicationUpdateResponseSchema:
+      type: object
+      properties:
+        message:
           type: string
-          description: The field that failed
-          example: summary.summary_description
-        value:
+          description: The message to return
+          example: Success
+        data:
+          type:
+          - object
+          $ref: '#/components/schemas/ApplicationUpdateResponseDataSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+        application_form_status:
+          description: Status indicating how much of a form has been filled out
+          enum:
+          - in_progress
+          - complete
+          type:
+          - string
+    ApplicationAuditAttachmentSchema:
+      type: object
+      properties:
+        application_attachment_id:
           type: string
-          description: The value that failed
-          example: invalid string
+          format: uuid
+          description: The ID of the application attachment
+          example: 123e4567-e89b-12d3-a456-426614174000
+        file_name:
+          type: string
+          description: The file name of the application attachment
+          example: my_example.pdf
+        is_deleted:
+          type: boolean
+          description: Whether the attachment has been deleted
+    CompetitionFormAlphaSchema:
+      type: object
+      properties:
+        is_required:
+          type: boolean
+          description: Whether the form is required for all applications to the competition
+        form:
+          description: The form template information for this competition
+          type:
+          - object
+          $ref: '#/components/schemas/FormAlphaSchema'
+    ApplicationAttachmentNoLinkSchema:
+      type: object
+      properties:
+        application_attachment_id:
+          type: string
+          format: uuid
+          description: The ID of the application attachment
+          example: 123e4567-e89b-12d3-a456-426614174000
+        file_name:
+          type: string
+          description: The name of the application attachment file
+          example: my_example.pdf
+        mime_type:
+          type: string
+          description: The MIME type / content-type of the file
+          example: application/pdf
+        file_size_bytes:
+          type: integer
+          description: The size of the attachment in bytes
+          example: 12340
+        created_at:
+          type: string
+          format: date-time
+          description: When the application attachment was created
+        updated_at:
+          type: string
+          format: date-time
+          description: When the application attachment was last updated
     ApplicationGetResponseDataSchema:
       type: object
       properties:
@@ -1625,25 +1555,120 @@ components:
             type:
             - object
             $ref: '#/components/schemas/ApplicationAttachmentNoLinkSchema'
-    CompetitionFormAlphaSchema:
+    ApplicationStartResponseSchema:
       type: object
       properties:
-        is_required:
-          type: boolean
-          description: Whether the form is required for all applications to the competition
-        form:
-          description: The form template information for this competition
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
           type:
           - object
-          $ref: '#/components/schemas/FormAlphaSchema'
-    ApplicationStartResponseDataSchema:
+          $ref: '#/components/schemas/ApplicationStartResponseDataSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    ApplicationAuditDataSchema:
       type: object
       properties:
-        application_id:
+        application_audit_id:
           type: string
           format: uuid
-          description: The unique identifier of the newly created application
-          example: 789f0123-f45g-67h8-i901-234567890123
+          description: The ID of the application audit event
+          example: 123e4567-e89b-12d3-a456-426614174000
+        application_audit_event:
+          description: The type of application audit event recorded
+          enum:
+          - application_created
+          - application_name_changed
+          - application_submitted
+          - application_submit_rejected
+          - attachment_added
+          - attachment_deleted
+          - attachment_updated
+          - submission_created
+          - user_added
+          - user_updated
+          - user_removed
+          - form_updated
+          - organization_added
+          type:
+          - string
+        user:
+          description: The user who did the event that was audited
+          type:
+          - object
+          $ref: '#/components/schemas/SimpleUserSchema'
+        target_user:
+          description: The user the audit event affected (if applicable)
+          type:
+          - object
+          $ref: '#/components/schemas/SimpleUserSchema'
+        target_application_form:
+          description: The application form modified (if applicable)
+          type:
+          - object
+          $ref: '#/components/schemas/ApplicationAuditAppFormSchema'
+        target_attachment:
+          description: The application attachment modified (if applicable)
+          type:
+          - object
+          $ref: '#/components/schemas/ApplicationAuditAttachmentSchema'
+        created_at:
+          type: string
+          format: date-time
+          description: When the audit event was created
+    ApplicationAttachmentUpdateRequestSchema:
+      type: object
+      properties:
+        file_attachment:
+          description: The file to attach to an application
+          type: string
+          format: binary
+      required:
+      - file_attachment
+    ValidationIssueSchema:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error
+          example: invalid
+        message:
+          type: string
+          description: The message to return
+          example: Not a valid string.
+        field:
+          type: string
+          description: The field that failed
+          example: summary.summary_description
+        value:
+          type: string
+          description: The value that failed
+          example: invalid string
+    ApplicationAuditAppFormSchema:
+      type: object
+      properties:
+        application_form_id:
+          type: string
+          format: uuid
+          description: The ID of the application form
+          example: 123e4567-e89b-12d3-a456-426614174000
+        competition_form_id:
+          type: string
+          format: uuid
+          description: The ID of the competition form
+          example: 123e4567-e89b-12d3-a456-426614174000
+        form_id:
+          type: string
+          format: uuid
+          description: The ID of the form
+          example: 123e4567-e89b-12d3-a456-426614174000
+        form_name:
+          type: string
+          description: The name of the form
     ApplicationAttachmentUpdateResponseSchema:
       type: object
       properties:
@@ -1659,128 +1684,6 @@ components:
           type: integer
           description: The HTTP status code
           example: 200
-    ApplicationUpdateResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type:
-          - object
-          $ref: '#/components/schemas/ApplicationUpdateResponseDataSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-        application_form_status:
-          description: Status indicating how much of a form has been filled out
-          enum:
-          - in_progress
-          - complete
-          type:
-          - string
-    PaginationInfoSchema:
-      type: object
-      properties:
-        page_offset:
-          type: integer
-          description: The page number that was fetched
-          example: 1
-        page_size:
-          type: integer
-          description: The size of the page fetched
-          example: 25
-        total_records:
-          type: integer
-          description: The total number of records fetchable
-          example: 42
-        total_pages:
-          type: integer
-          description: The total number of pages that can be fetched
-          example: 2
-        sort_order:
-          type: array
-          description: The sort order passed in originally
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/SortOrderSchema'
-    SortOrderSchema:
-      type: object
-      properties:
-        order_by:
-          type: string
-          description: The field that the records were sorted by
-          example: id
-        sort_direction:
-          description: The direction the records are sorted
-          enum:
-          - ascending
-          - descending
-          type:
-          - string
-    ApplicationSubmissionsRequestPaginationSchema:
-      type: object
-      properties:
-        sort_order:
-          type: array
-          default:
-          - order_by: created_at
-            sort_direction: descending
-          minItems: 1
-          maxItems: 5
-          description: The list of sorting rules
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/SortOrderApplicationSubmissionsRequestPaginationSchema'
-        page_size:
-          type: integer
-          minimum: 1
-          maximum: 5000
-          description: The size of the page to fetch
-          example: 25
-        page_offset:
-          type: integer
-          minimum: 1
-          description: The page number to fetch, starts counting from 1
-          example: 1
-      required:
-      - page_offset
-      - page_size
-    ApplicationAttachmentGetSchema:
-      type: object
-      properties:
-        download_path:
-          type: string
-          description: The file's download path
-        file_size_bytes:
-          type: integer
-          description: The size of the file in bytes
-          example: 1024
-        created_at:
-          type: string
-          format: date-time
-          readOnly: true
-        updated_at:
-          type: string
-          format: date-time
-          readOnly: true
-        application_attachment_id:
-          type: string
-          format: uuid
-          description: The ID of the uploaded application attachment
-          example: 123e4567-e89b-12d3-a456-426614174000
-        file_name:
-          type: string
-          description: The name of the application attachment file
-          example: my_example.pdf
-        mime_type:
-          type: string
-          description: The mime type / content type of the file
-          example: application/pdf
     ApplicationSubmissionsResponseSchema:
       type: object
       properties:
@@ -1803,6 +1706,118 @@ components:
           type: integer
           description: The HTTP status code
           example: 200
+    ApplicationAttachmentDeleteResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          example: null
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    SimpleUserSchema:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+          description: ID of the user
+          example: 123e4567-e89b-12d3-a456-426614174000
+        email:
+          type: string
+          description: Email address of the user
+          example: example@example.com
+        first_name:
+          type:
+          - string
+          - 'null'
+          description: Users first name
+          example: John
+        last_name:
+          type:
+          - string
+          - 'null'
+          description: Users last name
+          example: Smith
+    SortOrderApplicationAuditRequestPaginationSchema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          enum:
+          - created_at
+          description: The field to sort the response by
+        sort_direction:
+          description: Whether to sort the response ascending or descending
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+      required:
+      - order_by
+      - sort_direction
+    ApplicationStartResponseDataSchema:
+      type: object
+      properties:
+        application_id:
+          type: string
+          format: uuid
+          description: The unique identifier of the newly created application
+          example: 789f0123-f45g-67h8-i901-234567890123
+    ErrorResponseSchema:
+      type: object
+      properties:
+        data:
+          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
+          example: {}
+        message:
+          type: string
+          description: General description of the error
+          example: Error
+        status_code:
+          type: integer
+          description: The HTTP status code of the error
+        errors:
+          type: array
+          example: []
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        internal_request_id:
+          type: string
+          description: An internal tracking ID
+          example: 550e8400-e29b-41d4-a716-446655440000
+    ApplicationAuditFilterSchema:
+      type: object
+      properties:
+        application_audit_event:
+          type:
+          - object
+          $ref: '#/components/schemas/ApplicationAuditEventFieldFilterSchema'
+    SortOrderApplicationSubmissionsRequestPaginationSchema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          enum:
+          - created_at
+          description: The field to sort the response by
+        sort_direction:
+          description: Whether to sort the response ascending or descending
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+      required:
+      - order_by
+      - sort_direction
     SamGovEntityResponseSchema:
       type: object
       properties:
@@ -1831,84 +1846,69 @@ components:
           type: string
           description: Last name of the Electronic Business Point of Contact
           example: Smith
-    ApplicationAuditEventFieldFilterSchema:
+    ApplicationUpdateRequestSchema:
       type: object
       properties:
-        one_of:
-          type: array
-          minItems: 1
-          items:
-            example:
-            - application_created
-            enum:
-            - application_created
-            - application_name_changed
-            - application_submitted
-            - application_submit_rejected
-            - attachment_added
-            - attachment_deleted
-            - attachment_updated
-            - submission_created
-            - user_added
-            - user_updated
-            - user_removed
-            - form_updated
-            - organization_added
-            type:
-            - string
-    ApplicationSubmissionsRequestSchema:
-      type: object
-      properties:
-        pagination:
-          type:
-          - object
-          $ref: '#/components/schemas/ApplicationSubmissionsRequestPaginationSchema'
+        application_name:
+          type: string
+          description: The new name for the application
+          example: Updated Research Grant Application
       required:
-      - pagination
-    ApplicationAttachmentNoLinkSchema:
+      - application_name
+    ApplicationFormInclusionUpdateResponseSchema:
       type: object
       properties:
-        application_attachment_id:
+        message:
           type: string
-          format: uuid
-          description: The ID of the application attachment
-          example: 123e4567-e89b-12d3-a456-426614174000
-        file_name:
-          type: string
-          description: The name of the application attachment file
-          example: my_example.pdf
-        mime_type:
-          type: string
-          description: The MIME type / content-type of the file
-          example: application/pdf
-        file_size_bytes:
-          type: integer
-          description: The size of the attachment in bytes
-          example: 12340
-        created_at:
-          type: string
-          format: date-time
-          description: When the application attachment was created
-        updated_at:
-          type: string
-          format: date-time
-          description: When the application attachment was last updated
-    OrganizationSchema:
-      type: object
-      properties:
-        organization_id:
-          type: string
-          format: uuid
-          description: The unique identifier of the organization
-          example: 456e7890-e12c-34f5-b678-901234567890
-        sam_gov_entity:
-          description: SAM.gov entity information if organization is registered
+          description: The message to return
+          example: Success
+        data:
           type:
           - object
-          - 'null'
-          anyOf:
-          - $ref: '#/components/schemas/SamGovEntityResponseSchema'
-          - type: 'null'
+          $ref: '#/components/schemas/ApplicationFormGetResponseDataSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    ApplicationGetResponseSchema:
+      type: object
+      properties:
+        warnings:
+          type: array
+          description: A list of warnings - indicating something you may want to be aware of, but did not prevent handling of the request
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type:
+          - object
+          $ref: '#/components/schemas/ApplicationGetResponseDataSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    ApplicationAttachmentCreateRequestSchema:
+      type: object
+      properties:
+        file_attachment:
+          description: The file to attach to an application
+          type: string
+          format: binary
+      required:
+      - file_attachment
+    ApplicationFormInclusionUpdateRequestSchema:
+      type: object
+      properties:
+        is_included_in_submission:
+          type: boolean
+          description: Whether this form should be included in the application submission
+      required:
+      - is_included_in_submission
   securitySchemes:
     ApiJwtAuth:
       type: apiKey

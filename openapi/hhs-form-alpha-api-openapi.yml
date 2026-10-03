@@ -149,6 +149,154 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
+    FormUpdateRequestSchema:
+      type: object
+      properties:
+        form_name:
+          type: string
+          description: The name of the form
+          example: ABC Project Form
+        short_form_name:
+          type: string
+          description: The short name of the form used for making files
+          example: abc_project
+        form_version:
+          type: string
+          description: The version of the form
+          example: '1.0'
+        agency_code:
+          type: string
+          description: The agency code for the form
+          example: SGG
+        omb_number:
+          type:
+          - string
+          - 'null'
+          description: The OMB number for the form
+          example: 4040-0001
+        legacy_form_id:
+          type:
+          - integer
+          - 'null'
+          description: The legacy form ID
+          example: 123
+        form_json_schema:
+          type: object
+          description: The JSON Schema representation of the form
+          example:
+            type: object
+            title: Test form for testing
+            properties:
+              Title:
+                title: Title
+                type: string
+                minLength: 1
+                maxLength: 60
+              Description:
+                title: Description for application
+                type: string
+                minLength: 0
+                maxLength: 15
+              ApplicationNumber:
+                title: Application number
+                type: number
+                minLength: 1
+                maxLength: 120
+              Date:
+                title: 'Date of application '
+                type: string
+                format: date
+          additionalProperties: {}
+        form_ui_schema:
+          description: The UI Schema of the form for front-end rendering
+          example:
+          - type: field
+            definition: /properties/Title
+          - type: field
+            definition: /properties/Description
+          - type: field
+            definition: /properties/ApplicationNumber
+          - type: field
+            definition: /properties/Date
+        form_instruction_id:
+          type:
+          - string
+          - 'null'
+          format: uuid
+          description: The UUID of the form instruction
+          example: 123e4567-e89b-12d3-a456-426614174000
+        form_rule_schema:
+          type:
+          - object
+          - 'null'
+          description: The rule schema for the form
+          additionalProperties: {}
+        json_to_xml_schema:
+          type:
+          - object
+          - 'null'
+          description: The JSON to XML schema mapping configuration for the form
+          additionalProperties: {}
+        form_type:
+          description: The type of the form
+          example:
+          - SF424
+          enum:
+          - SF424
+          - SF424A
+          - SF424B
+          - SF424D
+          - SFLLL
+          - ProjectNarrativeAttachment
+          - BudgetNarrativeAttachment
+          - OtherNarrativeAttachment
+          - ProjectAbstractSummary
+          - ProjectAbstract
+          - CD511
+          - SupplementaryNEHCoverSheet
+          - GGLobbyingForm
+          - EPAForm4700-4
+          - EPAKeyContacts
+          - AttachmentForm
+          - ProjectPerformanceSiteLocation
+          type:
+          - string
+          - 'null'
+          - 'null'
+        sgg_version:
+          type:
+          - string
+          - 'null'
+          description: The SGG version of the form
+          example: '1.0'
+        is_deprecated:
+          type:
+          - boolean
+          - 'null'
+          description: Whether the form is deprecated
+          example: false
+      required:
+      - agency_code
+      - form_json_schema
+      - form_name
+      - form_ui_schema
+      - form_version
+      - short_form_name
+    FormUpdateResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          type:
+          - object
+          $ref: '#/components/schemas/FormAlphaSchema'
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
     ErrorResponseSchema:
       type: object
       properties:
@@ -173,6 +321,61 @@ components:
           type: string
           description: An internal tracking ID
           example: 550e8400-e29b-41d4-a716-446655440000
+    FormInstructionUploadResponseSchema:
+      type: object
+      properties:
+        message:
+          type: string
+          description: The message to return
+          example: Success
+        data:
+          description: The REST resource object
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+    FormInstructionSchema:
+      type: object
+      properties:
+        form_instruction_id:
+          type: string
+          format: uuid
+          description: The UUID of the form instruction
+          example: 123e4567-e89b-12d3-a456-426614174000
+        file_name:
+          type: string
+          description: The name of the form instruction file
+          example: instructions.pdf
+        download_path:
+          type: string
+          description: The download URL for the form instruction file
+        created_at:
+          type: string
+          format: date-time
+          description: The timestamp when the form instruction was created
+        updated_at:
+          type: string
+          format: date-time
+          description: The timestamp when the form instruction was last updated
+    ValidationIssueSchema:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error
+          example: invalid
+        message:
+          type: string
+          description: The message to return
+          example: Not a valid string.
+        field:
+          type: string
+          description: The field that failed
+          example: summary.summary_description
+        value:
+          type: string
+          description: The value that failed
+          example: invalid string
     FormAlphaSchema:
       type: object
       properties:
@@ -322,57 +525,6 @@ components:
           format: binary
       required:
       - file
-    FormUpdateResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          type:
-          - object
-          $ref: '#/components/schemas/FormAlphaSchema'
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-    FormInstructionSchema:
-      type: object
-      properties:
-        form_instruction_id:
-          type: string
-          format: uuid
-          description: The UUID of the form instruction
-          example: 123e4567-e89b-12d3-a456-426614174000
-        file_name:
-          type: string
-          description: The name of the form instruction file
-          example: instructions.pdf
-        download_path:
-          type: string
-          description: The download URL for the form instruction file
-        created_at:
-          type: string
-          format: date-time
-          description: The timestamp when the form instruction was created
-        updated_at:
-          type: string
-          format: date-time
-          description: The timestamp when the form instruction was last updated
-    FormInstructionUploadResponseSchema:
-      type: object
-      properties:
-        message:
-          type: string
-          description: The message to return
-          example: Success
-        data:
-          description: The REST resource object
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
     FormResponseAlphaSchema:
       type: object
       properties:
@@ -395,158 +547,6 @@ components:
             type:
             - object
             $ref: '#/components/schemas/ValidationIssueSchema'
-    FormUpdateRequestSchema:
-      type: object
-      properties:
-        form_name:
-          type: string
-          description: The name of the form
-          example: ABC Project Form
-        short_form_name:
-          type: string
-          description: The short name of the form used for making files
-          example: abc_project
-        form_version:
-          type: string
-          description: The version of the form
-          example: '1.0'
-        agency_code:
-          type: string
-          description: The agency code for the form
-          example: SGG
-        omb_number:
-          type:
-          - string
-          - 'null'
-          description: The OMB number for the form
-          example: 4040-0001
-        legacy_form_id:
-          type:
-          - integer
-          - 'null'
-          description: The legacy form ID
-          example: 123
-        form_json_schema:
-          type: object
-          description: The JSON Schema representation of the form
-          example:
-            type: object
-            title: Test form for testing
-            properties:
-              Title:
-                title: Title
-                type: string
-                minLength: 1
-                maxLength: 60
-              Description:
-                title: Description for application
-                type: string
-                minLength: 0
-                maxLength: 15
-              ApplicationNumber:
-                title: Application number
-                type: number
-                minLength: 1
-                maxLength: 120
-              Date:
-                title: 'Date of application '
-                type: string
-                format: date
-          additionalProperties: {}
-        form_ui_schema:
-          description: The UI Schema of the form for front-end rendering
-          example:
-          - type: field
-            definition: /properties/Title
-          - type: field
-            definition: /properties/Description
-          - type: field
-            definition: /properties/ApplicationNumber
-          - type: field
-            definition: /properties/Date
-        form_instruction_id:
-          type:
-          - string
-          - 'null'
-          format: uuid
-          description: The UUID of the form instruction
-          example: 123e4567-e89b-12d3-a456-426614174000
-        form_rule_schema:
-          type:
-          - object
-          - 'null'
-          description: The rule schema for the form
-          additionalProperties: {}
-        json_to_xml_schema:
-          type:
-          - object
-          - 'null'
-          description: The JSON to XML schema mapping configuration for the form
-          additionalProperties: {}
-        form_type:
-          description: The type of the form
-          example:
-          - SF424
-          enum:
-          - SF424
-          - SF424A
-          - SF424B
-          - SF424D
-          - SFLLL
-          - ProjectNarrativeAttachment
-          - BudgetNarrativeAttachment
-          - OtherNarrativeAttachment
-          - ProjectAbstractSummary
-          - ProjectAbstract
-          - CD511
-          - SupplementaryNEHCoverSheet
-          - GGLobbyingForm
-          - EPAForm4700-4
-          - EPAKeyContacts
-          - AttachmentForm
-          - ProjectPerformanceSiteLocation
-          type:
-          - string
-          - 'null'
-          - 'null'
-        sgg_version:
-          type:
-          - string
-          - 'null'
-          description: The SGG version of the form
-          example: '1.0'
-        is_deprecated:
-          type:
-          - boolean
-          - 'null'
-          description: Whether the form is deprecated
-          example: false
-      required:
-      - agency_code
-      - form_json_schema
-      - form_name
-      - form_ui_schema
-      - form_version
-      - short_form_name
-    ValidationIssueSchema:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of error
-          example: invalid
-        message:
-          type: string
-          description: The message to return
-          example: Not a valid string.
-        field:
-          type: string
-          description: The field that failed
-          example: summary.summary_description
-        value:
-          type: string
-          description: The value that failed
-          example: invalid string
   securitySchemes:
     ApiJwtAuth:
       type: apiKey
