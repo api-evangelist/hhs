@@ -63,30 +63,25 @@ paths:
       x-operation-id-source: derived
 components:
   schemas:
-    ErrorResponseSchema:
+    ValidationIssueSchema:
       type: object
       properties:
-        data:
-          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
-          example: {}
+        type:
+          type: string
+          description: The type of error
+          example: invalid
         message:
           type: string
-          description: General description of the error
-          example: Error
-        status_code:
-          type: integer
-          description: The HTTP status code of the error
-        errors:
-          type: array
-          example: []
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/ValidationIssueSchema'
-        internal_request_id:
+          description: The message to return
+          example: Not a valid string.
+        field:
           type: string
-          description: An internal tracking ID
-          example: 550e8400-e29b-41d4-a716-446655440000
+          description: The field that failed
+          example: summary.summary_description
+        value:
+          type: string
+          description: The value that failed
+          example: invalid string
     FileScanResultsResponseSchema:
       type: object
       properties:
@@ -112,25 +107,30 @@ components:
           - string
       required:
       - status
-    ValidationIssueSchema:
+    ErrorResponseSchema:
       type: object
       properties:
-        type:
-          type: string
-          description: The type of error
-          example: invalid
+        data:
+          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
+          example: {}
         message:
           type: string
-          description: The message to return
-          example: Not a valid string.
-        field:
+          description: General description of the error
+          example: Error
+        status_code:
+          type: integer
+          description: The HTTP status code of the error
+        errors:
+          type: array
+          example: []
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        internal_request_id:
           type: string
-          description: The field that failed
-          example: summary.summary_description
-        value:
-          type: string
-          description: The value that failed
-          example: invalid string
+          description: An internal tracking ID
+          example: 550e8400-e29b-41d4-a716-446655440000
   securitySchemes:
     ApiJwtAuth:
       type: apiKey

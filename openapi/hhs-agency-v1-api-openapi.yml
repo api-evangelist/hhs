@@ -93,166 +93,25 @@ components:
           items:
             type: boolean
             example: true
-    SortOrderSchema:
+    ValidationIssueSchema:
       type: object
       properties:
-        order_by:
+        type:
           type: string
-          description: The field that the records were sorted by
-          example: id
-        sort_direction:
-          description: The direction the records are sorted
-          enum:
-          - ascending
-          - descending
-          type:
-          - string
-    IsTestAgencyFilterV1Schema:
-      type: object
-      properties:
-        one_of:
-          type:
-          - array
-          - 'null'
-          items:
-            type: boolean
-            example: true
-    SortOrderAgencySearchPaginationV1Schema:
-      type: object
-      properties:
-        order_by:
-          type: string
-          enum:
-          - agency_code
-          - agency_name
-          description: The field to sort the response by
-        sort_direction:
-          description: Whether to sort the response ascending or descending
-          enum:
-          - ascending
-          - descending
-          type:
-          - string
-      required:
-      - order_by
-      - sort_direction
-    ErrorResponseSchema:
-      type: object
-      properties:
-        data:
-          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
-          example: {}
+          description: The type of error
+          example: invalid
         message:
           type: string
-          description: General description of the error
-          example: Error
-        status_code:
-          type: integer
-          description: The HTTP status code of the error
-        errors:
-          type: array
-          example: []
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/ValidationIssueSchema'
-        internal_request_id:
+          description: The message to return
+          example: Not a valid string.
+        field:
           type: string
-          description: An internal tracking ID
-          example: 550e8400-e29b-41d4-a716-446655440000
-    OpportunityStatusesFilterV1Schema:
-      type: object
-      properties:
-        one_of:
-          type: array
-          minItems: 1
-          items:
-            type: string
-            example: archived
-    AgencySearchPaginationV1Schema:
-      type: object
-      properties:
-        sort_order:
-          type: array
-          default:
-          - order_by: agency_code
-            sort_direction: ascending
-          minItems: 1
-          maxItems: 5
-          description: The list of sorting rules
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/SortOrderAgencySearchPaginationV1Schema'
-        page_size:
-          type: integer
-          minimum: 1
-          maximum: 5000
-          description: The size of the page to fetch
-          example: 25
-        page_offset:
-          type: integer
-          minimum: 1
-          description: The page number to fetch, starts counting from 1
-          example: 1
-      required:
-      - page_offset
-      - page_size
-    AgencySearchRequestSchema:
-      type: object
-      properties:
-        query:
+          description: The field that failed
+          example: summary.summary_description
+        value:
           type: string
-          minLength: 1
-          maxLength: 100
-          description: Query string which searches against several text fields
-          example: research
-        query_operator:
-          default:
-          - OR
-          description: Query operator for combining search conditions
-          example: OR
-          enum:
-          - AND
-          - OR
-          type:
-          - string
-        filters:
-          type:
-          - object
-          $ref: '#/components/schemas/AgencySearchFilterV1Schema'
-        pagination:
-          type:
-          - object
-          $ref: '#/components/schemas/AgencySearchPaginationV1Schema'
-      required:
-      - pagination
-    PaginationInfoSchema:
-      type: object
-      properties:
-        page_offset:
-          type: integer
-          description: The page number that was fetched
-          example: 1
-        page_size:
-          type: integer
-          description: The size of the page fetched
-          example: 25
-        total_records:
-          type: integer
-          description: The total number of records fetchable
-          example: 42
-        total_pages:
-          type: integer
-          description: The total number of pages that can be fetched
-          example: 2
-        sort_order:
-          type: array
-          description: The sort order passed in originally
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/SortOrderSchema'
+          description: The value that failed
+          example: invalid string
     AgencyV1Schema:
       type: object
       properties:
@@ -301,40 +160,39 @@ components:
           type: string
           format: date-time
           readOnly: true
-    ValidationIssueSchema:
+    OpportunityStatusesFilterV1Schema:
       type: object
       properties:
-        type:
-          type: string
-          description: The type of error
-          example: invalid
-        message:
-          type: string
-          description: The message to return
-          example: Not a valid string.
-        field:
-          type: string
-          description: The field that failed
-          example: summary.summary_description
-        value:
-          type: string
-          description: The value that failed
-          example: invalid string
-    AgencySearchFilterV1Schema:
+        one_of:
+          type: array
+          minItems: 1
+          items:
+            type: string
+            example: archived
+    IsTestAgencyFilterV1Schema:
       type: object
       properties:
-        has_active_opportunity:
+        one_of:
           type:
-          - object
-          $ref: '#/components/schemas/HasActiveOpportunityFilterV1Schema'
-        opportunity_statuses:
+          - array
+          - 'null'
+          items:
+            type: boolean
+            example: true
+    SortOrderSchema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          description: The field that the records were sorted by
+          example: id
+        sort_direction:
+          description: The direction the records are sorted
+          enum:
+          - ascending
+          - descending
           type:
-          - object
-          $ref: '#/components/schemas/OpportunityStatusesFilterV1Schema'
-        is_test_agency:
-          type:
-          - object
-          $ref: '#/components/schemas/IsTestAgencyFilterV1Schema'
+          - string
     AgencySearchResponseV1Schema:
       type: object
       properties:
@@ -355,6 +213,148 @@ components:
           type: integer
           description: The HTTP status code
           example: 200
+    AgencySearchRequestSchema:
+      type: object
+      properties:
+        query:
+          type: string
+          minLength: 1
+          maxLength: 100
+          description: Query string which searches against several text fields
+          example: research
+        query_operator:
+          default:
+          - OR
+          description: Query operator for combining search conditions
+          example: OR
+          enum:
+          - AND
+          - OR
+          type:
+          - string
+        filters:
+          type:
+          - object
+          $ref: '#/components/schemas/AgencySearchFilterV1Schema'
+        pagination:
+          type:
+          - object
+          $ref: '#/components/schemas/AgencySearchPaginationV1Schema'
+      required:
+      - pagination
+    SortOrderAgencySearchPaginationV1Schema:
+      type: object
+      properties:
+        order_by:
+          type: string
+          enum:
+          - agency_code
+          - agency_name
+          description: The field to sort the response by
+        sort_direction:
+          description: Whether to sort the response ascending or descending
+          enum:
+          - ascending
+          - descending
+          type:
+          - string
+      required:
+      - order_by
+      - sort_direction
+    AgencySearchPaginationV1Schema:
+      type: object
+      properties:
+        sort_order:
+          type: array
+          default:
+          - order_by: agency_code
+            sort_direction: ascending
+          minItems: 1
+          maxItems: 5
+          description: The list of sorting rules
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderAgencySearchPaginationV1Schema'
+        page_size:
+          type: integer
+          minimum: 1
+          maximum: 5000
+          description: The size of the page to fetch
+          example: 25
+        page_offset:
+          type: integer
+          minimum: 1
+          description: The page number to fetch, starts counting from 1
+          example: 1
+      required:
+      - page_offset
+      - page_size
+    AgencySearchFilterV1Schema:
+      type: object
+      properties:
+        has_active_opportunity:
+          type:
+          - object
+          $ref: '#/components/schemas/HasActiveOpportunityFilterV1Schema'
+        opportunity_statuses:
+          type:
+          - object
+          $ref: '#/components/schemas/OpportunityStatusesFilterV1Schema'
+        is_test_agency:
+          type:
+          - object
+          $ref: '#/components/schemas/IsTestAgencyFilterV1Schema'
+    PaginationInfoSchema:
+      type: object
+      properties:
+        page_offset:
+          type: integer
+          description: The page number that was fetched
+          example: 1
+        page_size:
+          type: integer
+          description: The size of the page fetched
+          example: 25
+        total_records:
+          type: integer
+          description: The total number of records fetchable
+          example: 42
+        total_pages:
+          type: integer
+          description: The total number of pages that can be fetched
+          example: 2
+        sort_order:
+          type: array
+          description: The sort order passed in originally
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderSchema'
+    ErrorResponseSchema:
+      type: object
+      properties:
+        data:
+          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
+          example: {}
+        message:
+          type: string
+          description: General description of the error
+          example: Error
+        status_code:
+          type: integer
+          description: The HTTP status code of the error
+        errors:
+          type: array
+          example: []
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        internal_request_id:
+          type: string
+          description: An internal tracking ID
+          example: 550e8400-e29b-41d4-a716-446655440000
   securitySchemes:
     ApiJwtAuth:
       type: apiKey

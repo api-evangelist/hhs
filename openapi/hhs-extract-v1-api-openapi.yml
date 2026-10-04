@@ -83,20 +83,43 @@ components:
           type:
           - object
           $ref: '#/components/schemas/DateRangeSchema'
-    SortOrderSchema:
+    ValidationIssueSchema:
+      type: object
+      properties:
+        type:
+          type: string
+          description: The type of error
+          example: invalid
+        message:
+          type: string
+          description: The message to return
+          example: Not a valid string.
+        field:
+          type: string
+          description: The field that failed
+          example: summary.summary_description
+        value:
+          type: string
+          description: The value that failed
+          example: invalid string
+    SortOrderExtractMetadataPaginationV1Schema:
       type: object
       properties:
         order_by:
           type: string
-          description: The field that the records were sorted by
-          example: id
+          enum:
+          - created_at
+          description: The field to sort the response by
         sort_direction:
-          description: The direction the records are sorted
+          description: Whether to sort the response ascending or descending
           enum:
           - ascending
           - descending
           type:
           - string
+      required:
+      - order_by
+      - sort_direction
     ExtractMetadataListResponseSchema:
       type: object
       properties:
@@ -120,80 +143,36 @@ components:
           type: integer
           description: The HTTP status code
           example: 200
-    ExtractMetadataRequestSchema:
+    SortOrderSchema:
       type: object
       properties:
-        message:
+        order_by:
           type: string
-          description: The message to return
-          example: Success
-        data:
-          description: The REST resource object
-        status_code:
-          type: integer
-          description: The HTTP status code
-          example: 200
-        filters:
+          description: The field that the records were sorted by
+          example: id
+        sort_direction:
+          description: The direction the records are sorted
+          enum:
+          - ascending
+          - descending
           type:
-          - object
-          $ref: '#/components/schemas/ExtractMetadataFilterV1Schema'
-        pagination:
+          - string
+    DateRangeSchema:
+      type: object
+      properties:
+        start_date:
           type:
-          - object
-          $ref: '#/components/schemas/ExtractMetadataPaginationV1Schema'
+          - string
+          - 'null'
+          format: date
+        end_date:
+          type:
+          - string
+          - 'null'
+          format: date
       required:
-      - pagination
-    ExtractMetadataPaginationV1Schema:
-      type: object
-      properties:
-        sort_order:
-          type: array
-          minItems: 1
-          maxItems: 5
-          description: The list of sorting rules
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/SortOrderExtractMetadataPaginationV1Schema'
-        page_size:
-          type: integer
-          minimum: 1
-          maximum: 5000
-          description: The size of the page to fetch
-          example: 25
-        page_offset:
-          type: integer
-          minimum: 1
-          description: The page number to fetch, starts counting from 1
-          example: 1
-      required:
-      - page_offset
-      - page_size
-      - sort_order
-    ErrorResponseSchema:
-      type: object
-      properties:
-        data:
-          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
-          example: {}
-        message:
-          type: string
-          description: General description of the error
-          example: Error
-        status_code:
-          type: integer
-          description: The HTTP status code of the error
-        errors:
-          type: array
-          example: []
-          items:
-            type:
-            - object
-            $ref: '#/components/schemas/ValidationIssueSchema'
-        internal_request_id:
-          type: string
-          description: An internal tracking ID
-          example: 550e8400-e29b-41d4-a716-446655440000
+      - end_date
+      - start_date
     ExtractMetadataResponseSchema:
       type: object
       properties:
@@ -221,6 +200,33 @@ components:
           type: string
           description: The type of extract
           example: opportunity_data_extract
+    ExtractMetadataPaginationV1Schema:
+      type: object
+      properties:
+        sort_order:
+          type: array
+          minItems: 1
+          maxItems: 5
+          description: The list of sorting rules
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/SortOrderExtractMetadataPaginationV1Schema'
+        page_size:
+          type: integer
+          minimum: 1
+          maximum: 5000
+          description: The size of the page to fetch
+          example: 25
+        page_offset:
+          type: integer
+          minimum: 1
+          description: The page number to fetch, starts counting from 1
+          example: 1
+      required:
+      - page_offset
+      - page_size
+      - sort_order
     PaginationInfoSchema:
       type: object
       properties:
@@ -247,59 +253,53 @@ components:
             type:
             - object
             $ref: '#/components/schemas/SortOrderSchema'
-    SortOrderExtractMetadataPaginationV1Schema:
+    ExtractMetadataRequestSchema:
       type: object
       properties:
-        order_by:
-          type: string
-          enum:
-          - created_at
-          description: The field to sort the response by
-        sort_direction:
-          description: Whether to sort the response ascending or descending
-          enum:
-          - ascending
-          - descending
-          type:
-          - string
-      required:
-      - order_by
-      - sort_direction
-    ValidationIssueSchema:
-      type: object
-      properties:
-        type:
-          type: string
-          description: The type of error
-          example: invalid
         message:
           type: string
           description: The message to return
-          example: Not a valid string.
-        field:
-          type: string
-          description: The field that failed
-          example: summary.summary_description
-        value:
-          type: string
-          description: The value that failed
-          example: invalid string
-    DateRangeSchema:
+          example: Success
+        data:
+          description: The REST resource object
+        status_code:
+          type: integer
+          description: The HTTP status code
+          example: 200
+        filters:
+          type:
+          - object
+          $ref: '#/components/schemas/ExtractMetadataFilterV1Schema'
+        pagination:
+          type:
+          - object
+          $ref: '#/components/schemas/ExtractMetadataPaginationV1Schema'
+      required:
+      - pagination
+    ErrorResponseSchema:
       type: object
       properties:
-        start_date:
-          type:
-          - string
-          - 'null'
-          format: date
-        end_date:
-          type:
-          - string
-          - 'null'
-          format: date
-      required:
-      - end_date
-      - start_date
+        data:
+          description: Additional data that might be useful in resolving an error (see specific endpoints for details, this is used infrequently)
+          example: {}
+        message:
+          type: string
+          description: General description of the error
+          example: Error
+        status_code:
+          type: integer
+          description: The HTTP status code of the error
+        errors:
+          type: array
+          example: []
+          items:
+            type:
+            - object
+            $ref: '#/components/schemas/ValidationIssueSchema'
+        internal_request_id:
+          type: string
+          description: An internal tracking ID
+          example: 550e8400-e29b-41d4-a716-446655440000
   securitySchemes:
     ApiJwtAuth:
       type: apiKey
