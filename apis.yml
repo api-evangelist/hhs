@@ -770,6 +770,12 @@ apis:
   - type: Plans
     url: plans/simpler-grants.yml
 common:
+  - type: Plans
+    url: plans/openfda.yml
+  - type: RateLimits
+    url: rate-limits/openfda.yml
+  - type: FinOps
+    url: finops/overview.yml
   - type: CapabilityMap
     url: capabilities/hhs-capability-edges.yml
     name: HHS (US Department of Health and Human Services) Business Capability Map
