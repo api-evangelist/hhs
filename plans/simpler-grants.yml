@@ -1,3 +1,7 @@
+# Provenance stamped 2026-10-07 (roadmap#943): written by an API Evangelist sweep (undated — the file carries no date and git cannot supply one), not
+# harvested from the provider. `method: generated` so the economics campaign may replace it with a
+# dated, verbatim transcription; every figure below is unverified until it does.
+method: generated
 name: Simpler Grants.gov API Plans
 description: Simpler Grants.gov API is free to use with an API key managed through a developer account. Higher throughput is available for production integrations upon request.
 url: https://simpler.grants.gov/developers
@@ -23,3 +27,34 @@ plans:
     pricingModel: free
     contactURL: https://simpler.grants.gov/developers
     notes: Contact support@grants.gov or 1-800-518-4726 to request elevated limits.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  units: []
+  plans:
+  - name: Anonymous
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
+  - name: API Key (Free)
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
+  - name: Standard (Free)
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
+  - name: Production (Request Required)
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
