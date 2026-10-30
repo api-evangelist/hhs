@@ -1,4 +1,4 @@
-# HHS (US Department of Health and Human Services) (hhs)
+# HHS (US Department of Health and Human Services)
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,172 +66,116 @@
 
 The US Department of Health and Human Services provides data APIs for health programs, public health datasets, grants data, and interoperability standards for health information. HHS operates a broad ecosystem of APIs spanning FDA drug and device data, grants opportunity search, health IT open data, HRSA health center locators, and public health content syndication through its agencies including FDA, HRSA, ONC, and ODPHP.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/hhs/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/hhs/refs/heads/main/apis.yml)
+**Areas:** Health · Public Health · Grants · Interoperability · FHIR · Government · Open Data · FDA · HRSA · ONC
 
-## Scope
+## HHS (US Department of Health and Human Services) on APIs.io
 
-- **Type:** Index
+Everything profiled for HHS (US Department of Health and Human Services) is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/hhs/](https://apis.io/providers/hhs/)** — or go straight to one of the APIs or properties below.
 
-## Tags
+### APIs (21)
 
-- Health
-- Public Health
-- Grants
-- Interoperability
-- FHIR
-- Government
-- Open Data
-- FDA
-- HRSA
-- ONC
+- [openFDA API](https://apis.io/apis/hhs/openfda-api/) — OpenFDA provides RESTful APIs and raw download access to high-value FDA public datasets including drug adverse events, drug labels, drug recalls, medical…
+- [MyHealthfinder API](https://apis.io/apis/hhs/myhealthfinder-api/) — The MyHealthfinder API (Version 4) allows developers to add evidence-based, plain language health content to their websites and applications. Content is…
+- [ONC Health IT Open Data API](https://apis.io/apis/hhs/onc-health-it-open-data-api/) — The ONC Health IT Open Data API provides access to open datasets published by the Office of the National Coordinator for Health Information Technology.…
+- [HRSA Health Center Data Web Service](https://apis.io/apis/hhs/hrsa-health-center-data-web-service/) — The HRSA Health Center Data Web Service allows querying for federally qualified health centers by state, county, or ZIP code. A separate service provides…
+- [HealthData.gov Catalog API](https://apis.io/apis/hhs/healthdatagov-catalog-api/) — The HealthData.gov Catalog API uses CKAN and provides machine-readable access to the HHS health data catalog. Developers can find newly added datasets,…
+- [HHS (US Department of Health and Human Services) Agency v1 API](https://apis.io/apis/hhs/hhs-agency-v1-api/) — The Agency v1 API from HHS (US Department of Health and Human Services) — 1 operation(s) for agency v1.
+- [HHS (US Department of Health and Human Services) Application Alpha API](https://apis.io/apis/hhs/hhs-application-alpha-api/) — The Application Alpha API from HHS (US Department of Health and Human Services) — 11 operation(s) for application alpha.
+- [HHS (US Department of Health and Human Services) Award Recommendation Alpha API](https://apis.io/apis/hhs/hhs-award-recommendation-alpha-api/) — The Award Recommendation Alpha API from HHS (US Department of Health and Human Services) — 11 operation(s) for award recommendation alpha.
+- [HHS (US Department of Health and Human Services) CommonGrants Protocol API](https://apis.io/apis/hhs/hhs-commongrants-protocol-api/) — CommonGrants-compliant API routes for searching opportunities to promote interoperability across grant systems. Learn more by visiting CommonGrants.org
+- [HHS (US Department of Health and Human Services) Competition Alpha API](https://apis.io/apis/hhs/hhs-competition-alpha-api/) — The Competition Alpha API from HHS (US Department of Health and Human Services) — 3 operation(s) for competition alpha.
+- [HHS (US Department of Health and Human Services) Extract v1 API](https://apis.io/apis/hhs/hhs-extract-v1-api/) — The Extract v1 API from HHS (US Department of Health and Human Services) — 1 operation(s) for extract v1.
+- [HHS (US Department of Health and Human Services) File v1 API](https://apis.io/apis/hhs/hhs-file-v1-api/) — The File v1 API from HHS (US Department of Health and Human Services) — 1 operation(s) for file v1.
+- [HHS (US Department of Health and Human Services) Form Alpha API](https://apis.io/apis/hhs/hhs-form-alpha-api/) — The Form Alpha API from HHS (US Department of Health and Human Services) — 2 operation(s) for form alpha.
+- [HHS (US Department of Health and Human Services) Health API](https://apis.io/apis/hhs/hhs-health-api/) — The Health API from HHS (US Department of Health and Human Services) — 1 operation(s) for health.
+- [HHS (US Department of Health and Human Services) Internal v1 - Admin Only API](https://apis.io/apis/hhs/hhs-internal-v1-admin-only-api/) — The Internal v1 - Admin Only API from HHS (US Department of Health and Human Services) — 1 operation(s) for internal v1 - admin only.
+- [HHS (US Department of Health and Human Services) LOCAL ONLY API](https://apis.io/apis/hhs/hhs-local-only-api/) — The LOCAL ONLY API from HHS (US Department of Health and Human Services) — 1 operation(s) for local only.
+- [HHS (US Department of Health and Human Services) Opportunity v1 API](https://apis.io/apis/hhs/hhs-opportunity-v1-api/) — The Opportunity v1 API from HHS (US Department of Health and Human Services) — 4 operation(s) for opportunity v1.
+- [HHS (US Department of Health and Human Services) Opportunity v1 - for Grantors API](https://apis.io/apis/hhs/hhs-opportunity-v1-for-grantors-api/) — The Opportunity v1 - for Grantors API from HHS (US Department of Health and Human Services) — 8 operation(s) for opportunity v1 - for grantors.
+- [HHS (US Department of Health and Human Services) Organization v1 API](https://apis.io/apis/hhs/hhs-organization-v1-api/) — The Organization v1 API from HHS (US Department of Health and Human Services) — 10 operation(s) for organization v1.
+- [HHS (US Department of Health and Human Services) User v1 - Internal Only API](https://apis.io/apis/hhs/hhs-user-v1-internal-only-api/) — The User v1 - Internal Only API from HHS (US Department of Health and Human Services) — 23 operation(s) for user v1 - internal only.
+- [HHS (US Department of Health and Human Services) Workflow API](https://apis.io/apis/hhs/hhs-workflow-api/) — The Workflow API from HHS (US Department of Health and Human Services) — 4 operation(s) for workflow.
 
-## Timestamps
+### Published properties
 
-- **Created:** 2026-06-13
-- **Modified:** 2026-06-13
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-## APIs
+#### JSON Schema (6)
 
-### openFDA API
+The data models the API reads and writes.
 
-OpenFDA provides RESTful APIs and raw download access to high-value FDA public datasets including drug adverse events, drug labels, drug recalls, medical device 510(k) clearances, device classifications, device recalls, and food recall enforcement reports. Free API key available for higher rate limits.
+- [AgencyV1Schema](https://apis.io/schemas/hhs/agencyv1/)
+- [ErrorResponseSchema](https://apis.io/schemas/hhs/errorresponse/)
+- [HealthcheckResponseSchema](https://apis.io/schemas/hhs/healthcheckresponse/)
+- [OpportunitySearchResponseV1Schema](https://apis.io/schemas/hhs/opportunitysearchresponsev1/)
+- [OpportunityV1Schema](https://apis.io/schemas/hhs/opportunityv1/)
+- [PaginationInfoSchema](https://apis.io/schemas/hhs/paginationinfo/)
 
-- **Human URL:** [https://open.fda.gov/apis/](https://open.fda.gov/apis/)
-- **Base URL:** `https://api.fda.gov`
+#### Examples (6)
 
-#### Tags
+Example requests and responses.
 
-- FDA
-- Drugs
-- Medical Devices
-- Food Safety
-- Adverse Events
-- Recalls
+- [Opportunity](https://apis.io/examples/hhs/opportunity/)
+- [Opportunity Search Request](https://apis.io/examples/hhs/opportunity-search-request/)
+- [V1_Agencies_Search_Post_Request](https://apis.io/examples/hhs/v1_agencies_search_post_request/)
+- [V1_Extracts_Post_Request](https://apis.io/examples/hhs/v1_extracts_post_request/)
+- [V1_Opportunities_Search_Csv_Post_Request](https://apis.io/examples/hhs/v1_opportunities_search_csv_post_request/)
+- [V1_Opportunities_Search_Post_Request](https://apis.io/examples/hhs/v1_opportunities_search_post_request/)
 
-#### Properties
+#### Governance rules (1)
 
-- [Documentation](https://open.fda.gov/apis/)
-- [Authentication](https://open.fda.gov/apis/authentication/)
-- [Rate Limits](rate-limits/openfda.yml)
-- [Plans](plans/openfda.yml)
+Spectral rulesets for the provider's contracts.
 
-### Simpler Grants.gov API
+- [HHS (US Department of Health and Human Services) — jsonschema rules](https://apis.io/rules/hhs/hhs-jsonschema-spectral-rules/)
 
-The Simpler Grants.gov API provides programmatic access to search and retrieve federal grant opportunities. Supports keyword search, fielded search, pagination, sorting, and detailed opportunity retrieval. Requires an API key managed through a developer account.
+#### Security (1)
 
-- **Human URL:** [https://simpler.grants.gov/developers](https://simpler.grants.gov/developers)
-- **Base URL:** `https://api.simpler.grants.gov`
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Tags
+- [Hhs Domain Security](https://apis.io/security/hhs/hhs-domain-security/)
 
-- Grants
-- Federal Funding
-- Opportunities
-- Search
+#### Plans and pricing (2)
 
-#### Properties
+Published plans, tiers and prices.
 
-- [Documentation](https://simpler.grants.gov/developers)
-- [OpenAPI](https://api.simpler.grants.gov/docs) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Open A P I Spec](openapi/simpler-grants-gov.yml)
-- [JSON Schema](json-schema/opportunityv1.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/opportunitysearchresponsev1.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/agencyv1.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/errorresponse.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/paginationinfo.json) — [JSON Schema](https://json-schema.org/specification)
-- [JSON Schema](json-schema/healthcheckresponse.json) — [JSON Schema](https://json-schema.org/specification)
-- [Examples](examples/v1_opportunities_search_post_request.json)
-- [Examples](examples/v1_agencies_search_post_request.json)
-- [J S O N L D Context](json-ld/context.json)
-- [Rate Limits](rate-limits/simpler-grants.yml)
-- [Plans](plans/simpler-grants.yml)
+- [Openfda](https://apis.io/plans/hhs/openfda/)
+- [Simpler Grants](https://apis.io/plans/hhs/simpler-grants/)
 
-### MyHealthfinder API
+#### Rate limits (2)
 
-The MyHealthfinder API (Version 4) allows developers to add evidence-based, plain language health content to their websites and applications. Content is available in English and Spanish and is completely free to use. Provides personalized health recommendations based on age, sex, and pregnancy status.
+Published request limits.
 
-- **Human URL:** [https://odphp.health.gov/our-work/national-health-initiatives/health-literacy/consumer-health-content/free-web-content/apis-developers](https://odphp.health.gov/our-work/national-health-initiatives/health-literacy/consumer-health-content/free-web-content/apis-developers)
-- **Base URL:** `https://health.gov/myhealthfinder`
+- [Openfda](https://apis.io/rate-limits/hhs/openfda/)
+- [Simpler Grants](https://apis.io/rate-limits/hhs/simpler-grants/)
 
-#### Tags
+#### FinOps (1)
 
-- Public Health
-- Health Content
-- Consumer Health
-- ODPHP
+What the API costs to run, by operation.
 
-#### Properties
+- [Overview](https://apis.io/finops/hhs/overview/)
 
-- [Documentation](https://odphp.health.gov/our-work/national-health-initiatives/health-literacy/consumer-health-content/free-web-content/apis-developers/api-documentation)
+## Where to find this API
 
-### ONC Health IT Open Data API
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-The ONC Health IT Open Data API provides access to open datasets published by the Office of the National Coordinator for Health Information Technology. Supports filtering by state and year, and returns data in JSON, CSV, or XML formats. Covers datasets on EHR adoption, health IT use, and interoperability metrics.
-
-- **Human URL:** [https://healthit.gov/data/api/](https://healthit.gov/data/api/)
-- **Base URL:** `https://healthit.gov/data/open-api`
-
-#### Tags
-
-- Health IT
-- EHR
-- Interoperability
-- ONC
-- Open Data
-
-#### Properties
-
-- [Documentation](https://healthit.gov/data/api/)
-
-### HRSA Health Center Data Web Service
-
-The HRSA Health Center Data Web Service allows querying for federally qualified health centers by state, county, or ZIP code. A separate service provides access to Ryan White HIV/AIDS Medical Care Providers searchable by latitude and longitude. Uses SOAP/XML. Registration required to obtain a web token.
-
-- **Human URL:** [https://data.hrsa.gov/data/services](https://data.hrsa.gov/data/services)
-- **Base URL:** `https://data.hrsa.gov`
-
-#### Tags
-
-- HRSA
-- Health Centers
-- HIV/AIDS
-- Provider Locator
-- SOAP
-
-#### Properties
-
-- [Documentation](https://data.hrsa.gov/data/services)
-
-### HealthData.gov Catalog API
-
-The HealthData.gov Catalog API uses CKAN and provides machine-readable access to the HHS health data catalog. Developers can find newly added datasets, search the catalog, download catalog metadata for analysis, or build new catalog tools. Conforms to DCAT-US 3.0 standards.
-
-- **Human URL:** [https://healthdata.gov/](https://healthdata.gov/)
-- **Base URL:** `https://healthdata.gov/api/3`
-
-#### Tags
-
-- Open Data
-- CKAN
-- Health Data
-- Data Catalog
-- DCAT
-
-#### Properties
-
-- [Documentation](https://healthdata.gov/)
-
-## Common Properties
-
-- [Git Hub](https://github.com/HHS)
-- [Terms of Service](https://www.hhs.gov/web/policies-and-standards/hhs-web-policies/terms-of-service/index.html)
-- [Privacy Policy](https://www.hhs.gov/web/policies-and-standards/hhs-web-policies/privacy/index.html)
-- [Open Data](https://healthdata.gov/)
-- [Status](https://www.hhs.gov/)
 - [Blog](https://www.hhs.gov/about/news/index.html)
-- [Accessibility](https://www.hhs.gov/web/policies-and-standards/hhs-web-policies/accessibility/index.html)
+- [Terms of service](https://www.hhs.gov/web/policies-and-standards/hhs-web-policies/terms-of-service/index.html)
+- [Privacy policy](https://www.hhs.gov/web/policies-and-standards/hhs-web-policies/privacy/index.html)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Unrated** — no public website could be reached for this company, so there was almost nothing to measure and nothing a reader could check.
+
+This is not a score of zero. No rating is published for this company. If that is wrong because something public exists that we missed, say so on this repository or email [info@apievangelist.com](mailto:info@apievangelist.com) and it will be re-run — free, and no justification needed.
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for HHS (US Department of Health and Human Services): the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/hhs/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
